@@ -76,6 +76,7 @@ export default function Example() {
             Not a member?{' '}
             <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
               Start a 14 day free trial
+              
             </a>
           </p>
         </div>
