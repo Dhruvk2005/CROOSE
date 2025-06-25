@@ -6,7 +6,7 @@ import React from 'react'
 
 
 
- const Page = () => {
+ const Login = () => {
  return (
   
    <div className='flex flex-col md:flex-row w-full min-h-screen   bg-[#EDEBF8] '>
@@ -106,7 +106,7 @@ import React from 'react'
    </div>
  );}
 
- export default Page
+ export default Login
 
 
 
