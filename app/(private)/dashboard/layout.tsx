@@ -10,19 +10,41 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const [show,setShow] = useState(false)
-  const [mediaQuery,setMediaQuery] = useState<any>()
+  // const [mediaQuery,setMediaQuery] = useState<any>()
 
-  useEffect(()=>{
-setMediaQuery( window.matchMedia("(max-width: 1259px)"))
-  },[])
-  useEffect(() => {
-   
-       
+  // useEffect(()=>{
+  // let a = window.matchMedia("(max-width: 1259px)")
+  //   setMediaQuery(a)
+  // },[])
+  // useEffect(() => {
+ 
+  //   // Initial check
+  //   if (mediaQuery.matches) {
+  //     setShow(false);
+  //   } else {
+  //     setShow(true);
+  //   }
+
+  //   // Listener for screen resize
+  //   const handleResize = (e:any) => {
+  //     setShow(e.matches);
+  //   };
+
+  //   mediaQuery.addEventListener("change", handleResize);
+
+  //   return () => {
+  //     mediaQuery.removeEventListener("change", handleResize);
+  //   };
+  // }, [mediaQuery]);
+
+   useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 1259px)");
+
     // Initial check
     if (mediaQuery.matches) {
-      setShow(false);
-    } else {
       setShow(true);
+    } else {
+      setShow(false);
     }
 
     // Listener for screen resize
@@ -35,7 +57,7 @@ setMediaQuery( window.matchMedia("(max-width: 1259px)"))
     return () => {
       mediaQuery.removeEventListener("change", handleResize);
     };
-  }, [mediaQuery]);
+  }, []);
   return (
     <section className="flex">
 
