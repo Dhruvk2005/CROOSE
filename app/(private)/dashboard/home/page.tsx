@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
     <>
       <div>
-        <Navbar />
+        hii
       </div>
 
     </>
