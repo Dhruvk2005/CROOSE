@@ -10,10 +10,14 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const [show,setShow] = useState(false)
-  const [mediaQuery,setMediaQuery] = useState<any>( window.matchMedia("(max-width: 1259px)"))
+  const [mediaQuery,setMediaQuery] = useState<any>()
+
+  useEffect(()=>{
+setMediaQuery( window.matchMedia("(max-width: 1259px)"))
+  },[])
   useEffect(() => {
    
-
+       
     // Initial check
     if (mediaQuery.matches) {
       setShow(false);
