@@ -1,170 +1,125 @@
-'use client'
-import React from "react";
-import Selectbox from "../component/selectbox";
 
 
 
-const Loginform = () => {
-  return (
-    <div className="flex ">
+ import { IM_Fell_Great_Primer_SC } from 'next/font/google';
+import React from 'react'
 
-      <div className="pt-[11px] pl-[7px] w-[684px] h-[900px] bg-[#685BC71F]">
-        <div className="w-[190px] h-[67.05px] mt-[40.94px] ml-[45px]">
-          <img
-            className="w-[173.52px] h-[40.24px] mt-[11.05px] ml-[7.66px]"
-            src="Vector.png"
-            alt="Logo"
-          />
+
+
+ const Page = () => {
+ return (
+  
+   <div className='flex flex-col md:flex-row w-full min-h-screen   bg-[#EDEBF8] '>
+    <div className='w-[685px]  flex flex-wrap h-[900px] bg-[#EDEBF8] md:w-full lg:w-full '>
+      <div className='w-[190px] top-[37px] left-[33px] h-[67px]'>
+        <img className=' mt-[37px] ml-[33px] ' src="croose.png" alt='croose'/>
         </div>
-        <div className="flex justify-center items-center flex-col gap-[47px] mt-[20px] w-full h-auto">
-          <div>
-            <img
-              className="w-[440px] h-[431px]"
-              src="cover.png"
-              alt="cover"
-            />
-          </div>
-          <div className="flex items-center flex-col w-[532px] h-auto gap-[16px]">
-            <p className="text-[#1D2939] font-bold text-[40px] leading-[40px] tracking-normal text-center">
-              The fastest way to automate your business
-            </p>
-            <p className="font-normal text-center text-[18px] mb-[18px] tracking-normal leading-[28px] text-[#344054]">
-              Croose helps you run your business on WhatsApp with an AI agent
-              that handles bookings, payments, messages, and more — all in one
-              place
-            </p>
-          </div>
+       <div className='flex flex-col justify-center items-center  w-[685px] h-[900px] '>
+         {/* <img className='top-[0px] left-[0px]' src="image1.png" alt='croose'/> */}
+    
+        <img className=' w-[260px] h-[463px] ' src="mobile.png"/>
+        <div className='w-[532px] mb-[100px] h-[184px]'>
+          <p className='w-[532px] text-[#1D2939] font-bold text-center leading-[44px] tracking-[-0.02em] mb-[18px] text-[40px]  h-[88px]'>Log in. Ignite your enterprise.</p>
+          <p className='font-inter font-medium text-[18px] leading-[28px] text-[#475467] tracking-normal text-center'>Access your Croose dashboard to manage your AI agent, automate your workflow, and keep your business running — all from one place.</p>
         </div>
+     </div>
+     </div>
+
+
+   <div className='w-full bg-[#ffff] h-[900px]'>
+     <div className='w-[755px] h-full flex-1 flex justify-center flex-wrap flex-col items-center bg-[#FFFFFF1A]'>
+      <div className='w-[406px] h-[544px] gap-[48px]'>
+       <p className='text-[#1D2939] h-[23px] w-[406px] font-inter font-bold text-[32px] mt-[20px] leading-[150%] tracking-[-4%]'>Welcome back!</p>
+
+  <div className="w-[406px] h-[294px] mt-[50px] flex flex-col gap-6">
+             <div className="flex flex-col w-[406px] h-[74px]">
+               <label
+                 htmlFor="email"
+                 className="w-[406px] h-[30px] pt-1.5 pb-1.5 text-[#344054]  font-inter font-medium text-[14px] leading-[20px]"
+               >
+                 Email
+               </label>
+               <input
+                 id="email"
+                 type="email"
+                 className="w-[406px] h-[44px]  rounded-[12px] border border-solid border-gray-300 p-[4px] text-[#cedaee]"
+                 placeholder="Enter email"
+               />
+             </div>
+
+             <div className="flex flex-col w-[406px] h-[74px]">
+               <label
+                 htmlFor="password"
+                 className="w-[406px] h-[30px] text-[#344054] font-inter font-medium text-[14px] leading-[20px]"
+               >
+                 Password (Min of 8 characters)
+               </label>
+               <div className='relative flex items-center'>
+                <img className='w-[21px] absolute right-[10px] mt-[3px] flex items-center h-[21px] pt-[2px]' src='Eye.png' />
+               <input
+                 id="password"
+                 type="password"
+                 className="w-[406px] h-[44px] rounded-[12px] border border-solid border-gray-300 p-[4px] mt-[3px] text-[#D0D5DD]"
+                 placeholder="Enter password"
+               />
+               </div>
+                  <p className="w-[200px] ml-[280px] mt-[10px] h-[10px] text-[#685BC7] font-inter font-semibold text-[14px] leading-[18px] cursor-pointer">
+               Forgot Password?
+             </p>
+              <div className="w-[406px] h-[84px] mt-[35px] flex flex-col gap-1">
+            <button className="w-[406px] h-[48px] bg-[#685BC7] rounded-[12px] text-white font-inter font-semibold text-[16px] leading-[24px] flex justify-center items-center">
+              Submit
+            </button>
+            <p className="w-[350px] h-[20px] mt-[3px] text-center pl-[70px] font-inter font-normal text-[14px] leading-[20px] text-[#344054]">
+              Don’t have an account? <span className='font-inter mt-[3px] font-medium text-[14px] text-center leading-[20px] tracking-normal space-y-[14px] text-[#685BC7]'> Sign up</span>
+            </p>
+          </div> 
+             </div>
+
+           </div>
+
+ <div className="w-[406px] h-[131px] flex flex-col gap-[24px]">
+            <div className="w-[406px] h-[7px] bg-transparent" />
+            <img src="line.png" alt='line' />
+
+             <div className="w-[406px] flex flex-col gap-[12px] h-[100px]">
+              <div className='relative flex items-center'>
+                <img className='w-[20px] absolute left-[95px] flex items-center h-[20px]' alt='google' src="google.png" />
+               <button className="w-[406px]  h-[44px] rounded-[12px] border border-gray-300 bg-[#FCFCFD] text-[#000000] font-inter font-medium">
+                 Continue with Google
+               </button>
+               </div>
+          
+               
+<div className='relative flex items-center'>
+  <img className='w-[21px] absolute left-[95px] mt-[3px] flex items-center h-[21px] pt-[2px]' src="apple.png" />
+               <button className="w-[406px] mt-[10px] h-[44px] rounded-[12px] border border-gray-300 bg-[#FCFCFD] text-[#1D2939] font-aeonik font-medium text-[17px] leading-[24px] flex justify-center items-center gap-6">
+                 Continue with Apple
+               </button>
+               </div>
+             </div>
+           </div>
+        
       </div>
+      </div> 
+     </div>
+   </div>
+ );}
+
+ export default Page
 
 
-      <div className="flex-1 flex  p-[80px_160px] h-[900px] -mt-[40px]">
-        <section className="w-[435px] h-auto flex flex-col gap-[32px]">
-          <div className="p-6 space-y-4 sm:p-8">
-            <h1 className="font-bold text-[32px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
-              Create an account
-            </h1>
-            <form className="space-y-4 " action="#">
-              <div>
-                <label htmlFor="full-name" className="block mb-2 text-sm font-medium text-[#344054]">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="full-name"
-                  id="full-name"
-                  placeholder="Enter Name"
-                  className="w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
-                  required
-                />
-              </div>
 
-              <div>
-                <label htmlFor="business-name" className="block mb-2 text-sm font-medium text-[#344054]">
-                  Business Name
-                </label>
-                <input
-                  type="text"
-                  name="business-name"
-                  id="business-name"
-                  placeholder="Enter Business Name"
-                  className="w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
-                  required
-                />
-              </div>
 
-              <div>
 
-                <Selectbox />
-                {/* <div className=" w-[435px] flex justify-center items-center border-[1px] rounded-[12px]  border-[#D0D5DD] " >
-                  <div className=" flex w-[50px] text-center justify-center " >
-                    <img className="w-[20px]" src="GH.png" alt="Gh" />
-                  </div>
-                <input
-                  type="text"
-                  name="business-location"
-                  id="business-location"
-                  placeholder="Ghana 🇬🇭"
-                  className=" outline-none border-none w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
-                  required
-                />
-                </div> */}
-              </div>
 
-              <div>
-                <label htmlFor="email" className="block mb-2 text-sm font-medium text-[#344054]">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Enter email"
-                  className="w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
-                  required
-                />
-              </div>
 
-              <div>
-                <label htmlFor="account-password" className="block mb-2 text-sm font-medium text-[#344054]">
-                  Password (Min of 8 characters)
-                </label>
-                <input
-                  type="password"
-                  name="account-password"
-                  id="account-password"
-                  placeholder="Enter Password"
-                  className="w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
-                  required
-                />
-              </div>
 
-              <button
-                type="submit"
-                className="bg-[#685BC7] text-white font-semibold text-[14px] leading-[21px] flex flex-row justify-center items-center w-[435px] h-[48px] px-[20px] py-[10px] gap-[10px] rounded-[12px]"
-              >
-                Sign up
-              </button>
-              <div className="flex flex-col items-center w-[435px] " >
-                <p className="font-normal text-sm leading-[20px] tracking-normal text-[#101828] text-center">
-                  Already have an account?{" "}
-                  <a
-                    href="#"
-                    className="font-medium text-primary-600 hover:underline text-[#685BC7] dark:text-primary-500"
-                  >
-                    Log In
-                  </a>
-                </p>
-                 <div className=" mt-[30px] flex items-center justify-center w-full gap-4 my-4">
-                <hr className="flex-grow border-t border-gray-300" />
-                <span className="text-gray-500 text-sm font-medium">OR</span>
-                <hr className="flex-grow border-t border-gray-300" />
-              </div>
-              </div>
-             <div>
-              <button
-                type="button"
-                className="flex  -mt-[20px]  items-center justify-center gap-[10px] w-[435px] h-[48px] rounded-[12px]  border-[#EAECF0] border-[1px]  text-sm font-medium text-[#344054]"
-              >
-                <img src="google.png" alt="Google" className="w-5 h-5" />
-                Continue with Google
-              </button>
 
-              <button
-                type="button"
-                className="flex  mt-[10px] items-center justify-center gap-[10px] w-[435px] h-[48px] rounded-[12px] border-[#EAECF0] border-[1px] text-sm font-medium text-[#344054]"
-              >
-                <img src="apple.jpeg" alt="Apple" className="w-[35.442505836486816px] " />
-                Continue with Apple
-              </button>
-              </div>
-            </form>
 
-          </div>
-        </section>
-      </div>
-    </div>
-  );
-};
 
-export default Loginform;
+
+
+
+
+
