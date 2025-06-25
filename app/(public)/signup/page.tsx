@@ -4,7 +4,7 @@ import Selectbox from "../component/selectbox";
 
 
 
-const Loginform = () => {
+const Signupform = () => {
   return (
     <div className="flex ">
 
@@ -167,4 +167,4 @@ const Loginform = () => {
   );
 };
 
-export default Loginform;
+export default Signupform;
