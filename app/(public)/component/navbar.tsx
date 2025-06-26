@@ -19,12 +19,12 @@ const Navbar = () => {
           </div>
 
         </div>
-        <div className='w-[1168px] h-[900px] ' >
+        
           <div>
 
           </div>
         </div>
-      </div>
+     
 
     </>
   )
