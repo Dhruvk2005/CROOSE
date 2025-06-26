@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Navbar = () => {
+const Navbar = ({show,setShow}:any) => {
   return (
     <>
-      <div>
-        <div className='w-[calc(100%-280px)] h-[64px] border-b-[2px] fixed flex justify-between items-center ' >
-          <div className='flex items-center  gap-[20px] text-[#121217] '>
+      <div className='w-[100%] h-[80px]'>
+        <div className={`w-[100%] xl:w-[calc(100%-272px)] h-[64px] border-b-[2px] fixed flex justify-between items-center `} >
+          <div className='flex items-center  gap-[20px] text-[#121217] ' onClick={()=>setShow(true)}>
             <svg className='mt-[5px] ml-[7.5px]' width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6.5 11L1.5 6L6.5 1" stroke="#101828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg><span className='font-semi bold text-[18px] ' >My Space</span>
@@ -19,12 +19,12 @@ const Navbar = () => {
           </div>
 
         </div>
-        
+        {/* <div className='w-[1168px] h-[900px] ' >
           <div>
 
           </div>
-        </div>
-     
+        </div> */}
+      </div>
 
     </>
   )
