@@ -27,13 +27,13 @@ export default function Selectbox() {
       </Label>
 
       <div className="relative">
-        <ListboxButton className="flex items-center w-[435px] h-[44px] p-[16px] gap-[8px] rounded-[12px] border border-gray-300 text-left text-gray-900 bg-white">
+        <ListboxButton className="flex items-center w-[100%] md:w-[435px]  h-[44px] p-[16px] gap-[8px] rounded-[12px] border border-gray-300 text-left text-gray-900 bg-white">
           <img
             alt=""
             src={selected?.avatar}
             className="w-5 h-5 rounded-full"
           />
-          <span className="truncate text-sm font-normal text-[#667085]">
+          <span className="truncate text-sm font-normal text-[#66708510">
             {selected?.name}
           </span>
 
