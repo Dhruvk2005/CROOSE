@@ -14,7 +14,7 @@ const Emailverification = () => {
                     </div>
                 </div>
             </div>
-            <div className='w-full h-auto flex flex-col items-center absolute top-[250px] ' >
+            <div className='w-full h-[80vh] flex flex-col items-center justify-center ' >
 
                 <div className='w-[358px] h-auto flex gap-[24px] flex-col ' >
                     <div className='flex flex-col gap-[24px]'>
@@ -25,7 +25,7 @@ const Emailverification = () => {
                     <div>
                         <div className='flex justify-center gap-[24px] flex-col' >
                             <button className='flex justify-center items-center w-[358px] h-[54px] pt-[10px] pb-[10px] pl-[16px] pr-[16px] bg-[#F2F4F7] text-[#344054] gap-[12px] rounded-[12px] ' >
-                                <img src="gmail.png" alt='gmail' className='w-[21px]' /> Open Gmail
+                                <img src="gmail.png" alt='gmail' className='w-[21px] rounded-[6px] ' /> Open Gmail
                             </button>
 
                             <Link
