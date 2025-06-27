@@ -65,7 +65,7 @@ export default function Layout({
 
       {/* <div > */}
         <div >
-        <Navbar show={show} setShow={setShow}/>
+        {/* <Navbar show={show} setShow={setShow}/> */}
           <div className="w-[100%] xl:w-[calc(100%-272px)] bg-[white] h-[100%] absolute"  onClick={()=>setShow(false)}>
           {children}
           </div>

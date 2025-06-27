@@ -3,7 +3,7 @@ import Link from 'next/link';
 const Emailverification = () => {
     return (
 
-        <div className='h-full md:flex-row' >
+        <div className='flex flex-wrap flex-col min-h-screen' >
             <div>
                 <div className=' flex justify-between w-full h-auto -mt-[0px] border-b-[1px] border-b-[#EAECF0] pt-[14px] pb-[30px] pl-[20px] pr-[20px]' >
                     <div>
