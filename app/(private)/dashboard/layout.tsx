@@ -104,27 +104,14 @@ export default function Layout({
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-white transition-all duration-300">
-      {/* Sidebar */}
-      {show && (
-        <div className="w-[272px] bg-[#13102E] transition-all duration-300">
-          <Nav />
-        </div>
-      )}
+    <section className="flex">
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col transition-all duration-300">
-        {/* Top Navbar */}
-        <Navbar show={show} setShow={setShow} />
+      <Nav show={show} setShow={setShow}/>
 
-        {/* Main Page Content */}
-        <div
-          className="p-4"
-          onClick={() => {
-            // On small screen, close sidebar when content is clicked
-            if (window.innerWidth < 1260) setShow(false);
-          }}
-        >
+      {/* <div > */}
+        <div >
+        {/* <Navbar show={show} setShow={setShow}/> */}
+          <div className="w-[100%] xl:w-[calc(100%-272px)] bg-[white] h-[100%] absolute"  onClick={()=>setShow(false)}>
           {children}
         </div>
       </div>
