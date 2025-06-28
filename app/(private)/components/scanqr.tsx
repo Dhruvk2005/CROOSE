@@ -1,16 +1,16 @@
 import React from 'react'
 import { Icon } from "@iconify/react";
-const Scanqrpage = () => {
+const Scanqrpage = (props:any) => {
     return (
         <>
-            <div className=' flex flex-wrap justify-center items-center w-full h-[900px] bg-[#9999]  ' >
+            <div className=' fixed top-0 left-0 flex z-[70] overflow-y-auto flex-wrap justify-center items-center w-full h-full bg-[#9999]  ' >
                 <div className=' flex flex-col items-center w-[859px] h-[700px] rounded-[16px] bg-[#FFFFFF] ' >
                     <div className=' flex items-center px-[24px] py-[20px] border-[1px] border-[#FFFFFF] rounded-t-[16px] justify-end w-full h-[60px] '>
-                        <Icon icon="charm:cross" width="16" height="26" style={{ color: "#000" }} className=' w-[30px] ' />
+                        <Icon onClick={()=>props.setScanopen(false)} icon="charm:cross" width="16" height="26" style={{ color: "#000" }} className=' w-[30px] ' />
                     </div>
                     <div className='flex flex-col gap-[32px] items-center ' >
                         <div className='' >
-                            <ul className='flex flex-col items-center w-[827px] h-auto gap-[12px]' >
+                            <ul className='flex flex-col items-center w-full h-auto gap-[12px]' >
                                 <li className='w-[104px]' ><img src='/123.png' alt="123" /></li>
                                 <li className='font-bold text-[20px] text-[#121217] font-sans' >Scan QR code</li>
                                 <li className='w-[378px] h-[40px] ' ><p className='text-center text-[#475467] font-normal text-[14px]' >Scan this code with WhatsApp app on your mobile device,

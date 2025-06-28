@@ -1,13 +1,14 @@
+'use Client'
 import React from 'react'
 import { Icon } from "@iconify/react";
-const Upgradetopro = () => {
+const Upgradetopro = (props:any) => {
     return (
         <>
-            <div className=' flex justify-center items-center w-full h-[100vh] bg-[#9999] ' >
+            <div className='fixed top-0 left-0 z-[50] w-full h-full bg-[#00000080] flex items-center justify-center ' >
                 <div className='  w-[400px] h-auto rounded-[16px] bg-[#FFFFFF] ' >
                     <div className='w-[400px]  rounded-t-[16px]  h-[89px] relative  bg-[#F3F0FA]' >
 
-                        <Icon icon="charm:cross" width="16" height="26" style={{ color: "#000" }} className=' w-[30px] absolute top-[15px] left-[350px] ' />
+                        <Icon onClick={()=>props.setProopen(false)} icon="charm:cross" width="16" height="26" style={{ color: "#000" }} className=' w-[30px] absolute top-[15px] left-[350px] ' />
                     </div>
                     <div className=' flex flex-col items-center w-[400px] h-auto p-[40px] gap-[16px]' >
                         <div className='w-[320px]' >
@@ -21,7 +22,10 @@ const Upgradetopro = () => {
                         </div>
                     </div>
                     <div className='flex justify-center flex-col w-[400px] p-[20px] h-auto border-t-[1px] border-t-[#EAECF0]  gap-[12px]  ' >
-                        <button className='flex justify-center font-sans w-[360px]  rounded-[8px]  bg-[#685BC7] flex pt-[8px] pr-[16px] pb-[8px] pl-[16px]  ' >Pay $499 </button>
+                        <button onClick={()=>{props.setProopen(false)
+                            props.setScanopen(true)
+                            
+                        }} className='flex justify-center font-sans w-[360px]  rounded-[8px]  bg-[#685BC7] flex pt-[8px] pr-[16px] pb-[8px] pl-[16px]  ' >Pay $499 </button>
                     </div>
                     <div></div>
 
