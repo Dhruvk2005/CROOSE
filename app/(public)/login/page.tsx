@@ -1,44 +1,44 @@
 
 
 import Link from 'next/link';
- import { IM_Fell_Great_Primer_SC } from 'next/font/google';
+import { IM_Fell_Great_Primer_SC } from 'next/font/google';
 import React from 'react'
 import Selectbox from '../component/selectbox';
 
 
 
- const Login = () => {
- return (
-  
-   <div className='flex flex-col md:flex-row w-full min-h-screen '>
-    <div className=' hidden w-[685px]  flex flex-col gap-[40px] flex-wrap h-[900px] bg-[#EDEBF8] md:w-full lg:w-full md:block '>
-      <div className="w-[190px] h-[67.05px] mt-[40.94px] ml-[45px]">
+const Login = () => {
+  return (
+
+    <div className='flex flex-col md:flex-row w-full min-h-screen '>
+      <div className=' hidden w-[685px]  flex flex-col gap-[40px] flex-wrap h-[900px] bg-[#EDEBF8] md:w-full lg:w-full md:block '>
+        <div className="w-[190px] h-[67.05px] mt-[40.94px] ml-[45px]">
           <img
             className="w-[173.52px] h-[40.24px] mt-[11.05px] ml-[7.66px]"
             src="Vector.png"
             alt="Logo"
           />
         </div>
-       <div className='flex flex-col justify-center items-center  '>
-         {/* <img className='top-[0px] left-[0px]' src="image1.png" alt='croose'/> */}
-    
-        <img className=' mb-[40px] w-[260px] h-[463px] ' src="mobile.png"/>
-        <div className='w-[532px] mb-[100px] h-[184px]'>
-          <p className='w-[532px] text-[#1D2939] font-bold text-center leading-[44px] tracking-[-0.02em] mb-[18px] text-[40px]  h-[88px]'>Log in. Ignite your enterprise.</p>
-          <p className='font-inter font-medium text-[18px] leading-[28px] text-[#475467] tracking-normal text-center'>Access your Croose dashboard to manage your AI agent, automate your workflow, and keep your business running — all from one place.</p>
+        <div className='flex flex-col justify-center items-center  '>
+          {/* <img className='top-[0px] left-[0px]' src="image1.png" alt='croose'/> */}
+
+          <img className=' mb-[40px] w-[260px] h-[463px] ' src="mobile.png" />
+          <div className='w-[532px] mb-[100px] h-[184px]'>
+            <p className='w-[532px] text-[#1D2939] font-bold text-center leading-[44px] tracking-[-0.02em] mb-[18px] text-[40px]  h-[88px]'>Log in. Ignite your enterprise.</p>
+            <p className='font-inter font-medium text-[18px] leading-[28px] text-[#475467] tracking-normal text-center'>Access your Croose dashboard to manage your AI agent, automate your workflow, and keep your business running — all from one place.</p>
+          </div>
         </div>
-     </div>
-     </div>
+      </div>
 
 
- <div className="flex-1 flex bg-white h-[100%] md:-mt-[40px] md:p-[80px_160px] ">
+      <div className="flex-1 flex bg-white h-[100%] md:-mt-[40px] md:p-[80px_160px] ">
         <section className=" w-[100%] md:w-[435px]  mt-[70px]  h-auto flex flex-col gap-[32px]">
           <div className="p-6 space-y-4 sm:p-8">
             <h1 className="font-bold text-[32px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
               Welcome back!
             </h1>
             <form className="space-y-4 " action="#">
-              
+
 
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-[#344054]">
@@ -67,9 +67,18 @@ import Selectbox from '../component/selectbox';
                   required
                 />
               </div>
+              <div className='ml-[300px] w-[406px] h-auto flex flex-col gap-[16px]' >
+                <Link
+                  href="/forgotcard"
+                  className='text-[#685BC7] font-semibold text-14px'
+                >
+                  Forgot Password?
+
+                </Link>
+              </div>
 
               <Link
-              href="/dashboard/home"
+                href="/dashboard/home"
                 type="submit"
                 className="bg-[#685BC7] text-white font-semibold text-[14px] leading-[21px] flex flex-row justify-center items-center  w-[100%] md:w-[435px] h-[48px] px-[20px] py-[10px] gap-[10px] rounded-[12px]"
               >
@@ -86,7 +95,7 @@ import Selectbox from '../component/selectbox';
                   </Link>
                 </p>
                 <div className=" mt-[30px] flex items-center justify-center w-full gap-4 my-4">
-                 
+
                 </div>
               </div>
               <div>
@@ -111,10 +120,11 @@ import Selectbox from '../component/selectbox';
           </div>
         </section>
       </div>
-   </div>
- );}
+    </div>
+  );
+}
 
- export default Login
+export default Login
 
 
 
