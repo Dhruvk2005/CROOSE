@@ -143,14 +143,14 @@ const Page = () => {
 
 
 
-
+{/* 
 
 <div className="relative z-10">
   <div className="fixed inset-0 bg-gray-500/75 transition-opacity flex justify-center items-center">
     <div className="w-full flex justify-center px-4 sm:px-6">
       <div className="w-full max-w-4xl h-auto flex flex-col items-center border rounded-2xl bg-white">
 
-        {/* Header */}
+         
         <div className="w-[90%] flex items-center justify-between h-16">
           <img src="/arrow-left.png" className="h-5 w-5" />
           <div className="text-[#121217] font-sans font-semibold text-xl leading-none tracking-tight text-center">
@@ -159,10 +159,10 @@ const Page = () => {
           <img src="/x.png" className="h-5 w-5" />
         </div>
 
-        {/* Content Wrapper */}
+        
         <div className="bg-white flex flex-col border-b px-4 pb-12 gap-8 w-full items-center">
           
-          {/* Intro */}
+          
           <div className="w-full flex flex-col justify-center items-center gap-2 text-center">
             <span className="text-[#121217] font-sans font-semibold text-xl leading-none tracking-tight">
               Increase Space IQ
@@ -172,10 +172,10 @@ const Page = () => {
             </span>
           </div>
 
-          {/* Input Section */}
+          
           <div className=" sm:w-[80%] h-[396px]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
 
-            {/* Plain Text */}
+            
             
             <div className="w-[80%] h-[186px]  ml-[60px] flex flex-col gap-3">
               <span className="text-[#18181B] font-sans font-medium text-base leading-6">
@@ -195,12 +195,12 @@ const Page = () => {
             
             </div>
 
-            {/* Divider */}
+          
             <div className="w-[70%]">
               <img src="/Line 10.png" alt="line" className="w-[90%]" />
             </div>
 
-            {/* Document Upload */}
+            
             <div className="w-[80%] h-[116px] ml-[60px] flex flex-col gap-3">
               <span className="text-[#18181B] h-[24px] font-sans font-medium text-base leading-6">
                 Documents
@@ -220,6 +220,106 @@ const Page = () => {
             </div>
           </div>
 
+          
+          <div className="w-[390px] flex flex-col sm:flex-row items-center gap-3 mt-6 px-4">
+            <button className=" w-[315px] py-2 bg-[#685BC7] text-white font-sans font-semibold text-sm rounded-md text-center">
+              Finish
+            </button>
+            <button className=" w-[63px] py-2 border border-zinc-200 bg-[#F4F4F5] text-[#685BC7] font-sans font-semibold text-sm rounded-md text-center">
+              Skip
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  */}
+
+
+<div className="relative  z-10">
+  <div className="fixed inset-0 bg-gray-500/75 transition-opacity flex justify-center items-center">
+    <div className="w-full flex justify-center   px-4 sm:px-6">
+      <div className="w-full max-w-4xl h-[700px]  flex flex-col items-center border rounded-2xl bg-white">
+
+        {/* Header */}  
+        <div className="w-[97%] h-[100px] flex text-center p-[30px]  items-center justify-between ">
+          <img src="/arrow-left.png" className="h-5 w-5" />
+          <div className="text-[#121217] font-sans font-semibold text-xl leading-none tracking-tight text-center">
+            Scan QR code
+          </div>
+          <img src="/x.png" className="h-5 w-5" />
+        </div>
+
+        {/* Content Wrapper */}
+        <div className="bg-white flex flex-col border-b px-4 pb-12 gap-8 w-full items-center">
+          
+          {/* Intro */}
+          <div className="w-full h-[100px]  flex flex-col justify-center items-center gap-2 text-center">
+            <img src="/Frame.png" className="w-[105px] h-[16px] flex gap-[4px]" />
+            <span className="text-[#121217] font-sans font-semibold text-xl leading-none tracking-tight">
+              Increase Space IQ
+            </span>
+            <span className="text-[#71717A] font-sans text-sm leading-5 w-full sm:w-[47%]">
+              Set custom instructions and guidance for the agent to follow. Enter plain text, upload or link documents.
+            </span>
+          </div>
+
+          {/* Input Section */}
+          <div className=" sm:w-[80%] h-[396px]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
+
+            {/* Plain Text */}
+            
+            <div className="w-[80%] h-[186px]  ml-[60px] flex flex-col gap-3">
+              <span className="text-[#18181B] font-sans font-medium text-base leading-6">
+                Plain Text
+              </span>
+              
+              <div className="w-[80%] h-[150px] rounded-xl border border-gray-300 p-4   flex flex-col gap-3 text-[#101828]">
+     
+                <div className="w-[100%]  h-[216px] font-sans font-normal text-[15px] leading-5 tracking-normal overflow-y-auto ">
+               <ul className="list-disc">  
+                <li> Summarize long articles into bullet points.</li>
+                <li>  Always respond in a casual, friendly tone.</li>
+                <li>Include emojis at the end of key points.</li>
+                <li>Translate responses into French.</li>
+                <li>Use examples relevant to graphic designers.</li>
+                <li>Format outputs in Markdown.</li>
+                <li>Keep answers under 100 words unless specified.</li>
+                <li>Prioritize mobile app design in suggestions.</li>
+                <li>Cite sources whenever facts are mentioned.</li>
+                <li>Focus on Gen Z communication styles.</li>
+                     </ul>
+                </div>
+               
+              </div>
+            
+            </div>
+
+            {/* Divider */}
+            <div className="w-[70%]">
+              <img src="/Line 10.png" alt="line" className="w-[90%]" />
+            </div>
+
+            {/* Document Upload */}
+            <div className="w-[80%] h-[116px]  ml-[60px] flex flex-col gap-3">
+              <span className="text-[#18181B] h-[24px] font-sans font-medium text-base leading-6">
+                Documents
+              </span>
+              <div className="w-[80%] h-[56px] rounded-lg border p-4 flex flex-col gap-2 ">
+                <div className="h-[24px] w-[100%] flex flex-row justify-between ">
+                  <span className="h-[24px] w-[135px] font-sans font-semibold text-sm leading-6 tracking-normal text-[#101828]">4 documents added</span>
+                  <span className="w-[81px] h-[24px] flex flex-row gap-[4px]">
+                    <span className="w-[57px] h-[24px] font-sans font-normal text-sm leading-6 tracking-normal text-[#475467]">See files</span>
+                    <img className="w-[11.33px] h-[13.33px] mt-[3.33px]" src="/files.png" />
+                  </span>
+                </div>
+                <div className="w-[95px] h-[28px] mt-[10px] border rounded-[8px] pt-[4px]  pb-[4px]  flex gap-[10px] ml-[-10px]">
+                  <span className="w-[95px] h-[20px] text-[#685BC7] font-sans font-normal text-sm leading-5 tracking-normal text-center">Add more</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Action Buttons */}
           <div className="w-[390px] flex flex-col sm:flex-row items-center gap-3 mt-6 px-4">
             <button className=" w-[315px] py-2 bg-[#685BC7] text-white font-sans font-semibold text-sm rounded-md text-center">
@@ -233,7 +333,8 @@ const Page = () => {
       </div>
     </div>
   </div>
-</div>
+</div> 
+
 
 
 
