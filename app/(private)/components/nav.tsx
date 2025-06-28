@@ -49,6 +49,7 @@ export const Nav = ({ show, setShow }: any) => {
 
               <li className="flex  w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] items-center " >
                 <div>
+                   
                   <Icon icon="hugeicons:sparkles" className="w-5 h-5.5 text-gray-100" />
                 </div>
                 <div className='text-[14px] font-sans text-[#F2F4F7] font-normal' >
