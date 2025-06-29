@@ -1,16 +1,24 @@
 'use client'
 import React, { useState } from 'react'
 import Spaceiq from './spaceiq'
+import Documentpopup from './documentpopup'
+import Spaceiqcolor from './spaceiqcolor'
+import Upgradetopro from './upgradetopro'
+import Scanqrpage from './scanqr'
 
 
 const Myspace = () => {
 
-    const[open, Setopen] = useState(false)
+    const[spaceiqopen, setSpaceiqopen] = useState(false)
+    const[docopen,setDocopen] = useState(false)
+    const [spaceipcoloropen, setSpaceiqcoloropen] = useState(false)
+    const[proopen,setProopen] = useState(false)
+    const[scanopen,setScanopen]=useState(false)
 
 
   return (
     <div>
-     <div className="h-[900px] w-full bg-[#FFFFFF] relative flex flex-col gap-5  ">
+     <div className="h-[900px] w-full bg-[#FFFFFF] relative mt-[15px] flex flex-col gap-5  ">
         <div className="w-[100%] border border-b-1px items-center mt-[-17px]   flex flex-row h-[64px] ">
           <img
             src="/arrow.png"
@@ -103,7 +111,7 @@ const Myspace = () => {
         <section className="flex justify-center">
           <div className="w-[89%] h-[486px]   bottom-0  rounded-lg border border-[#EAECF0]">
             <div className="w-[100%] flex flex-row items-center justify-center  border border-b-[#EAECF0] gap-[10px]  rounded-t-[10px] h-[60px]">
-              <div className="h-[32px] bg-[#F2F4F7] border border-[#F2F4F7] p-[8px] flex  gap-[10px]  rounded-[8px] w-[32px]">
+              <div className="h-[32px] bg-[#F2F4F7] ml-[5px] border border-[#F2F4F7] p-[8px] flex  gap-[10px]  rounded-[8px] w-[32px]">
                 <img
                   src="/message-circle.png"
                   alt="circle-sms"
@@ -137,7 +145,7 @@ const Myspace = () => {
                   </div>
                 </div>
                 <div className="w-[148px] flex flex-row rounded-[8px] pt-[8px] pr-[16px] border border-gray-200 pl-[16px] pb-[8px] gap-[10px] bg-[#F2F4F7] h-[36px]">
-                  <div onClick={()=>Setopen(true)} className="w-[116px] h-[20px] font-sans font-semibold text-sm leading-5 tracking-normal text-center text-[#101828]">
+                  <div onClick={()=>setSpaceiqopen(true)} className="w-[116px] h-[20px] font-sans font-semibold text-sm leading-5 tracking-normal text-center text-[#101828]">
                     Connect account
                   </div>
                 </div>
@@ -146,7 +154,16 @@ const Myspace = () => {
           </div>
         </section>
       </div>
-      { open? <Spaceiq Setopen={Setopen} /> :""}
+      { spaceiqopen? <Spaceiq setSpaceiqopen={setSpaceiqopen} setSpaceiqcoloropen={setSpaceiqcoloropen} setDocopen = {setDocopen} setProopen={setProopen} /> :""}
+
+      {spaceipcoloropen? <Spaceiqcolor setSpaceiqcoloropen={setSpaceiqcoloropen} setDocopen = {setDocopen} setSpaceiqopen={setSpaceiqopen} setProopen={setProopen} />:""}
+
+      {docopen ? <Documentpopup setDocopen = {setDocopen} />:""}
+
+      {proopen? <Upgradetopro setProopen = {setProopen} setScanopen ={setScanopen}  />:""}
+
+      { scanopen? <Scanqrpage setScanopen={setScanopen} />:""}
+      
     </div>
 
   )

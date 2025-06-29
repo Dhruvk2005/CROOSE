@@ -6,8 +6,11 @@ import Navbar from '@/app/(public)/component/navbar'
 const Dashboard = () => {
   return (
     <>
-      <div>
-        hii
+      <div className='w-[1168px] h-[900px] relative  ' >
+        <div>
+         <p className='text-red' >hi</p>
+
+        </div>
       </div>
 
     </>

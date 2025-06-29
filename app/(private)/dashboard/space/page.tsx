@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 // import Navbar from '@/app/(public)/component/page'
 import Myspace from "../../components/myspace";
@@ -10,8 +11,7 @@ const Page = () => {
 
        
 
-{/* 
-<Spaceiqcolor/> */}
+
 
 
 

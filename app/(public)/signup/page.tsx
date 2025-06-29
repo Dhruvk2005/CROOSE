@@ -115,9 +115,12 @@ const Signupform = () => {
                   name="account-password"
                   id="account-password"
                   placeholder="Enter Password"
+                  
                   className=" w-[100%] md:w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
                   required
+                  
                 />
+                
               </div>
 
               <button
