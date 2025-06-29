@@ -40,11 +40,11 @@ const Spaceiq = (props) => {
                 Plain Text
               </span>
               
-              <div className="w-[80%] h-[150px] rounded-xl border border-gray-300 p-4  flex flex-col gap-3 bg-white">
+              <div className="w-[80%] h-[150px] rounded-[16px] border border-gray-300 p-4  flex flex-col gap-3 bg-white">
                 <div className="text-[#71717A] font-sans text-sm leading-5">
                   Enter custom instructions
                 </div>
-                <div className="flex items-center mt-[20%] justify-end gap-2">
+                <div className="flex items-center mt-[18%] justify-end gap-2">
                   <span className="text-[10px] text-[#71717A] font-sans">Write with</span>
                   <span className="text-[10px] text-[#71717A] font-sans">Cactus AI</span>
                   <img src="/sms.png" alt="sms" className="h-4 w-4" />
@@ -79,11 +79,11 @@ const Spaceiq = (props) => {
           </div>
 
           
-          <div className="w-[390px] flex flex-col sm:flex-row items-center gap-3 mt-6 px-4">
-            <button className=" w-[315px] py-2 bg-[#685BC7] text-white font-sans font-semibold text-sm rounded-md text-center">
+          <div className="w-[54%] flex flex-col sm:flex-row items-center  mt-6 ">
+            <button className=" w-[74%] py-2  bg-[#685BC7] text-white font-sans font-semibold text-sm rounded-md text-center">
               Finish
             </button>
-            <button className=" w-[63px] py-2 border border-zinc-200 bg-[#F4F4F5] text-[#685BC7] font-sans font-semibold text-sm rounded-md text-center">
+            <button className=" w-[63px] py-2 border border-zinc-200 bg-[#F4F4F5] ml-[5px] text-[#685BC7] font-sans font-semibold text-sm rounded-md text-center">
               Skip
             </button>
           </div>
