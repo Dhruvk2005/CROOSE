@@ -32,12 +32,12 @@ const Myspace = () => {
               className="w-[48px] h-[48px] top-[8px]"
             ></img>
           </div>
-          <div className="w-[70%] text-[#101828] ml-[18px] font-sans font-semibold text-lg leading-7 tracking-normal align-middle h-[28px]">
+          <div className="w-[70%] text-[#101828] ml-[18px]  border-r-4 border-r-zinc-200 p-0 font-sans font-semibold text-lg leading-7 tracking-normal align-middle h-[28px]">
             Space Name
           </div>
-          <div className="w-[211px] right-[0px] flex flex-row  gap-[8px] h-[36px]">
-            <div className="w-[103px] h-[36px] flex flex-row border pt-2 pr-4 pb-2 bg-[#EAECF0] pl-4 gap-[10px] rounded-[8px]">
-              <div className="font-sans font-semibold text-sm w-[71px] leading-5 tracking-normal text-center  text-[#685BC7] h-[20px]">
+          <div className="w-[211px] right-[0px] flex flex-row border  border-none  gap-[8px] h-[36px]">
+            <div className="w-[103px] h-[36px] flex flex-row  border pt-2 pr-4 pb-2 bg-[#EAECF0] ml-[8px] pl-4 gap-[10px] rounded-[8px]">
+              <div className="font-sans font-semibold text-sm w-[71px] leading-5 tracking-normal text-center   text-[#685BC7] h-[20px]">
                 Spaces IQ
               </div>
             </div>
