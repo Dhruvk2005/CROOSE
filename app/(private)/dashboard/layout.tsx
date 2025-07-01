@@ -104,7 +104,7 @@ export default function Layout({
   }, []);
 
   return (
-    <section className="flex">
+   <section className="flex">
 
       <Nav show={show} setShow={setShow}/>
 
@@ -113,8 +113,9 @@ export default function Layout({
         {/* <Navbar show={show} setShow={setShow}/> */}
           <div className="w-[100%] xl:w-[calc(100%-272px)] bg-[white] h-[100%] absolute"  onClick={()=>setShow(false)}>
           {children}
+          </div>
         </div>
-      </div>
-    </div>
+      {/* </div> */}
+    </section>
   );
 }
