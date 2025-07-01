@@ -85,23 +85,23 @@ export default function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   // Handle responsive sidebar
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 1259px)");
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia("(max-width: 1259px)");
 
-    // Initial check
-    setShow(!mediaQuery.matches);
+  //   // Initial check
+  //   setShow(!mediaQuery.matches);
 
-    // Listener for screen resize
-    const handleResize = (e: MediaQueryListEvent) => {
-      setShow(!e.matches);
-    };
+  //   // Listener for screen resize
+  //   const handleResize = (e: MediaQueryListEvent) => {
+  //     setShow(!e.matches);
+  //   };
 
-    mediaQuery.addEventListener("change", handleResize);
-    return () => mediaQuery.removeEventListener("change", handleResize);
-  }, []);
+  //   mediaQuery.addEventListener("change", handleResize);
+  //   return () => mediaQuery.removeEventListener("change", handleResize);
+  // }, []);
 
   return (
    <section className="flex">

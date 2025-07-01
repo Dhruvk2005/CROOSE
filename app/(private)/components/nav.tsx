@@ -94,14 +94,14 @@ export const Nav = ({ show, setShow }: any) => {
               <ul className=" flex flex-col gap-[4px] w-[80%] h-auto " >
                 <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] " >
                   <div>
-                    <Icon icon="mingcute:settings-4-line" width="24" height="24" />
+                    <Icon icon="mingcute:settings-4-line" width="24" height="24" color="white"/>
                   </div>
                   <div>
                     <span className=" text-[14px] font-sans text-[#F2F4F7] font-normal " >Settings</span>
                   </div>
                 </li>
                 <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px]"> <div>
-                 <Icon icon="tabler:headphones" width="24" height="24" />
+                 <Icon icon="tabler:headphones" width="24" height="24" color='white'/>
                 </div>
                   <div>
                     <span className=" text-[14px] font-sans text-[#F2F4F7] font-normal " >Support</span>

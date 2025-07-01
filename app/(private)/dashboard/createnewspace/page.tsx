@@ -11,7 +11,7 @@ const Newspace = () => {
       <section className='flex flex-wrap justify-center'>
         <div className='w-[80%] h-auto flex flex-col gap-[40px] mt-[30px]' >
           <div className=' flex ' >
-            <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] font-[500]  items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px] ' >
+            <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500]  items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px] ' >
               Create New Space
             </button>
           </div>
