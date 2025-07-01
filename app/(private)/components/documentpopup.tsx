@@ -8,7 +8,7 @@ const Documentpopup = (props:any) => {
 
 
   return (
-    <div className=' fixed top-0 left-0 z-[50]  bg-gray-500/75  flex justify-center items-center w-full h-[100vh]' >
+    <div className=' fixed top-0 left-0 z-[50]  bg-[#18181B66]  flex justify-center items-center w-full h-[100vh]' >
       <div className='w-[458px] bg-[#FFFFFF]  rounded-[16px] h-auto' >
         <div>
           <ul className=' flex justify-between py-[16px] px-[24px] w-[458px] border-b-[1px] border-b-[#FFFFFF] ' >

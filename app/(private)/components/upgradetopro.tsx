@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 const Upgradetopro = (props:any) => {
     return (
         <>
-            <div className='fixed top-0 left-0 z-[50] w-full h-full bg-[#00000080] flex items-center justify-center ' >
+            <div className='fixed top-0 left-0 z-[50] w-full h-full bg-[#18181B66] flex items-center justify-center ' >
                 <div className='  w-[400px] h-auto rounded-[16px] bg-[#FFFFFF] ' >
                     <div className='w-[400px]  rounded-t-[16px]  h-[89px] relative  bg-[#F3F0FA]' >
 

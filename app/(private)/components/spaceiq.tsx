@@ -4,14 +4,14 @@ const Spaceiq = (props:any) => {
   return (
     <div>
       <div className="relative z-10">
-  <div className="fixed inset-0 bg-gray-500/75 transition-opacity flex justify-center items-center">
+  <div className="fixed inset-0 bg-[#18181B66] transition-opacity flex justify-center items-center">
     <div className="w-full flex justify-center px-4 sm:px-6">
       <div className="w-full max-w-4xl h-auto flex flex-col items-center border rounded-2xl bg-white">
 
          
         <div className="w-[90%] flex items-center justify-between h-16">
           <img src="/arrow-left.png" className="h-5 w-5" />
-          <div className="text-[#121217] font-sans font-semibold text-xl leading-none tracking-tight text-center">
+          <div className="text-white font-sans font-semibold text-xl leading-none tracking-tight text-center">
             Scan QR code
           </div>
           <img  onClick={()=>props.setSpaceiqopen(false)} src="/x.png" className="h-5 w-5" />
