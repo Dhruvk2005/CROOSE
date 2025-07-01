@@ -84,6 +84,7 @@ export const Nav = ({ show, setShow }: any) => {
                 <div>
                   <span className=" text-[14px] font-sans text-[#F2F4F7] font-normal " >Analytics</span>
                 </div>
+                </li>
 
               
               <li className="flex items-center w-full px-3 py-2 gap-2 hover:bg-white/5 rounded-[6px] cursor-pointer transition">
@@ -128,14 +129,14 @@ export const Nav = ({ show, setShow }: any) => {
               </ul>
             </div>
 
-            {/*BLock ends here */}
+           
           <div className="flex flex-col w-full h-auto p-[12px] gap-[10px] " >
             
 
 
             <div className="bg-[#FFFFFF1F] flex items-center p-[12px] gap-[12px] rounded-[10px] w-fit h-fit">
                 <div>
-                  {/* SVG ICON */}
+                  
                   <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="40" height="40" rx="20" fill="#EAECF0" />
                     <rect width="40" height="40" rx="20" fill="#EAECF0" />
@@ -328,6 +329,7 @@ export const Nav = ({ show, setShow }: any) => {
                 </div>
               </div>
 
+            </div>
             </div>
           </section>
         </div>

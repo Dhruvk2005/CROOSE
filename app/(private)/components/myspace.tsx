@@ -5,6 +5,7 @@ import Documentpopup from './documentpopup'
 import Spaceiqcolor from './spaceiqcolor'
 import Upgradetopro from './upgradetopro'
 import Scanqrpage from './scanqr'
+import Spacenav from './spacenav'
 
 
 const Myspace = () => {
@@ -48,11 +49,10 @@ const Myspace = () => {
             </div>
           </div>
         </div>
-        {/* <Navbar /> */}
+        
 
-        {/* Top Cards Row */}
         <div className=" flex flex-row flex-wrap gap-[20px] justify-center w-[100%]   rounded-lg">
-          {/* Card 1 */}
+      
           <div className="w-[260p] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[260px] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/chat.png" />
@@ -65,7 +65,7 @@ const Myspace = () => {
             </div>
           </div>
 
-          {/* Card 2 */}
+      
           <div className="w-[260p] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[260px] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/message.png" />
@@ -79,7 +79,7 @@ const Myspace = () => {
             </div>
           </div>
 
-          {/* Card 3 */}
+          
           <div className="w-[260p] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[260px] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/timer.png" />
@@ -93,7 +93,7 @@ const Myspace = () => {
             </div>
           </div>
 
-          {/* Card 4 */}
+          
           <div className="w-[260p] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[260px] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/party-popper.png" />
