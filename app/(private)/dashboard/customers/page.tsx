@@ -1,13 +1,14 @@
 import React from 'react'
 import Customerspace from '../customerspace/page'
 import { Icon } from "@iconify/react";
+import UserTable from '../../components/table';
 
 const Customers = () => {
     return (
         <div>
             <div>
 
-                <div className='w-[100%] h-[64px]  flex justify-between items-center' style={{borderBottom:"1px solid #eaeacf"}}>
+                <div className='w-[100%] h-[64px]  flex justify-between items-center' style={{borderBottom:"1px solid #EAECF0"}}>
                     <div className='flex items-center  gap-[20px] text-[#121217] '>
                         <span className='font-semi font-bold text-[20px] pl-[20px] ml-[10px]' >Customers</span>
 
@@ -122,12 +123,12 @@ const Customers = () => {
                                         />
                                         <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
                                     </div>
-                                    <li className=' w-full  flex items-center ' >
+                                    <div className=' w-full  flex items-center ' >
                                         <button className=' items-center px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
                                             <Icon icon="bitcoin-icons:export-outline" width="24" height="24" style={{ color: '#344054' }} />
                                             <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Export</p>
                                         </button>
-                                    </li>
+                                    </div>
                                 </li>
 
                             </ul>
@@ -136,9 +137,11 @@ const Customers = () => {
                             </div>
                         </div>
                     </div>
+                    <UserTable/>
 
                     <div>
                         
+
                     </div>
 
                 </div>
