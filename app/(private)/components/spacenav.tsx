@@ -5,7 +5,7 @@ const Spacenav = () => {
   return (
     <div>
       
-            <div className='w-[100%] h-[64px] flex justify-between items-center' style={{borderBottom:"1px solid #eaeacf"}}>
+            <div className='w-[100%] h-[64px] flex justify-between items-center' style={{borderBottom:"1px solid #EAECF0"}}>
               <div className='flex items-center  gap-[20px] text-[#121217] '>
                 <span className='font-semi font-bold text-[20px] pl-[20px] ml-[10px]' >Space</span>
       

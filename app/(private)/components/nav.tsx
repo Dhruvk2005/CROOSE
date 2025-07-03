@@ -20,38 +20,38 @@ export const Nav = ({ show, setShow }: any) => {
           <div className="flex justify-center flex-col items-center gap-[4px] mt-[20px] -ml-[10px]" >
             <ul>
               <Link href="/dashboard/space">
-              <li className="flex  w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] items-center" >
-                <div>
-                  <Squares2X2Icon className="w-5.6 h-5.5 text-gray-100" />
+                <li className="flex  w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] items-center" >
+                  <div>
+                    <Squares2X2Icon className="w-5.6 h-5.5 text-gray-100" />
 
-                </div>
-                <div className='text-[14px] font-sans text-[#F2F4F7] font-normal' >
-                  Overview
+                  </div>
+                  <div className='text-[14px] font-sans text-[#F2F4F7] font-normal' >
+                    Overview
 
-                </div>
-                
-              </li>
+                  </div>
+
+                </li>
               </Link>
               <Link href="/dashboard/createnewspace">
-              <li className="flex  w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] items-center " >
-                <div>
-                  <MagnifyingGlassIcon className="w-5.6 h-5.5 text-gray-100" />
-                </div>
-                <div className='text-[14px] font-sans text-[#F2F4F7] font-normal' >
-                  Modules
-                </div>
-              </li>
-</Link>
+                <li className="flex  w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] items-center " >
+                  <div>
+                    <MagnifyingGlassIcon className="w-5.6 h-5.5 text-gray-100" />
+                  </div>
+                  <div className='text-[14px] font-sans text-[#F2F4F7] font-normal' >
+                    Modules
+                  </div>
+                </li>
+              </Link>
               <Link href="/dashboard/customers">
 
-              <li className="flex  w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] items-center " >
-                <div>
-                  <Icon icon="hugeicons:sparkles" className="w-5 h-5.5 text-gray-100" />
-                </div>
-                <div className='text-[14px] font-sans text-[#F2F4F7] font-normal' >
-                  Your Space
-                </div>
-              </li>
+                <li className="flex  w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] items-center " >
+                  <div>
+                    <Icon icon="hugeicons:sparkles" className="w-5 h-5.5 text-gray-100" />
+                  </div>
+                  <div className='text-[14px] font-sans text-[#F2F4F7] font-normal' >
+                    Your Space
+                  </div>
+                </li>
               </Link>
 
               <li className="flex w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] " >
@@ -65,15 +65,15 @@ export const Nav = ({ show, setShow }: any) => {
               </li>
               <Link href="/dashboard/customers">
 
-              <li className="flex w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] " >
-                <div>
-                  <Icon icon="lucide:book-user" className="w-5 h-5.5 text-gray-100" />
-                </div>
-                <div>
-                  <span className="text-[14px] font-sans text-[#F2F4F7] font-normal " >Customers</span>
-                </div>
+                <li className="flex w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] " >
+                  <div>
+                    <Icon icon="lucide:book-user" className="w-5 h-5.5 text-gray-100" />
+                  </div>
+                  <div>
+                    <span className="text-[14px] font-sans text-[#F2F4F7] font-normal " >Customers</span>
+                  </div>
 
-              </li>
+                </li>
               </Link>
 
               <li className="flex w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] " >
@@ -86,6 +86,28 @@ export const Nav = ({ show, setShow }: any) => {
 
               </li>
 
+              <li className="flex w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] " >
+                <div>
+                  <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} />
+                </div>
+                <div>
+                  <span className=" text-[14px] font-sans text-[#F2F4F7] font-normal " >Appointments</span>
+                </div>
+
+              </li>
+
+              <li className="flex w-[232px] h-[auto] pt-[8px] pb-[8px] pr-[12px] pl-[12px] gap-[8px] " >
+                <div>
+                  <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} />
+                </div>
+                <div>
+                  <span className=" text-[14px] font-sans text-[#F2F4F7] font-normal " >product/Services</span>
+                </div>
+
+              </li>
+
+
+
 
             </ul>
           </div>
@@ -94,18 +116,24 @@ export const Nav = ({ show, setShow }: any) => {
               <ul className=" flex flex-col gap-[4px] w-[80%] h-auto " >
                 <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] " >
                   <div>
-                    <Icon icon="mingcute:settings-4-line" width="24" height="24" color="white"/>
+                    <Icon icon="mingcute:settings-4-line" width="24" height="24" color="white" />
                   </div>
                   <div>
                     <span className=" text-[14px] font-sans text-[#F2F4F7] font-normal " >Settings</span>
                   </div>
                 </li>
-                <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px]"> <div>
-                 <Icon icon="tabler:headphones" width="24" height="24" color='white'/>
-                </div>
-                  <div>
-                    <span className=" text-[14px] font-sans text-[#F2F4F7] font-normal " >Support</span>
-                  </div></li>
+                <Link
+                  href='/dashboard/support'
+
+                >
+                  <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px]"> <div>
+                    <Icon icon="tabler:headphones" width="24" height="24" color='white' />
+                  </div>
+                    <div>
+                      <span className=" text-[14px] font-sans text-[#F2F4F7] font-normal " >Support</span>
+                    </div>
+                  </li>
+                </Link>
               </ul>
             </div>
             <div className="flex flex-col w-[272px] h-auto p-[12px] gap-[10px] " >
