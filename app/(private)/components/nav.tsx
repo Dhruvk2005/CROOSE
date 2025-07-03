@@ -11,7 +11,7 @@ import Link from 'next/link';
 export const Nav = ({ show, setShow }: any) => {
   return (
     <div className={`${show ? "block" : "hidden"} ${show ? "fixed" : "relative"} xl:block  z-1 bg-[#13102E] w-[272px] h-[100%] max-w-[272px]`}>
-      <div className="bg-[#13102E] w-[272px] h-[900px] max-w-[272px] fixed">
+      <div className="bg-[#13102E] w-[272px] h-[100vh] max-w-[272px] fixed">
         <div className="flex w-[272px] h-[76px] justify-left gap-[12px] pt-[24px] pr-[32px] pd-[12px] pl-[32px] items-center " >
           <img className="w-[82.95893096923828px] h-[19.239667892456055px]" src="../logo.png" alt='logo' />
         </div>

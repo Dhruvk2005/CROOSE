@@ -9,7 +9,7 @@ const Newspace = () => {
       </div>
 
       <section className='flex flex-wrap justify-center'>
-        <div className='w-[80%] h-auto flex flex-col gap-[40px] mt-[30px]' >
+        <div className='w-[90%] h-auto flex flex-col gap-[40px] mt-[30px]' >
           <div className=' flex ' >
             <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500]  items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px] ' >
               Create New Space
@@ -169,9 +169,7 @@ const Newspace = () => {
                   </section>
                 </div>
               </li>
-            </ul>
-            <ul className='flex gap-[30px]' >
-              <li className=' w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
+               <li className=' w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
                 <div>
                   <div className='flex flex-col justify-end p-[20px]  w-[289px] h-[127px] bg-[#685BC70D] ' >
                     <ul className='flex -space-x-4 rtl:space-x-reverse' >
@@ -304,6 +302,7 @@ const Newspace = () => {
                 </div>
               </li>
             </ul>
+           
 
           </div>
 
