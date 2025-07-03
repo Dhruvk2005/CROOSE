@@ -1,7 +1,7 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 
-import AccordionUsage from "../../components/material/accordings";
+import AccordionUsage from "./material/accordings";
 
 let boxes = [
   {
@@ -42,9 +42,11 @@ let accordings = [
   }
 ]
 
-const Page = () => {
+
+
+let Customerpopup:any = (props :any)=>{
   return (
-    <div className="flex justify-center items-center w-[100%] h-[100%] text-[#101828] bg-[#0009] fixed left-0">
+    <div className="flex justify-center items-center w-[100%] h-[100%] text-[#101828] bg-[#0009] fixed left-0 z-2 top-0">
       <section className="bg-[white] w-[658px] h-auto sm:h-[80%]  flex flex-col gap-[10px] rounded-[20px] relative ">
         <div className="absolute">
           <div >
@@ -54,6 +56,7 @@ const Page = () => {
         />
 
         <Icon
+        onClick={()=>props.setOpen(false)}
           icon="material-symbols:close-rounded"
           width="24"
           height="24"
@@ -139,5 +142,4 @@ const Page = () => {
     </div>
   );
 };
-
-export default Page;
+export default Customerpopup;

@@ -1,7 +1,12 @@
 import React from 'react'
 import { Icon } from "@iconify/react";
 import Spacenav from '../../components/spacenav';
+import { useState } from 'react';
+import Customerpopup from '../../components/customerpopup';
 const Newspace = () => {
+
+
+  
   return (
     <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col' >
       <div>
@@ -309,6 +314,7 @@ const Newspace = () => {
 
         </div>
       </section>
+     
     </div>
   )
 }
