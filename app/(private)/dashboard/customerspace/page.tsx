@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Spacenav from '../../components/spacenav'
+import Customerpopup from '../../components/customerpopup'
 
 const Customerspace = () => {
+
+   
     return (
         <div>
             <div><Spacenav /></div>
@@ -72,6 +75,7 @@ const Customerspace = () => {
                     </div>
                 </div>
             </div>
+            
 
         </div>
     )

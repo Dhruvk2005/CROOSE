@@ -1,9 +1,13 @@
+'use client'
 import React from 'react'
 import Customerspace from '../customerspace/page'
 import { Icon } from "@iconify/react";
 import UserTable from '../../components/table';
+import { useState } from 'react';
+import Customerpopup from '../../components/customerpopup';
 
 const Customers = () => {
+     const [open,setOpen] = useState(false)
     return (
         <div>
             <div>
@@ -123,7 +127,7 @@ const Customers = () => {
                                         />
                                         <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
                                     </div>
-                                    <div className=' w-full  flex items-center ' >
+                                    <div onClick={()=>setOpen(true)}  className=' w-full  flex items-center ' >
                                         <button className=' items-center px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
                                             <Icon icon="bitcoin-icons:export-outline" width="24" height="24" style={{ color: '#344054' }} />
                                             <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Export</p>
@@ -149,6 +153,7 @@ const Customers = () => {
 
 
             </div>
+            {open? <Customerpopup setOpen={setOpen} />:""}
         </div>
     )
 }
