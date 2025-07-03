@@ -3,9 +3,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 
-const Croosehq = (): React.ReactElement => {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<{ type: 'user' | 'bot'; text: string }[]>([]);
+const CroosehqRigtFull= ({open, setOpen}:any): React.ReactElement => {
+  // const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<any>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -20,7 +20,7 @@ const Croosehq = (): React.ReactElement => {
     if (!input.trim()) return;
 
     const userMessage = { type: 'user', text: input };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev:any) => [...messages,userMessage]);
     setInput('');
     setIsLoading(true);
 
@@ -29,7 +29,7 @@ const Croosehq = (): React.ReactElement => {
         type: 'bot',
         text: 'Getting information from Croose HQ ...',
       };
-      setMessages(prev => [...prev, botReply]);
+      setMessages((prev:any) => [...prev, botReply]);
       setIsLoading(false);
     }, 1200);
   };
@@ -72,15 +72,15 @@ const Croosehq = (): React.ReactElement => {
     React.Fragment,
     null,
     // Open Chat Button
-    React.createElement(
-      'button',
-      {
-        onClick: () => setOpen(true),
-        className:
-          'fixed bottom-6 right-6 z-50 px-4 py-2 bg-blue-600 text-white rounded-full shadow-lg'
-      },
-      'Open Chat'
-    ),
+    // React.createElement(
+    //   'button',
+    //   {
+    //     onClick: () => setOpen(true),
+    //     className:
+    //       'fixed bottom-6 right-6 z-50 px-4 py-2 bg-blue-600 text-white rounded-full shadow-lg'
+    //   },
+    //   'Open Chat'
+    // ),
 
     // Overlay
     open &&
@@ -135,7 +135,7 @@ const Croosehq = (): React.ReactElement => {
         React.createElement(
           'div',
           { className: 'flex-1 p-4 space-y-4 overflow-y-auto' },
-          ...messages.map((msg, idx) => createMessage(msg, idx)),
+          ...messages.map((msg:any, idx:any) => createMessage(msg, idx)),
           React.createElement('div', { ref: messagesEndRef })
         ),
 
@@ -194,4 +194,4 @@ const Croosehq = (): React.ReactElement => {
   );
 };
 
-export default Croosehq;
+export default CroosehqRigtFull;

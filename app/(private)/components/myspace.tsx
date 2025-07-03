@@ -19,6 +19,7 @@ const Myspace = () => {
 
   return (
     <div>
+        <Spacenav/>
      <div className="h-auto w-full bg-[#FFFFFF] relative mt-[15px] flex flex-col gap-5  items-center">
         <div className="w-[100%]  items-center mt-[-17px]   flex flex-row h-[64px] " style={{borderBottom:"1px solid #eaeacf"}}>
           <img

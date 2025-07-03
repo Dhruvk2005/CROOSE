@@ -1,6 +1,7 @@
 import React from 'react'
 import Customerspace from '../customerspace/page'
 import { Icon } from "@iconify/react";
+import UserTable from '../../components/table';
 
 const Customers = () => {
     return (
@@ -136,6 +137,7 @@ const Customers = () => {
                             </div>
                         </div>
                     </div>
+                    <UserTable/>
 
                     <div>
                         

@@ -34,10 +34,14 @@ const Croosehq = (props:any) => {
             setIsLoading(false);
         }, 1200);
     };
-
+  const closeTab = ()=>{
+     console.log(props)
+    props.setCrooseOpen2(false)
+    props.setOpen(true)
+                        }
     return (
-        <div className='w-full min-h-screen bg-[#18181B1F] flex items-end justify-end p-4 md:p-6'>
-            <div className="w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[38%] h-[600px] rounded-[16px] shadow-xl border flex flex-col overflow-hidden bg-white">
+        // <div className='w-full min-h-screen bg-[#18181B1F] flex items-end justify-end p-4 md:p-6'>
+            <div className="w-[90%] sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[38%] h-[600px] rounded-[16px] shadow-xl border flex flex-col overflow-hidden bg-white fixed bottom-[20px] right-[20px]  ">
                 
                 <div className="p-4 border-b flex justify-between items-center">
                     <span className="flex gap-[8px] font-sans font-semibold text-gray-700">
@@ -45,7 +49,7 @@ const Croosehq = (props:any) => {
                         Croose HQ
                     </span>
                     <div className="flex gap-[16px]">
-                        <button className="text-gray-400 hover:text-black">
+                        <button onClick={closeTab} className="text-gray-400 hover:text-black">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10.6667 2H14.0001V5.33333" stroke="#71717A" strokeWidth="1.5"
@@ -59,7 +63,7 @@ const Croosehq = (props:any) => {
                             </svg>
                         </button>
                         <button className="text-gray-400 hover:text-black">
-                            <Icon onClick={()=>props.setCrooseOpen(false)} icon="maki:cross" width="15" height="15" style={{ color: "#71717A" }} />
+                            <Icon onClick={()=>props.setCrooseOpen2(false)} icon="maki:cross" width="15" height="15" style={{ color: "#71717A" }} />
                         </button>
                     </div>
                 </div>
@@ -125,7 +129,7 @@ const Croosehq = (props:any) => {
                     </div>
                 </div>
             </div>
-        </div>
+        // </div>
     );
 };
 

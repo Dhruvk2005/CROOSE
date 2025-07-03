@@ -3,12 +3,14 @@ import React from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useState } from 'react'
 import Croosehq from '../../components/croosehq'
+import { Righteous } from 'next/font/google'
+import CroosehqRigtFull from '../../components/croosehqright'
 
 let Accordings = ({index,value,toggleaccordion,openindex}:any)=>{
     const [isopen, setIsopen] = useState(false)
+   
     
-    
-    return(  <div key={index} className="w-[917px]  h-auto rounded-[8px] bg-[#F2F4F7] text-[#101828] font-semibold font-Inter text-[16px] p-[24px]">
+    return(  <div key={index} className="w-[90%]  h-auto rounded-[8px] bg-[#F2F4F7] text-[#101828] font-semibold font-Inter text-[16px] p-[24px]">
                                     <ul onClick={()=>toggleaccordion(index)}
                                         className="flex justify-between items-center cursor-pointer"
 
@@ -36,7 +38,7 @@ let Accordings = ({index,value,toggleaccordion,openindex}:any)=>{
                                     </ul>
 
                                     {openindex == index && (
-                                        <div className="mt-4 text-[#344054] font-normal">
+                                        <div className="  text-[#344054] font-normal">
                                             <p>
                                                {value.description}
                                             </p>
@@ -46,6 +48,7 @@ let Accordings = ({index,value,toggleaccordion,openindex}:any)=>{
 }
 const Support = () => {
     const[crooseopen,setCrooseOpen]  = useState(false)
+     const [open,setOpen] = useState(false)
 
     const [openindex,setOpenindex] =useState<number | null>(null) ;
 
@@ -138,7 +141,8 @@ const Support = () => {
             </div>
             
 
-            {crooseopen? <Croosehq setCrooseOpen = {setCrooseOpen}  />:""}
+            {crooseopen? <Croosehq setCrooseOpen2={setCrooseOpen} setOpen={setOpen} />:""}
+            {open? <CroosehqRigtFull open={open} setOpen = {setOpen} />:""}
 
         </div>
     )
