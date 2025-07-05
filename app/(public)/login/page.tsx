@@ -2,12 +2,24 @@
 
 import Link from 'next/link';
 import { IM_Fell_Great_Primer_SC } from 'next/font/google';
-import React from 'react'
+import React, { useState } from 'react'
 import Selectbox from '../component/selectbox';
+import { loginApi } from '@/app/Apis/publicapi';
 
 
 
 const Login = () => {
+
+  const [loguser, setLogUser] = useState({
+    "email": "",
+    "password": ""
+
+  })
+
+  const submit = async()=>{
+    let data = await loginApi(loguser)
+    console.log(data)
+  }
   return (
 
     <div className='flex flex-col md:flex-row w-full min-h-screen '>
@@ -45,6 +57,8 @@ const Login = () => {
                   Email
                 </label>
                 <input
+
+                onChange={(e)=>{setLogUser({...loguser, email:e.target.value})}}
                   type="email"
                   name="email"
                   id="email"
@@ -59,6 +73,7 @@ const Login = () => {
                   Password (Min of 8 characters)
                 </label>
                 <input
+                onChange={(e)=>{setLogUser({...loguser, password:e.target.value})}}
                   type="password"
                   name="account-password"
                   id="account-password"
@@ -90,6 +105,7 @@ const Login = () => {
                   <Link
                     href="/signup"
                     className="font-medium text-[#685BC7] hover:underline"
+                    onChange={submit}
                   >
                     Sign up
                   </Link>
