@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { countryApi } from '@/app/Apis/publicapi'
 
 const people = [
   {
@@ -17,8 +18,18 @@ const people = [
 
 ]
 
-export default function Selectbox() {
-  const [selected, setSelected] = useState(people[0])
+export default function Selectbox({selected, setSelected}:any) {
+
+  const [countries, setCountries]  = useState<any>([])
+
+  const countryList = async()=>{
+   let countryListData  = await countryApi()
+   setCountries(countryListData.data)
+   console.log(countryListData,26)
+  }
+  useEffect(()=>{
+countryList()
+  },[])
 
   return (
     <Listbox value={selected} onChange={setSelected}>
@@ -30,7 +41,7 @@ export default function Selectbox() {
         <ListboxButton className="flex items-center w-[100%] md:w-[435px]  h-[44px] p-[16px] gap-[8px] rounded-[12px] border border-gray-300 text-left text-gray-900 bg-white">
           <img
             alt=""
-            src={selected?.avatar}
+            src={selected?.flag}
             className="w-5 h-5 rounded-full"
           />
           <span className="truncate text-sm font-normal text-[#66708510">
@@ -49,14 +60,14 @@ export default function Selectbox() {
         transition
         className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
       >
-        {people.map((person) => (
+        {countries.map((person:any) => (
           <ListboxOption
-            key={person.id}
+            key={person?.id}
             value={person}
             className="group relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden"
           >
             <div className="flex items-center">
-              <img alt="" src={person.avatar} className="size-5 shrink-0 rounded-full" />
+              <img alt="" src={person?.flag} className="size-5 shrink-0 rounded-full" />
               <span className="ml-3 block truncate font-normal group-data-selected:font-semibold">{person.name}</span>
             </div>
 

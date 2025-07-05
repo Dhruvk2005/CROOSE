@@ -1,11 +1,37 @@
 'use client'
-import React from "react";
+import React,{useState} from "react";
 import Selectbox from "../component/selectbox";
 import Link from 'next/link';
+import { registerApi } from "@/app/Apis/publicapi";
+
+import axios, { AxiosRequestConfig, Method } from 'axios';
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 
 
 const Signupform = () => {
+  const [selected, setSelected] = useState<any>(
+    {}
+  )
+  const [user, setUser] = useState({
+    "name": "",
+    "business_name": "",
+    "business_location": "",
+    "phone_number": "",
+    "email": "",
+    "password": ""
+
+  })
+
+  const submit = async()=>{
+    let data = await registerApi({...user,business_location:selected.name})
+    console.log(data)
+
+    
+
+  }
+
+
   return (
     <div className="flex ">
 
@@ -45,12 +71,13 @@ const Signupform = () => {
             <h1 className="font-bold text-[32px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
               Create an account
             </h1>
-            <form className="space-y-4 " action="#">
+            <section className="space-y-4 " >
               <div>
                 <label htmlFor="full-name" className="block mb-2 text-sm font-medium text-[#344054]">
                   Full Name
                 </label>
                 <input
+                onChange={(e)=>{setUser({ ...user ,name:e.target.value})}}
                   type="text"
                   name="full-name"
                   id="full-name"
@@ -65,6 +92,7 @@ const Signupform = () => {
                   Business Name
                 </label>
                 <input
+                onChange={(e)=>{setUser({...user ,business_name:e.target.value })}}
                   type="text"
                   name="business-name"
                   id="business-name"
@@ -76,7 +104,7 @@ const Signupform = () => {
 
               <div>
 
-                <Selectbox />
+                <Selectbox selected={selected} setSelected={setSelected} />
                 {/* <div className="  w-[100%] md:w-[435px] flex justify-center items-center border-[1px] rounded-[12px]  border-[#D0D5DD] " >
                   <div className=" flex w-[50px] text-center justify-center " >
                     <img className="w-[20px]" src="GH.png" alt="Gh" />
@@ -97,6 +125,7 @@ const Signupform = () => {
                   Email
                 </label>
                 <input
+                onChange={(e)=>{setUser({...user, email:e.target.value })}}
                   type="email"
                   name="email"
                   id="email"
@@ -107,26 +136,43 @@ const Signupform = () => {
               </div>
 
               <div>
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-[#344054]">
+                  Mobile Number
+                </label>
+                <input
+                 onChange={(e)=>{setUser({...user, phone_number:e.target.value })}}
+                  type="number"
+                  name="number"
+                  id="number"
+                  placeholder="Enter Mobile Number"
+                  className=" w-[100%] md:w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
+                  required
+                />
+              </div>
+
+              <div>
                 <label htmlFor="account-password" className="block mb-2 text-sm font-medium text-[#344054]">
                   Password (Min of 8 characters)
                 </label>
                 <input
+                onChange={(e)=>{setUser({...user, password:e.target.value })}}
                   type="password"
                   name="account-password"
                   id="account-password"
                   placeholder="Enter Password"
-                  
+
                   className=" w-[100%] md:w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
                   required
-                  
+
                 />
-                
+
               </div>
 
               <button
-              
-                type="submit"
+
+                type="button"
                 className="bg-[#685BC7] text-white font-semibold text-[14px] leading-[21px] flex flex-row justify-center items-center  w-[100%] md:w-[435px] h-[48px] px-[20px] py-[10px] gap-[10px] rounded-[12px]"
+                onClick={submit}
               >
                 Sign up
               </button>
@@ -163,7 +209,7 @@ const Signupform = () => {
                   Continue with Apple
                 </button>
               </div>
-            </form>
+            </section>
 
           </div>
         </section>
