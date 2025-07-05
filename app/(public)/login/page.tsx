@@ -1,25 +1,43 @@
 
-
+'use client'
 import Link from 'next/link';
 import { IM_Fell_Great_Primer_SC } from 'next/font/google';
 import React, { useState } from 'react'
 import Selectbox from '../component/selectbox';
 import { loginApi } from '@/app/Apis/publicapi';
-
+import { useFormik } from 'formik';
 
 
 const Login = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
 
-  const [loguser, setLogUser] = useState({
-    "email": "",
-    "password": ""
+    validate: (values) => {
+      const errors: { email?: string; password?: string } = {};
 
-  })
+      if (!values.email) {
+        errors.email = 'Email is required';
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+        errors.email = 'Invalid email address';
+      }
 
-  const submit = async()=>{
-    let data = await loginApi(loguser)
-    console.log(data)
-  }
+      if (!values.password) {
+        errors.password = 'Password is required';
+      } else if (values.password.length < 8) {
+        errors.password = 'Password must be at least 8 characters';
+      }
+
+      return errors;
+    },
+
+    onSubmit: async (values) => {
+      const data = await loginApi(values);
+      console.log(data);
+    },
+  });
   return (
 
     <div className='flex flex-col md:flex-row w-full min-h-screen '>
@@ -49,7 +67,7 @@ const Login = () => {
             <h1 className="font-bold text-[32px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
               Welcome back!
             </h1>
-            <form className="space-y-4 " action="#">
+            <form onSubmit={formik.handleSubmit} className="space-y-4 " action="#">
 
 
               <div>
@@ -58,7 +76,7 @@ const Login = () => {
                 </label>
                 <input
 
-                onChange={(e)=>{setLogUser({...loguser, email:e.target.value})}}
+
                   type="email"
                   name="email"
                   id="email"
@@ -66,6 +84,10 @@ const Login = () => {
                   className=" w-[100%] md:w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
                   required
                 />
+
+                {formik.touched.email && formik.errors.email &&(
+                  <p className='text-500-red text-sm mt-1' >{formik.errors.email}</p>
+                )}
               </div>
 
               <div>
@@ -73,7 +95,7 @@ const Login = () => {
                   Password (Min of 8 characters)
                 </label>
                 <input
-                onChange={(e)=>{setLogUser({...loguser, password:e.target.value})}}
+
                   type="password"
                   name="account-password"
                   id="account-password"
@@ -81,6 +103,9 @@ const Login = () => {
                   className=" w-[100%] md:w-[435px] h-[44px] p-[16px] text-sm leading-[20px] font-normal text-[#98A2B3] border border-gray-300 rounded-[12px] outline-none"
                   required
                 />
+                {formik.touched.password && formik.errors.password && (
+                  <p className='text-500-red text-sm mt-1' >{formik.errors.password}</p>
+                )}
               </div>
               <div className='ml-[300px] w-[406px] h-auto flex flex-col gap-[16px]' >
                 <Link
@@ -105,7 +130,7 @@ const Login = () => {
                   <Link
                     href="/signup"
                     className="font-medium text-[#685BC7] hover:underline"
-                    onChange={submit}
+
                   >
                     Sign up
                   </Link>
