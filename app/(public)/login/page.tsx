@@ -35,6 +35,7 @@ const Login = () => {
 
     onSubmit: async (values) => {
       const data = await loginApi(values);
+      console.log(data)
       console.log(data);
     },
   });

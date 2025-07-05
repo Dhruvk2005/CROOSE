@@ -33,7 +33,7 @@ export default function Selectbox({ formik }: { formik: any }) {
   }, [])
 
   return (
-    <Listbox value={formik.values.business_location}
+    <Listbox value={formik.values?.business_location?.name}
       onChange={(value) => formik.setFieldValue('business_location', value)}>
       <Label className="block text-sm font-medium text-gray-900 mb-2">
         Business Location

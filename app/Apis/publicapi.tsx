@@ -18,7 +18,7 @@ export const axiosRequest = async ({
   formData,
 }: AxiosOptions): Promise<any> => {
   try {
-    const config:any = {
+    const config: any = {
       method,
       url,
       headers,
@@ -41,45 +41,54 @@ export const axiosRequest = async ({
 };
 
 
- export const  loginApi = async(data:any)=>{
-    try{
-       let res = await axiosRequest( {method:"post",
-  url:`${BASE_URL}/api/auth/login`,
-  headers:{},
-  body:data,
+export const loginApi = async (data: any) => {
+  try {
+    let res = await axiosRequest({
+      method: "post",
+      url: `${BASE_URL}/api/auth/login`,
+      headers: {},
+      body: data,
     })
 
     return res
-    }
-    catch(err){
-        console.log(err)
-    }
- }
+  }
+  catch (err) {
+    console.log(err)
+  }
+}
 
-  export const  registerApi = async(data:any)=>{
-    try{
-       let res = await fetch(  `${BASE_URL}/api/register`,{method:"Post",body:JSON.stringify(data)})
-       let json = await res.json()
-       console.log(json)
+export const registerApi = async (data: any) => {
+  try {
+    console.log(data)
+    let res = await axiosRequest({
 
-    return json
-    }
-    catch(err){
-        console.log(err)
-    }
- }
+      method: "post",
+      url: `${BASE_URL}/api/register`,
+      headers: {},
+      body: data,
+    })
+    // let json = await res.json()
+    // console.log(json)
 
-   export const  countryApi = async()=>{
-    try{
-       let res = await axiosRequest( {method:"get",
-  url:`${BASE_URL}/api/countries`,
-  headers:{},
- 
+    return res
+  }
+  catch (err) {
+    console.log(err)
+  }
+}
+
+export const countryApi = async () => {
+  try {
+    let res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/countries`,
+      headers: {},
+
     })
 
     return res
-    }
-    catch(err){
-        console.log(err)
-    }
- }
+  }
+  catch (err) {
+    console.log(err)
+  }
+}
