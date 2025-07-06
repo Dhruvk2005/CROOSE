@@ -79,6 +79,8 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/app/(public)/component/navbar"; // Assuming this is your top header/navbar
 import { Nav } from "../components/nav"; // Sidebar
+import { useRouter } from "next/navigation";
+import { verifyToken } from "@/app/Apis/publicapi";
 
 export default function Layout({
   children,
@@ -86,6 +88,42 @@ export default function Layout({
   children: React.ReactNode;
 }) {
   const [show, setShow] = useState(false);
+
+   const [loding, setLoding] = useState(false)
+  
+    const router = useRouter()
+  
+    const isLogin = async () => {
+      try {
+  
+        setLoding(true)
+  
+        let res: any = await verifyToken()
+        console.log(res,28)
+        // router.push("/dashboard/space")
+        setLoding(false)
+  
+        if(res?.err?.status){
+          console.log("inif")
+  
+          return router.push("/login")
+        }
+          // router.push("/dashboard/space")
+  
+          
+  
+  
+  
+  
+  
+      }
+      catch (err) {
+        router.push("/login")
+      }
+    }
+    useEffect(() => {
+      isLogin()
+    }, [])
 
   // Handle responsive sidebar
   // useEffect(() => {
