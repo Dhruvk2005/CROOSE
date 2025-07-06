@@ -30,6 +30,8 @@ const ProductServiceTabs = () => {
     ai_tags: '',
     is_featured: false,
     is_active: true,
+
+
   });
 
   useEffect(() => {
@@ -101,6 +103,7 @@ const ProductServiceTabs = () => {
         ai_tags: '',
         is_featured: false,
         is_active: true,
+
       });
       setShowModal(false);
     } catch (err: any) {
@@ -135,13 +138,13 @@ const ProductServiceTabs = () => {
       <div className="flex justify-between items-center mb-4">
         <div className="flex gap-2">
           <button
-            className={`px-4 py-2 rounded ${activeTab === 'products' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded ${activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`}
             onClick={() => setActiveTab('products')}
           >
             Products
           </button>
           <button
-            className={`px-4 py-2 rounded ${activeTab === 'services' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded ${activeTab === 'services' ? 'bg-[#685BC7]  text-white' : 'bg-gray-200'}`}
             onClick={() => setActiveTab('services')}
           >
             Services
@@ -149,7 +152,7 @@ const ProductServiceTabs = () => {
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded"
+          className="bg-[#685BC7] text-white px-4 py-2 rounded"
         >
           Add {activeTab === 'products' ? 'Product' : 'Service'}
         </button>
@@ -194,12 +197,29 @@ const ProductServiceTabs = () => {
 
               </select>
               <input value={formState.price} onChange={(e) => setFormState(f => ({ ...f, price: e.target.value }))} type="text" placeholder="Price" required className="border p-2 rounded" />
-              <select value={formState.type} onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded" required>
+              <select
+                value={formState.type}
+                onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))}
+                className="border p-2 rounded"
+                required
+              >
                 <option value="">Select Type</option>
-                <option value="physical">Physical</option>
-                <option value="bundle">Bundle</option>
-                <option value="custom">Custom</option>
+                {activeTab === 'services' ? (
+                  <>
+                    <option value="in_store">In Store</option>
+                    <option value="at_home">At Home</option>
+                    <option value="virtual">Virtual</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="physical">Physical</option>
+                    <option value="bundle">Bundle</option>
+                    <option value="custom">Custom</option>
+                  </>
+                )}
               </select>
+
+
               {activeTab === 'products' && (
                 <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" placeholder="Unit" className="border p-2 rounded" />
               )}
