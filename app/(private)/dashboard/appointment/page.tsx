@@ -77,7 +77,7 @@ const AppointmentTable = () => {
       date: formData.appointmentTime,
       status: formData.status.toLowerCase()
     };
-    setAppointments([newAppointment, ...appointments]);
+    setAppointments([ ...appointments]);
     setShowModal(false);
     setFormData({
       name: '',
