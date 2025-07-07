@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
+import { updateAppointmentStatus } from '@/app/Apis/publicapi';
+import { appointmentList } from '@/app/Apis/publicapi';
 
 const initialAppointments = [
   {
@@ -57,9 +59,68 @@ const AppointmentTable = () => {
     notes: ''
   });
 
-  const handleSubmit = (e:any) => {
+ const handleStatusUpdate = async (id: number, newStatus: string) => {
+  try {
+    const res = await updateAppointmentStatus(id, newStatus);
+    console.log("Status updated successfully:", res);
+
+  
+    const updatedList = await appointmentList();
+    console.log("Updated Appointments:", updatedList?.data?.appointments);
+
+    
+    const statusColorMap: any = {
+      Confirmed: 'bg-green-500',
+      Pending: 'bg-yellow-400',
+      Cancelled: 'bg-red-500',
+      Completed: 'bg-blue-500',
+    };
+
+    const formatted = updatedList.data.appointments.map((appt: any) => ({
+      ...appt,
+      statusColor: statusColorMap[appt.status] || 'bg-gray-300',
+    }));
+
+    setAppointments(formatted);
+  } catch (err) {
+    console.error("Failed to update appointment status", err);
+  }
+};
+
+
+
+
+  useEffect(() => {
+  const fetchAppointment = async () => {
+    try {
+      const res = await appointmentList();
+      if (res?.data?.appointments) {
+        const statusColorMap: any = {
+          Confirmed: 'bg-green-500',
+          Pending: 'bg-yellow-400',
+          Cancelled: 'bg-red-500',
+          Completed: 'bg-blue-500',
+        };
+
+        const formattedAppointments = res.data.appointments.map((appt: any) => ({
+          ...appt,
+          statusColor: statusColorMap[appt.status] || 'bg-gray-300',
+        }));
+
+        setAppointments(formattedAppointments);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchAppointment();
+}, []);
+
+
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    const statusColorMap:any = {
+    const statusColorMap: any = {
       Confirmed: 'bg-green-500',
       Pending: 'bg-yellow-400',
       Cancelled: 'bg-red-500'
@@ -86,7 +147,7 @@ const AppointmentTable = () => {
     const matchSearch = a.name.toLowerCase().includes(search.toLowerCase()) ||
       a.phone.includes(search) ||
       a.service.toLowerCase().includes(search.toLowerCase());
-    const  matchStatus = statusFilter ? a.status === statusFilter : true;
+    const matchStatus = statusFilter ? a.status === statusFilter : true;
     const matchService = serviceFilter ? a.service === serviceFilter : true;
     const matchDate = (!dateFrom || new Date(a.createdAt) >= new Date(dateFrom)) &&
       (!dateTo || new Date(a.createdAt) <= new Date(dateTo));
@@ -206,9 +267,17 @@ const AppointmentTable = () => {
                   <td className="px-4 py-3">{appt.notes}</td>
                   <td className="px-4 py-3">{appt.createdAt}</td>
                   <td className="px-4 py-3">
-                    <button className="text-gray-600 hover:text-black">
-                      <Icon icon="bi:three-dots-vertical" />
-                    </button>
+                    <select
+                      value={appt.status}
+                      onChange={(e) => handleStatusUpdate(appt.id, e.target.value)}
+                      className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white"
+                    >
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Cancelled">Cancelled</option>
+                      <option value="Completed">Completed</option>
+                    </select>
+
                   </td>
                 </tr>
               ))}

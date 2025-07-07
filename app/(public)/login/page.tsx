@@ -15,19 +15,19 @@ const Login = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
   const [loginData, setLoginData] = useState({})
-  const [loding, setLoding] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const router = useRouter()
 
   const isLogin = async () => {
     try {
 
-      setLoding(true)
+      setLoading(true)
 
       let res: any = await verifyToken()
       console.log(res,28)
       // router.push("/dashboard/space")
-      setLoding(false)
+      setLoading(false)
 
       if(res?.err?.status){
         console.log("inif")
@@ -98,7 +98,7 @@ const Login = () => {
     <>
       {
 
-        loding ? "loding..." : <>
+        loading ? "Loading..." : <>
 
           <Snackbar
             open={snackbarOpen}
