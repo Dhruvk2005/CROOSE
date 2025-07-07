@@ -42,7 +42,48 @@ export const axiosRequest = async ({
   }
 };
 
+export const appointmentList = async () => {
+  try {
+    let token = localStorage.getItem("token")
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/appointments`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
 
+    })
+    return res
+
+  } catch (err) {
+    console.log(err)
+
+  }
+}
+
+export const updateAppointmentStatus = async (id: number, status: string) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axiosRequest({
+      method: "post",
+      url: `${BASE_URL}/appointments_status_update`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: {
+        id,
+        status,
+      },
+    });
+
+    return res;
+  } catch (err) {
+    console.error("Error updating appointment status:", err);
+    throw err;
+  }
+};
 
 export const addProduct = async (data: any) => {
   try {
@@ -58,7 +99,7 @@ export const addProduct = async (data: any) => {
     return res
 
 
-  } catch (err:any) {
+  } catch (err: any) {
     console.log(err)
     throw new Error(err?.message || "Failed to add product.");
   }
@@ -77,7 +118,7 @@ export const addServices = async (data: any) => {
 
     })
     return res
-  } catch (err:any) {
+  } catch (err: any) {
     console.log(err)
     throw new Error(err?.message || "Failed to add product.");
 
