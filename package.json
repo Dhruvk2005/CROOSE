@@ -17,6 +17,8 @@
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
     "@mui/styled-engine-sc": "^7.2.0",
+    "axios": "^1.10.0",
+    "formik": "^2.4.6",
     "next": "^15.3.4",
     "react": "^19.1.0",
     "react-chatbot-kit": "^2.2.2",

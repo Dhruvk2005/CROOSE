@@ -21,7 +21,7 @@ const Myspace = () => {
     <div>
         <Spacenav/>
      <div className="h-auto w-full bg-[#FFFFFF] relative mt-[15px] flex flex-col gap-5  items-center">
-        <div className="w-[100%]  items-center mt-[-17px]   flex flex-row h-[64px] " style={{borderBottom:"1px solid #eaeacf"}}>
+        <div className="w-[100%]  items-center mt-[-17px]   flex flex-row h-[64px] " style={{borderBottom:"1px solid #EAECF0"}}>
           <img
             src="/arrow.png"
             alt="arrow"
@@ -52,7 +52,7 @@ const Myspace = () => {
         </div>
         
 
-        <div className=" flex flex-row flex-wrap gap-[20px] justify-center w-[90%]   rounded-lg">
+        <div className=" flex flex-row flex-wrap gap-[20px] justify-center w-[100%]   rounded-lg">
       
           <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">

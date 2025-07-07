@@ -82,8 +82,8 @@ const UserTable = () => {
               {/* Customer */}
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex gap-[5px] items-center">
-                    <input className=' appearance-none border-[2px] border-[#D0D5DD] ' type='checkbox' />
-                  <img className="w-10 h-10 rounded-full" src={user.img} alt={user.name} />
+                    <input className='appearance-none w-4 h-4 border-2 border-[#D0D5DD] mr-[5px] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD] ' type='checkbox' />
+                  <img className="w-10  h-10 rounded-full" src={user.img} alt={user.name} />
                   <div className="ps-3">
                     <div className="text-base font-semibold text-[#101828]">{user.name}</div>
                     <div className="font-normal text-gray-500">{user.email}</div>
