@@ -8,7 +8,7 @@ const Spaceiqcolor = (props: any) => {
   return (
     <div>
       <div className="relative  z-[40]">
-        <div className="fixed inset-0 bg-gray-500/75  transition-opacity flex justify-center items-center">
+        <div className="fixed inset-0 bg-[#18181B66] transition-opacity flex justify-center items-center">
           <div className="w-full flex justify-center   px-4 sm:px-6">
             <div className="w-full max-w-4xl h-[700px]  flex flex-col items-center border rounded-2xl bg-white">
 
@@ -29,7 +29,7 @@ const Spaceiqcolor = (props: any) => {
                   <span className="text-[#121217] font-sans font-semibold text-xl leading-none tracking-tight">
                     Increase Space IQ
                   </span>
-                  <span className="text-[#71717A] font-sans text-sm leading-5 w-full sm:w-[47%]">
+                  <span className="text-[#475467] font-sans text-sm leading-5 w-full sm:w-[47%]">
                     Set custom instructions and guidance for the agent to follow. Enter plain text, upload or link documents.
                   </span>
                 </div>

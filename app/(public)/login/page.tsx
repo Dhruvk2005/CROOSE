@@ -78,7 +78,7 @@ const Login = () => {
               </div>
 
               <Link
-                href="/dashboard/home"
+                href="/dashboard/space"
                 type="submit"
                 className="bg-[#685BC7] text-white font-semibold text-[14px] leading-[21px] flex flex-row justify-center items-center  w-[100%] md:w-[435px] h-[48px] px-[20px] py-[10px] gap-[10px] rounded-[12px]"
               >
