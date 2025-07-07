@@ -1,48 +1,11 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
-import { updateAppointmentStatus } from '@/app/Apis/publicapi';
-import { appointmentList } from '@/app/Apis/publicapi';
-
-const initialAppointments = [
-  {
-    id: 1,
-    name: "Neil Sims",
-    phone: "0241763214",
-    service: "Dental Cleaning",
-    status: "Confirmed",
-    statusColor: "bg-green-500",
-    notes: "First-time visit",
-    appointmentTime: "2025-07-10 10:30 AM",
-    createdAt: "2025-07-01"
-  },
-  {
-    id: 2,
-    name: "Bonnie Green",
-    phone: "0241763214",
-    service: "Eye Checkup",
-    status: "Pending",
-    statusColor: "bg-yellow-400",
-    notes: "Needs translator",
-    appointmentTime: "2025-07-12 02:00 PM",
-    createdAt: "2025-07-03"
-  },
-  {
-    id: 3,
-    name: "Thomas Lean",
-    phone: "0241763214",
-    service: "Skin Consultation",
-    status: "Cancelled",
-    statusColor: "bg-red-500",
-    notes: "Reschedule needed",
-    appointmentTime: "2025-07-11 11:15 AM",
-    createdAt: "2025-07-02"
-  }
-];
+import { updateAppointmentStatus, appointmentList } from '@/app/Apis/publicapi';
 
 const AppointmentTable = () => {
-  const [appointments, setAppointments] = useState(initialAppointments);
+  const [appointments, setAppointments] = useState([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [serviceFilter, setServiceFilter] = useState('');
@@ -59,77 +22,60 @@ const AppointmentTable = () => {
     notes: ''
   });
 
- const handleStatusUpdate = async (id: number, newStatus: string) => {
-  try {
-    const res = await updateAppointmentStatus(id, newStatus);
-    console.log("Status updated successfully:", res);
+  const statusColorMap: any = {
+    confirmed: 'bg-green-500',
+    pending: 'bg-yellow-400',
+    cancelled: 'bg-red-500',
+    completed: 'bg-blue-500',
+  };
 
-  
-    const updatedList = await appointmentList();
-    console.log("Updated Appointments:", updatedList?.data?.appointments);
-
-    
-    const statusColorMap: any = {
-      Confirmed: 'bg-green-500',
-      Pending: 'bg-yellow-400',
-      Cancelled: 'bg-red-500',
-      Completed: 'bg-blue-500',
-    };
-
-    const formatted = updatedList.data.appointments.map((appt: any) => ({
-      ...appt,
-      statusColor: statusColorMap[appt.status] || 'bg-gray-300',
-    }));
-
-    setAppointments(formatted);
-  } catch (err) {
-    console.error("Failed to update appointment status", err);
-  }
-};
-
-
-
-
-  useEffect(() => {
-  const fetchAppointment = async () => {
+  const handleStatusUpdate = async (id: number, newStatus: string) => {
     try {
-      const res = await appointmentList();
-      if (res?.data?.appointments) {
-        const statusColorMap: any = {
-          Confirmed: 'bg-green-500',
-          Pending: 'bg-yellow-400',
-          Cancelled: 'bg-red-500',
-          Completed: 'bg-blue-500',
-        };
+      const res = await updateAppointmentStatus(id, newStatus);
+      console.log("Status updated successfully:", res);
 
-        const formattedAppointments = res.data.appointments.map((appt: any) => ({
-          ...appt,
-          statusColor: statusColorMap[appt.status] || 'bg-gray-300',
-        }));
+      const updatedList = await appointmentList();
 
-        setAppointments(formattedAppointments);
-      }
+      const formatted = updatedList.data.map((appt: any) => ({
+        ...appt,
+        statusColor: statusColorMap[appt.status?.toLowerCase()] || 'bg-gray-300',
+      }));
+
+      setAppointments(formatted);
     } catch (err) {
-      console.log(err);
+      console.error("Failed to update appointment status", err);
     }
   };
 
-  fetchAppointment();
-}, []);
-
+  useEffect(() => {
+    const fetchAppointment = async () => {
+      try {
+        const res = await appointmentList();
+        if (res?.data) {
+          const formattedAppointments = res.data.map((appt: any) => ({
+            ...appt,
+            statusColor: statusColorMap[appt.status?.toLowerCase()] || 'bg-gray-300',
+          }));
+          setAppointments(formattedAppointments);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAppointment();
+  }, []);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const statusColorMap: any = {
-      Confirmed: 'bg-green-500',
-      Pending: 'bg-yellow-400',
-      Cancelled: 'bg-red-500'
-    };
     const newAppointment = {
       ...formData,
       id: appointments.length + 1,
       createdAt: new Date().toISOString().split('T')[0],
-      statusColor: statusColorMap[formData.status] || 'bg-gray-300'
+      statusColor: statusColorMap[formData.status?.toLowerCase()] || 'bg-gray-300',
+      customer_name: formData.name,
+      service_name: formData.service,
+      date: formData.appointmentTime,
+      status: formData.status.toLowerCase()
     };
     setAppointments([newAppointment, ...appointments]);
     setShowModal(false);
@@ -143,15 +89,21 @@ const AppointmentTable = () => {
     });
   };
 
-  const filtered = appointments.filter(a => {
-    const matchSearch = a.name.toLowerCase().includes(search.toLowerCase()) ||
-      a.phone.includes(search) ||
-      a.service.toLowerCase().includes(search.toLowerCase());
-    const matchStatus = statusFilter ? a.status === statusFilter : true;
-    const matchService = serviceFilter ? a.service === serviceFilter : true;
-    const matchDate = (!dateFrom || new Date(a.createdAt) >= new Date(dateFrom)) &&
-      (!dateTo || new Date(a.createdAt) <= new Date(dateTo));
-    return matchSearch && matchStatus && matchService && matchDate;
+  const filteredAppointments = appointments.filter((appt: any) => {
+    const searchTerm = search.toLowerCase();
+    const matchesSearch =
+      appt.customer_name?.toLowerCase().includes(searchTerm) ||
+      appt.phone?.toLowerCase().includes(searchTerm) ||
+      appt.service_name?.toLowerCase().includes(searchTerm);
+
+    const matchesStatus = statusFilter ? appt.status?.toLowerCase() === statusFilter.toLowerCase() : true;
+    const matchesService = serviceFilter ? appt.service_name?.toLowerCase() === serviceFilter.toLowerCase() : true;
+
+    const apptDate = new Date(appt.date);
+    const matchesDateFrom = dateFrom ? apptDate >= new Date(dateFrom) : true;
+    const matchesDateTo = dateTo ? apptDate <= new Date(dateTo) : true;
+
+    return matchesSearch && matchesStatus && matchesService && matchesDateFrom && matchesDateTo;
   });
 
   return (
@@ -210,6 +162,7 @@ const AppointmentTable = () => {
             <option value="Confirmed">Confirmed</option>
             <option value="Pending">Pending</option>
             <option value="Cancelled">Cancelled</option>
+            <option value="Completed">Completed</option>
           </select>
 
           <select
@@ -242,48 +195,30 @@ const AppointmentTable = () => {
             <thead className="bg-gray-100">
               <tr>
                 <th className="px-4 py-3">Customer Name</th>
-                <th className="px-4 py-3">Phone Number</th>
+                <th className="px-4 py-3">Service Name</th>
                 <th className="px-4 py-3">Appointment Time</th>
-                <th className="px-4 py-3">Service</th>
                 <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Notes</th>
-                <th className="px-4 py-3">Created At</th>
-                <th className="px-4 py-3">Actions</th>
+                <th className="px-4 py-3">Status Tag</th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((appt) => (
-                <tr key={appt.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
-                  <td className="px-4 py-3">{appt.name}</td>
-                  <td className="px-4 py-3">{appt.phone}</td>
-                  <td className="px-4 py-3">{appt.appointmentTime}</td>
-                  <td className="px-4 py-3">{appt.service}</td>
+              {filteredAppointments.map((appt: any) => (
+                <tr key={appt?.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
+                  <td className="px-4 py-3">{appt?.customer_name}</td>
+                  <td className="px-4 py-3">{appt?.service_name}</td>
+                  <td className="px-4 py-3">{appt?.date}</td>
+                  <td className="px-4 py-3 capitalize">{appt?.status}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center gap-1 ${appt.statusColor} text-white text-xs px-2 py-1 rounded-full`}>
                       <span className="w-2 h-2 rounded-full bg-white"></span>
                       {appt.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3">{appt.notes}</td>
-                  <td className="px-4 py-3">{appt.createdAt}</td>
-                  <td className="px-4 py-3">
-                    <select
-                      value={appt.status}
-                      onChange={(e) => handleStatusUpdate(appt.id, e.target.value)}
-                      className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white"
-                    >
-                      <option value="Confirmed">Confirmed</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Cancelled">Cancelled</option>
-                      <option value="Completed">Completed</option>
-                    </select>
-
-                  </td>
                 </tr>
               ))}
-              {filtered.length === 0 && (
+              {filteredAppointments.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="text-center py-6 text-gray-400">No appointments found</td>
+                  <td colSpan={5} className="text-center py-6 text-gray-400">No appointments found</td>
                 </tr>
               )}
             </tbody>
