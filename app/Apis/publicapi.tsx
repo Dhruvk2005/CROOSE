@@ -89,7 +89,7 @@ export const getAllProducts = async () => {
     const token = localStorage.getItem("token")
     const res = await axiosRequest({
       method: "get",
-      url: `${BASE_URL}/api/products`,
+      url: `${BASE_URL}/api/products/products_list`,
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -104,7 +104,7 @@ export const getAllProducts = async () => {
 export const getAllServices = async () => {
   try {
     let token = localStorage.getItem("token")
-    const res = await axios.get(`${BASE_URL}/api/products`, {
+    const res = await axios.get(`${BASE_URL}/api/services/get_services`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
