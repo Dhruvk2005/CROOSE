@@ -30,8 +30,6 @@ const ProductServiceTabs = () => {
     ai_tags: '',
     is_featured: false,
     is_active: true,
-
-
   });
 
   useEffect(() => {
@@ -39,7 +37,7 @@ const ProductServiceTabs = () => {
       try {
         const [productList, serviceList] = await Promise.all([
           getAllProducts(),
-          getAllServices()
+          getAllServices(),
         ]);
         setData({ products: productList?.data || [], services: serviceList?.data || [] });
       } catch (err) {
@@ -103,7 +101,6 @@ const ProductServiceTabs = () => {
         ai_tags: '',
         is_featured: false,
         is_active: true,
-
       });
       setShowModal(false);
     } catch (err: any) {
@@ -189,20 +186,38 @@ const ProductServiceTabs = () => {
             <h3 className="text-lg font-semibold mb-4">Add {activeTab === 'products' ? 'Product' : 'Service'}</h3>
             <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
               <input value={formState.name} onChange={(e) => setFormState(f => ({ ...f, name: e.target.value }))} type="text" placeholder="Name" required className="border p-2 rounded" />
+
+              {/* CATEGORIES */}
               <select value={formState.category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border p-2 rounded" required>
                 <option value="">Select category</option>
-                <option value="Shampoo">Shampoo</option>
-                <option value="Hair Oil">Hair Oil</option>
-                <option value="Facewash">Facewash</option>
-
+                {activeTab === 'products' ? (
+                  <>
+                    <option value="Wigs">Wigs</option>
+                    <option value="Hair Extensions">Hair Extensions</option>
+                    <option value="Hair Care Products">Hair Care Products</option>
+                    <option value="Styling Tools & Accessories">Styling Tools & Accessories</option>
+                    <option value="Makeup">Makeup</option>
+                    <option value="Skincare">Skincare</option>
+                    <option value="Fragrances & Body Care">Fragrances & Body Care</option>
+                    <option value="Appointments & Services">Appointments & Services</option>
+                    <option value="Bundles & Combos">Bundles & Combos</option>
+                    <option value="Merch & Apparel">Merch & Apparel</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="Hair">Hair</option>
+                    <option value="Beauty">Beauty</option>
+                    <option value="Grooming">Grooming</option>
+                    <option value="Spa">Spa</option>
+                  </>
+                )}
               </select>
+
+              {/* PRICE */}
               <input value={formState.price} onChange={(e) => setFormState(f => ({ ...f, price: e.target.value }))} type="text" placeholder="Price" required className="border p-2 rounded" />
-              <select
-                value={formState.type}
-                onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))}
-                className="border p-2 rounded"
-                required
-              >
+
+              {/* TYPES */}
+              <select value={formState.type} onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded" required>
                 <option value="">Select Type</option>
                 {activeTab === 'services' ? (
                   <>
@@ -212,13 +227,52 @@ const ProductServiceTabs = () => {
                   </>
                 ) : (
                   <>
-                    <option value="physical">Physical</option>
-                    <option value="bundle">Bundle</option>
-                    <option value="custom">Custom</option>
+                    <option value="Wigs">Wigs</option>
+                    <option value="Extensions">Extensions</option>
+                    <option value="Oils">Oils</option>
+                    <option value="Brushes">Brushes</option>
+                    <option value="Custom Wigs">Custom Wigs</option>
+                    <option value="Braids">Braids</option>
+                    <option value="Haircuts">Haircuts</option>
+                    <option value="Facials">Facials</option>
+                    <option value="Makeup">Makeup</option>
+                    <option value="Skincare">Skincare</option>
+                    <option value="Beard Care">Beard Care</option>
+                    <option value="Ponytails">Ponytails</option>
+                    <option value="Closures">Closures</option>
+                    <option value="Tape-ins">Tape-ins</option>
+                    <option value="Shaving">Shaving</option>
+                    <option value="Hair Coloring">Hair Coloring</option>
+                    <option value="Retouching">Retouching</option>
+                    <option value="Dreadlocks">Dreadlocks</option>
+                    <option value="Cornrows">Cornrows</option>
+                    <option value="Nails">Nails</option>
+                    <option value="Pedicure">Pedicure</option>
+                    <option value="Manicure">Manicure</option>
+                    <option value="Loc Maintenance">Loc Maintenance</option>
+                    <option value="Styling Tools">Styling Tools</option>
+                    <option value="Bonnets">Bonnets</option>
+                    <option value="Edge Control">Edge Control</option>
+                    <option value="Mousse">Mousse</option>
+                    <option value="Shampoo">Shampoo</option>
+                    <option value="Conditioner">Conditioner</option>
+                    <option value="Body Butter">Body Butter</option>
+                    <option value="Lip Gloss">Lip Gloss</option>
+                    <option value="Foundation">Foundation</option>
+                    <option value="Lashes">Lashes</option>
+                    <option value="Appointments">Appointments</option>
+                    <option value="Consultations">Consultations</option>
+                    <option value="Gift Cards">Gift Cards</option>
+                    <option value="Bundles">Bundles</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Clippers">Clippers</option>
+                    <option value="Durags">Durags</option>
+                    <option value="Wave Caps">Wave Caps</option>
+                    <option value="Dye Kits">Dye Kits</option>
+                    <option value="Detanglers">Detanglers</option>
                   </>
                 )}
               </select>
-
 
               {activeTab === 'products' && (
                 <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" placeholder="Unit" className="border p-2 rounded" />
