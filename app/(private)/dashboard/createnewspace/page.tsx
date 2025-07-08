@@ -15,7 +15,7 @@ const Newspace = () => {
       </div>
 
       <section className='flex flex-wrap justify-center'>
-        <div className='w-[90%] h-auto flex flex-col gap-[40px] mt-[30px]' >
+        <div className='w-[90%] h-[120vh] flex flex-col gap-[40px] mt-[30px]' >
           <div className=' flex ' >
             <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500]  items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px] ' >
               Create New Space
@@ -43,9 +43,9 @@ const Newspace = () => {
 
           <div className='w-full flex flex-col gap-[30px] '>
             <ul className='flex flex-wrap gap-[30px]' >
-              <li className='w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
+              <li className='w-[289px]  list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
                 <div>
-                  <div className=' flex flex-col justify-end p-[20px] w-[289px]  h-[127px] bg-[#685BC70D] ' >
+                  <div className=' flex flex-col justify-end p-[20px] w-[289px] rounded-[16px]  h-[127px] bg-[#685BC70D] ' >
                     <ul className='flex  -space-x-4 rtl:space-x-reverse' >
                       <li><img src="/profile-picture-1.png" alt='profile-1' className='w-10 h-10 border-2  rounded-full ' /></li>
                       <li><img src="/profile-picture-2.png" alt='profile-2' className='w-10 h-10 border-2 border-white rounded-full ' /></li>
@@ -55,8 +55,8 @@ const Newspace = () => {
 
                   </div>
                   <section>
-                    <div>
-                      <div className='w-[289px] h-auto p-[16px] flex flex-col gap-[16px] ' >
+                    <div >
+                      <div className='w-[289px] h-auto p-[16px]  flex flex-col gap-[16px] ' >
                         <ul className='flex justify-between items-center' >
                           <li className='list-none text-[#1D2939] font-normal text-[14px] ' > Space Name</li>
                           <li className=' flex justify-center items-center list-none w-[50px] h-auto rounded-[12px] border-[1px] border-[#FDA29B] text-[#D92D20] font-400 text-[12px] pt-[1px] pr-[4px] pb-[1px] pl-[4px]'  >Live</li>
@@ -89,7 +89,7 @@ const Newspace = () => {
 
               <li className='w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
                 <div>
-                  <div className='flex flex-col justify-end p-[20px]  w-[289px] h-[127px] bg-[#685BC70D] ' >
+                  <div className='flex flex-col justify-end p-[20px]  w-[289px]  rounded-[16px] h-[127px] bg-[#685BC70D] ' >
                     <ul className='flex -space-x-4 rtl:space-x-reverse' >
                       <li><img src="/profile-picture-1.png" alt='profile-1' className='w-10 h-10 border-2  rounded-full ' /></li>
                       <li><img src="/profile-picture-2.png" alt='profile-2' className='w-10 h-10 border-2 border-white rounded-full ' /></li>
@@ -134,7 +134,7 @@ const Newspace = () => {
 
               <li className='w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
                 <div>
-                  <div className='flex flex-col justify-end p-[20px]  w-[289px] h-[127px] bg-[#685BC70D] ' >
+                  <div className='flex flex-col justify-end p-[20px]  w-[289px]  rounded-[16px] h-[127px] bg-[#685BC70D] ' >
                     <ul className='flex -space-x-4 rtl:space-x-reverse' >
                       <li><img src="/profile-picture-1.png" alt='profile-1' className='w-10 h-10 border-2  rounded-full ' /></li>
                       <li><img src="/profile-picture-2.png" alt='profile-2' className='w-10 h-10 border-2 border-white rounded-full ' /></li>
@@ -177,7 +177,7 @@ const Newspace = () => {
               </li>
                <li className=' w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
                 <div>
-                  <div className='flex flex-col justify-end p-[20px]  w-[289px] h-[127px] bg-[#685BC70D] ' >
+                  <div className='flex flex-col justify-end p-[20px]  w-[289px]  rounded-[16px] h-[127px] bg-[#685BC70D] ' >
                     <ul className='flex -space-x-4 rtl:space-x-reverse' >
                       <li><img src="/profile-picture-1.png" alt='profile-1' className='w-10 h-10 border-2  rounded-full ' /></li>
                       <li><img src="/profile-picture-2.png" alt='profile-2' className='w-10 h-10 border-2 border-white rounded-full ' /></li>
@@ -221,7 +221,7 @@ const Newspace = () => {
 
               <li className='w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
                 <div>
-                  <div className='flex flex-col justify-end p-[20px]  w-[289px] h-[127px] bg-[#685BC70D] ' >
+                  <div className='flex flex-col justify-end p-[20px]  w-[289px]  rounded-[16px] h-[127px] bg-[#685BC70D] ' >
                     <ul className='flex -space-x-4 rtl:space-x-reverse' >
                       <li><img src="/profile-picture-1.png" alt='profile-1' className='w-10 h-10 border-2  rounded-full ' /></li>
                       <li><img src="/profile-picture-2.png" alt='profile-2' className='w-10 h-10 border-2 border-white rounded-full ' /></li>
@@ -266,7 +266,7 @@ const Newspace = () => {
 
               <li className='w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0] ' >
                 <div>
-                  <div className='flex flex-col justify-end p-[20px]  w-[289px] h-[127px] bg-[#685BC70D] ' >
+                  <div className='flex flex-col justify-end p-[20px]  rounded-[16px]  w-[289px] h-[127px] bg-[#685BC70D] ' >
                     <ul className='flex -space-x-4 rtl:space-x-reverse' >
                       <li><img src="/profile-picture-1.png" alt='profile-1' className='w-10 h-10 border-2  rounded-full ' /></li>
                       <li><img src="/profile-picture-2.png" alt='profile-2' className='w-10 h-10 border-2 border-white rounded-full ' /></li>

@@ -103,10 +103,11 @@ const Payments = () => {
         </div>
       </div>
 
+      <div className='w-full p-6' >
       
-      <div className="w-full overflow-x-auto p-4 sm:p-6">
-        <table className="min-w-[700px] w-full border border-[#EAECF0] text-sm text-left text-gray-500 bg-white rounded-[5px]">
-          <thead className="text-xs text-[#475467] bg-gray-50 font-medium">
+      <div className="w-full overflow-x-auto  border-2  border-[#EAECF0]  rounded-[10px]  ">
+        <table className="min-w-[700px] w-full  border-[#EAECF0] text-sm text-left text-gray-500 bg-white rounded-[10px]">
+          <thead className="text-xs text-[#475467] rounded-[10px] bg-gray-50 font-medium">
             <tr>
               <th className="px-6 py-3">Customer</th>
               <th className="px-6 py-3">Amount</th>
@@ -119,7 +120,7 @@ const Payments = () => {
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <tr key={index} className="border-b border-[#EAECF0]">
+              <tr key={index} className="border-b rounded-[10px] border-[#EAECF0]">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-3">
                     <input
@@ -145,6 +146,7 @@ const Payments = () => {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );
