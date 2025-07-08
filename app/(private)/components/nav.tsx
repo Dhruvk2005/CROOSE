@@ -41,7 +41,7 @@ export const Nav = ({ show, setShow }: any) => {
           <section style={{ position: "fixed", bottom: "0" }}>
             <div className="flex justify-center items-center flex-col w-full gap-[4px] -ml-[12px]">
               <ul className="flex flex-col gap-[4px] w-[80%] h-auto">
-                <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-blue-400 transition-all">
+                <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
                   <div>
                     <Icon icon="mingcute:settings-4-line" width="24" height="24" color="white" />
                   </div>
@@ -50,7 +50,7 @@ export const Nav = ({ show, setShow }: any) => {
                   </div>
                 </li>
                 <Link href='/dashboard/support'>
-                  <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-blue-400 transition-all">
+                  <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
                     <div>
                       <Icon icon="tabler:headphones" width="24" height="24" color='white' />
                     </div>
