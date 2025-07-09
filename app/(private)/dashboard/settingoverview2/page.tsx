@@ -15,7 +15,7 @@ const Page = () => {
                               </span>
             </section>
 
-              <section className="w-full  px-4 py-6 sm:px-[64px] bg-[pink] h-[611px] sm:py-[32px] flex flex-col gap-8">
+              <section className="w-full  px-4 py-6 sm:px-[64px] bg-[#ffffff] h-[611px] sm:py-[32px] flex flex-col gap-8">
                   <div className="w-full flex flex-col gap-6">
                 <div className="w-full flex flex-wrap items-center gap-2 sm:gap-5">
                   <div className="flex flex-wrap gap-2 w-full">
@@ -30,8 +30,51 @@ const Page = () => {
                     </button>
                     </div>
                     </div>
+                         <div className="text-[18px] font-inter font-semibold  leading-[28px] tracking-[0] text-[#101828]">Security</div>
                     </div>
+                     <section className='w-full h-[314px] flex  gap-[32px]'>
+                        <div className='w-full h-[74px] mt-2 flex flex-col'>
+                           <label className="block font-medium text-sm leading-5 align-middle font-inter text-[#344054]">Current Password</label>
+                        <div className="relative mt-1 w-full">
+                           <input type="password" className="w-full h-[44px]  text-[#98A2B3] text-sm rounded-[12px] border border-[#D0D5DD] p-4" placeholder="Enter your password"/>
+                          <button type="button"  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" >
+                           <Icon icon="tabler:eye-filled" width="20" height="20" />
+                             </button>
+                         </div>
+                         <div className='w-full h-[74px] mt-3 flex flex-col'>
+                          <label className="block font-medium text-sm leading-5 align-middle font-inter text-[#344054]">New Password </label>
+                           <div className="relative mt-1 w-full">
+                           <input type="password" className="w-full h-[44px]  text-[#98A2B3] text-sm rounded-[12px] border border-[#D0D5DD] p-4" placeholder="Enter Password  "/>
+                          <button type="button"  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" >
+                           <Icon icon="tabler:eye-filled" width="20" height="20" />
+                             </button>
+                             </div>
+                         </div>
+
+                          <div className='w-full h-[74px] mt-3 flex flex-col'>
+                          <label className="block font-medium text-sm leading-5 align-middle font-inter text-[#344054]">Repeat New Password  </label>
+                           <div className="relative mt-1 w-full">
+                           <input type="password" className="w-full h-[44px]  text-[#98A2B3] text-sm rounded-[12px] border border-[#D0D5DD] p-4" placeholder="Enter Password   "/>
+                          <button type="button"  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" >
+                           <Icon icon="tabler:eye-filled" width="20" height="20" />
+                             </button>
+                             </div>
+                         </div>
+          <section className="w-[130px] h-[36px] mt-11 rounded-[64px] gap-[4px] px-[20px] py-[10px] opacity-100 bg-[#FFEBEE] flex justify-end ml-auto">
+  <button className="font-inter font-semibold text-[12px] leading-[18px] tracking-[0] text-[#DE2525]">
+    Delete Account
+  </button>
+</section>
+
+                           </div>
+                     </section>
+              
               </section>
+                     <section className="w-full flex justify-end  px-4 py-3 sm:px-[20px] sm:py-[12px]">
+                
+              <button  className="rounded-lg bg-[#685BC7] text-white text-sm font-semibold px-7 py-2">  Save changes  </button>
+            </section>
+             
             </div>
             </div>
             </div>
