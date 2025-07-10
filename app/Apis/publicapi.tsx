@@ -202,6 +202,24 @@ export const loginApi = async (data: any) => {
   }
 }
 
+export const logoutapi = async(data:any)=>{
+  try{
+  let token = localStorage.getItem("token")
+  let res = await axiosRequest({
+    method:"post",
+    url:`${BASE_URL}/api/logout`,
+    headers:{
+      Authorization:`Bearer ${token}`
+    },
+    body:data
+  }) 
+  return res
+  }catch(err){
+    console.log(err)
+
+  }
+}
+
 export const registerApi = async (data: any) => {
   try {
     console.log(data)
