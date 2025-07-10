@@ -42,6 +42,8 @@ export const axiosRequest = async ({
   }
 };
 
+
+
 export const appointmentList = async () => {
   try {
     let token = localStorage.getItem("token")
@@ -67,7 +69,7 @@ export const updateAppointmentStatus = async (id: number, status: string) => {
 
     const res = await axiosRequest({
       method: "post",
-      url: `${BASE_URL}/appointments_status_update`,
+      url: `https://joincroose.com/croose/api/appointments_status_update`,
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -202,19 +204,19 @@ export const loginApi = async (data: any) => {
   }
 }
 
-export const logoutapi = async(data:any)=>{
-  try{
-  let token = localStorage.getItem("token")
-  let res = await axiosRequest({
-    method:"post",
-    url:`${BASE_URL}/api/logout`,
-    headers:{
-      Authorization:`Bearer ${token}`
-    },
-    body:data
-  }) 
-  return res
-  }catch(err){
+export const logoutapi = async (data: any) => {
+  try {
+    let token = localStorage.getItem("token")
+    let res = await axiosRequest({
+      method: "post",
+      url: `${BASE_URL}/api/logout`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: data
+    })
+    return res
+  } catch (err) {
     console.log(err)
 
   }
