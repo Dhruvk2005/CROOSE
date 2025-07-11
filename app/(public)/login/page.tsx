@@ -80,8 +80,15 @@ const Login = () => {
           setSnackbarMessage(data.message || 'Login successful');
           setSnackbarSeverity('success');
           setSnackbarOpen(true);
-          // Redirect here if needed
-        } else {
+
+
+          
+        }
+        if(data?.data){
+          localStorage.setItem('userdata',JSON.stringify(data))
+        }
+        
+        else {
           throw new Error(data?.message || 'Login failed');
         }
       } catch (error: any) {
