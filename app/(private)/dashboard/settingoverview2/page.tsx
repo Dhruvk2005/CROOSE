@@ -1,6 +1,31 @@
-import React from 'react'
+ 'use client'
+ 
+
+import { useRouter } from 'next/router';
+
+
+
+import React, { useState,useEffect } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
-const Page = () => {
+import DeletePopup from '../settingoverview3/page';
+
+
+
+
+
+const SettingTwo = (props:any) => {
+   const [Open ,setOpen]=useState(false)
+  
+
+
+  useEffect(() => {
+  if (Open) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
+}, [Open]);
+
   return (
     <div>
         <div className="relative flex items-center justify-center min-h-screen h-auto bg-gray-100 p-4 sm:p-6">
@@ -61,7 +86,7 @@ const Page = () => {
                              </div>
                          </div>
           <section className="w-[130px] h-[36px] mt-11 rounded-[64px] gap-[4px] px-[20px] py-[10px] opacity-100 bg-[#FFEBEE] flex justify-end ml-auto">
-  <button className="font-inter font-semibold text-[12px] leading-[18px] tracking-[0] text-[#DE2525]">
+  <button  onClick={() => setOpen(true)} className="font-inter font-semibold text-[12px] leading-[18px] tracking-[0] text-[#DE2525]">
     Delete Account
   </button>
 </section>
@@ -79,8 +104,12 @@ const Page = () => {
             </div>
             </div>
       
+
+      {Open? <DeletePopup setOpen={setOpen}  />:   ''}
     </div>
+
+
   )
 }
 
-export default Page
+export default SettingTwo
