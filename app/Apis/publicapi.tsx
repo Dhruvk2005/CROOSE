@@ -1,12 +1,12 @@
 // utils/axiosRequest.ts
-import axios, { AxiosRequestConfig, Method } from 'axios';
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+import axios, { AxiosRequestConfig } from 'axios';
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export interface AxiosOptions {
-  method: Method;
+interface AxiosOptions {
+  method: 'get' | 'post' | 'put' | 'delete';
   url: string;
-  headers?: Record<string, string>;
+  headers?: any;
   body?: any;
   formData?: FormData;
 }
@@ -19,67 +19,55 @@ export const axiosRequest = async ({
   formData,
 }: AxiosOptions): Promise<any> => {
   try {
-    const config: any = {
+    const config: AxiosRequestConfig = {
       method,
       url,
-      headers,
+      headers: {
+        ...headers,
+        ...(formData ? {} : { 'Content-Type': 'application/json' }),
+      },
       data: formData || body,
     };
-
-
-    // If sending FormData, let Axios set the correct headers
-    if (formData) {
-      config.headers['Content-Type'] = 'multipart/form-data';
-    } else {
-      config.headers['Content-Type'] = 'application/json';
-    }
 
     const response = await axios(config);
     return response.data;
   } catch (error: any) {
-    // Pass error to the calling function to show via Snackbar
-    throw new Error(error?.response?.data?.message || error.message || 'Something went wrong');
+    throw new Error(
+      error?.response?.data?.message || error.message || 'Something went wrong'
+    );
   }
 };
 
-
-
 export const appointmentList = async () => {
   try {
-    let token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: "get",
       url: `${BASE_URL}/api/appointments`,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-
-    })
-    return res
-
+    });
+    return res;
   } catch (err) {
-    console.log(err)
-
+    console.log(err);
   }
-}
+};
 
 export const updateAppointmentStatus = async (id: number, status: string) => {
   try {
     const token = localStorage.getItem("token");
-
     const res = await axiosRequest({
       method: "post",
-      url: `https://joincroose.com/croose/api/appointments_status_update`,
+      url: `${BASE_URL}/api/appointments_status_update`,
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
       },
       body: {
         id,
         status,
       },
     });
-
     return res;
   } catch (err) {
     console.error("Error updating appointment status:", err);
@@ -87,173 +75,141 @@ export const updateAppointmentStatus = async (id: number, status: string) => {
   }
 };
 
-export const addProduct = async (data: any) => {
-  try {
-    const token = localStorage.getItem("token")
-    const res = await axiosRequest({
-      method: "post",
-      url: `${BASE_URL}/api/products`,
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      body: data,
-    });
-    return res
-
-
-  } catch (err: any) {
-    console.log(err)
-    throw new Error(err?.message || "Failed to add product.");
-  }
-}
+export const addProduct = async (formData: FormData) => {
+  const token = localStorage.getItem("token");
+  return await axiosRequest({
+    method: "post",
+    url: `${BASE_URL}/api/products`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    formData,
+  });
+};
 
 export const addServices = async (data: any) => {
   try {
-    let token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: 'post',
       url: `${BASE_URL}/api/services`,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: data,
-
-    })
-    return res
+    });
+    return res;
   } catch (err: any) {
-    console.log(err)
-    throw new Error(err?.message || "Failed to add product.");
-
+    console.log(err);
+    throw new Error(err?.message || "Failed to add service.");
   }
-}
+};
 
 export const getAllProducts = async () => {
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: "get",
       url: `${BASE_URL}/api/products/products_list`,
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    return res
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
   }
-  catch (err) {
-    console.log(err)
-  } return { data: [] };
+  return { data: [] };
+};
 
-}
 export const getAllServices = async () => {
   try {
-    let token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const res = await axios.get(`${BASE_URL}/api/services/get_services`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    return res.data
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
   } catch (err) {
-    console.log(err)
-  } return { data: [] };
+    console.log(err);
+  }
+  return { data: [] };
+};
 
-}
 export const verifyToken = async () => {
   try {
-    let token = localStorage.getItem("token")
-    let res = await axiosRequest({
-
-
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
       method: "get",
       url: `${BASE_URL}/api/manual-token-check`,
       headers: {
-
-        Authorization: `Bearer ${token}`
-
-
+        Authorization: `Bearer ${token}`,
       },
-
-    })
-    return res
-
+    });
+    return res;
   } catch (err) {
     return {
-      err: { status: true }
-    }
-
+      err: { status: true },
+    };
   }
-}
+};
 
 export const loginApi = async (data: any) => {
   try {
-    let res = await axiosRequest({
-
+    const res = await axiosRequest({
       method: "post",
       url: `${BASE_URL}/api/login`,
       headers: {},
       body: data,
-    })
-
-    localStorage.setItem("token", res.token)
-    console.log(res)
-
-    return res
+    });
+    localStorage.setItem("token", res.token);
+    return res;
+  } catch (err) {
+    console.log(err);
   }
-  catch (err) {
-    console.log(err)
-  }
-}
+};
 
 export const logoutapi = async (data: any) => {
   try {
-    let token = localStorage.getItem("token")
-    let res = await axiosRequest({
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
       method: "post",
       url: `${BASE_URL}/api/logout`,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: data
-    })
-    return res
+      body: data,
+    });
+    return res;
   } catch (err) {
-    console.log(err)
-
+    console.log(err);
   }
-}
+};
 
 export const registerApi = async (data: any) => {
   try {
-    console.log(data)
-    let res = await axiosRequest({
-
+    const res = await axiosRequest({
       method: "post",
       url: `${BASE_URL}/api/register`,
       headers: {},
       body: data,
-    })
-    // let json = await res.json()
-    // console.log(json)
-
-    return res
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
   }
-  catch (err) {
-    console.log(err)
-  }
-}
+};
 
 export const countryApi = async () => {
   try {
-    let res = await axiosRequest({
+    const res = await axiosRequest({
       method: "get",
       url: `${BASE_URL}/api/countries`,
       headers: {},
-
-    })
-
-    return res
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
   }
-  catch (err) {
-    console.log(err)
-  }
-}
+};
