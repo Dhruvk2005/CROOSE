@@ -23,12 +23,12 @@ const navItems = [
 export const Nav = ({ show, setShow }: any) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [user, setUser] = useState<any>()
+  const [userdata, setUser] = useState<any>()
 
   const router = useRouter()
 
      useEffect(() => {
-      const storedUser = localStorage.getItem('user')
+      const storedUser = localStorage.getItem('userdata')
       if (storedUser) {
         setUser(JSON.parse(storedUser))
       }
@@ -122,8 +122,8 @@ export const Nav = ({ show, setShow }: any) => {
                   </svg>
                 </div>
                 <div className="flex flex-col w-[136px] h-auto">
-                  <p className="font-medium text-[14px] text-[#F2F4F7] ">{user?user.name:"name"}</p>
-                  <p className="font-normal text-[12px] text-[#F2F4F7] ">{user?user.email:"email"}</p>
+                  <p className="font-medium text-[14px] text-[#F2F4F7] ">{userdata?.data?.name || "naem" }</p>
+                  <p className="font-normal text-[12px] text-[#F2F4F7] ">{userdata?.data?.email || "email" }</p>
                 </div>
                 <div className="flex items-center">
                   <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
