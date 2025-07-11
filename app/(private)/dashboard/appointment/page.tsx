@@ -179,7 +179,7 @@ const AppointmentTable = () => {
           <option value="Skin Consultation">Skin Consultation</option>
         </select>
         <input type="date" className="border p-2 rounded-md text-sm" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-        <input type="date" className="border p-2 rounded-md text-sm" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+        
       </div>
 
       <div className="mt-6 overflow-x-auto bg-white border rounded-lg">

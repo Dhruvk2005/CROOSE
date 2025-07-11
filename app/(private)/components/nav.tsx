@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Squares2X2Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
@@ -10,31 +10,40 @@ import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 const navItems = [
   { label: 'Overview', href: '/dashboard/space', icon: <Squares2X2Icon className="w-5.6 h-5.5 text-gray-100" /> },
-  { label: 'Modules', href: '/dashboard/createnewspace', icon: <MagnifyingGlassIcon className="w-5.6 h-5.5 text-gray-100" /> },
-  { label: 'Your Space', href: '/dashboard/customers', icon: <Icon icon="hugeicons:sparkles" className="w-5 h-5.5 text-gray-100" /> },
+  // { label: 'Modules', href: '/dashboard/createnewspace', icon: <MagnifyingGlassIcon className="w-5.6 h-5.5 text-gray-100" /> },
+  { label: 'Your Space', href: '/dashboard/createnewspace', icon: <Icon icon="hugeicons:sparkles" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Payments', href: '/dashboard/payments', icon: <Icon icon="solar:banknote-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Customers', href: '/dashboard/customers', icon: <Icon icon="lucide:book-user" className="w-5 h-5.5 text-gray-100" /> },
-  { label: 'Analytics', href: '#', icon: <Icon icon="solar:chart-outline" className="w-5 h-5.5 text-gray-100" /> },
+  // { label: 'Analytics', href: '#', icon: <Icon icon="solar:chart-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Appointments', href: '/dashboard/appointment', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
   { label: 'Product/Services', href: '/dashboard/product', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
 ];
 
 
 export const Nav = ({ show, setShow }: any) => {
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-     const [openSnackbar, setOpenSnackbar] = useState(false);
-
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [user, setUser] = useState<any>()
 
   const router = useRouter()
 
-   const handlelogout = async () => {
+     useEffect(() => {
+      const storedUser = localStorage.getItem('user')
+      if (storedUser) {
+        setUser(JSON.parse(storedUser))
+      }
+
+
+    }, [])
+
+  const handlelogout = async () => {
     try {
       await logoutapi({});
       localStorage.removeItem("token");
       setSnackbarMessage('Logout successful');
-      setOpenSnackbar(true); 
+      setOpenSnackbar(true);
 
-      
+
       setTimeout(() => {
         router.push("/login");
       }, 1000);
@@ -42,6 +51,7 @@ export const Nav = ({ show, setShow }: any) => {
       setSnackbarMessage(err.message || "Logout failed");
       setOpenSnackbar(true);
     }
+
   };
 
   return (
@@ -112,8 +122,8 @@ export const Nav = ({ show, setShow }: any) => {
                   </svg>
                 </div>
                 <div className="flex flex-col w-[136px] h-auto">
-                  <p className="font-medium text-[14px] text-[#F2F4F7] ">RoiTech</p>
-                  <p className="font-normal text-[12px] text-[#F2F4F7] ">Isaac Onyemah</p>
+                  <p className="font-medium text-[14px] text-[#F2F4F7] ">{user?user.name:"name"}</p>
+                  <p className="font-normal text-[12px] text-[#F2F4F7] ">{user?user.email:"email"}</p>
                 </div>
                 <div className="flex items-center">
                   <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">

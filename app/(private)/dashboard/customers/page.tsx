@@ -98,13 +98,7 @@ const Customers = () => {
                                     <p className='text-[#475467] font-Inter font-normal text-[14px]' >Dive deep into who your customers are</p>
 
                                 </div>
-                                <div>
-                                    <button className=' w-[161px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[10px] ' >
-                                        <Icon icon="uil:calender" width="24" height="24" style={{ color: "#344054" }} />
-                                        <p className='font-semibold text-[16px]  text-[#667085] ' >Select Noofvisitss</p>
-                                    </button>
 
-                                </div>
                             </div>
                             <ul className=' w-[full] flex flex-wrap gap-[16px] ' >
                                 <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
@@ -165,11 +159,18 @@ const Customers = () => {
                         </div>
                         <div className='w-full flexflex-col items-center  ' >
                             <ul className='w-full flex  items-center justify-between ' >
-                                <li className=' w-full  flex items-center ' >
+                                <li className=' w-full gap-[12px] flex items-center ' >
                                     <button className='px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
                                         <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
                                         <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
                                     </button>
+                                   
+                                        <button className=' w-[121px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[9px] ' >
+                                            <Icon icon="uil:calender" width="24" height="24" style={{ color: "#667085" }} />
+                                            <p className='font-semibold text-[16px]  text-[#344054] ' >Select</p>
+                                        </button>
+
+                                
                                 </li>
                                 <li className='flex gap-[12px] ' >
                                     <div className="w-full max-w-[320px] flex items-center gap-2 border-[2px] border-[#EAECF0] bg-white px-3 py-2 rounded-[8px]">
