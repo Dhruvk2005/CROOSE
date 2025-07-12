@@ -19,7 +19,7 @@ const people = [
 
 ]
 
-export default function Selectbox({ formik }: { formik: any }) {
+export default function Selectbox({ formik }:any) {
 
   const [countries, setCountries] = useState<any>([])
 

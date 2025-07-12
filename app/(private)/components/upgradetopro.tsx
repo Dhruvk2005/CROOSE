@@ -25,7 +25,11 @@ const Upgradetopro = (props:any) => {
                         <button onClick={()=>{props.setProopen(false)
                             props.setScanopen(true)
                             
+<<<<<<< HEAD
+                        }} className=' justify-center font-sans w-[360px]  rounded-[8px]  bg-[#685BC7] flex pt-[8px] pr-[16px] pb-[8px] pl-[16px]  ' >Pay $499 </button>
+=======
                         }} className='flex justify-center font-sans w-[360px]  rounded-[8px] text-white  bg-[#685BC7] flex pt-[8px] pr-[16px] pb-[8px] pl-[16px]  ' >Pay $499 </button>
+>>>>>>> a72fdfc2924519dd520cec9d161816d03caec201
                     </div>
                     <div></div>
 
