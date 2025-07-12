@@ -1,5 +1,6 @@
 import React from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import Link from 'next/link'
 
 const Dashhome = () => {
   return (
@@ -53,7 +54,10 @@ const Dashhome = () => {
               <p className='text-[#475467] font-sans text-[14px]' >All spaces you have created will appear here</p>
             </div>
             <div >
+              <Link 
+              href="/spacebusiness">
               <button className='py-[8px] px-[16px] border-none bg-[#685BC7] rounded-[8px] text-[#FFFFFF] font-sans  ' >Create Space</button>
+              </Link>
             </div>
           </div>
 
