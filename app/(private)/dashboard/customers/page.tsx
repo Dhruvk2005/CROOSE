@@ -6,13 +6,66 @@ import UserTable from '../../components/table';
 import { useState } from 'react';
 import Customerpopup from '../../components/customerpopup';
 
+const users = [
+    {
+        name: "Neil Sims",
+        email: "neil.sims@flowbite.com",
+        img: "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+        Status: "Active",
+        PhoneNumber: "0241763214",
+        TotalSpent: "$18",
+        Noofvisits: "12",
+        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+    },
+    {
+        name: "Bonnie Green",
+        email: "bonnie@flowbite.com",
+        img: "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
+        Status: "Active",
+        PhoneNumber: "0241763214",
+        TotalSpent: "$18",
+        Noofvisits: "3",
+        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+    },
+    {
+        name: "Jese Leos",
+        email: "jese@flowbite.com",
+        img: "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+        Status: "Active",
+        PhoneNumber: "0241763214",
+        TotalSpent: "$18",
+        Noofvisits: "6",
+        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+    },
+    {
+        name: "Thomas Lean",
+        email: "thomes@flowbite.com",
+        img: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+        Status: "Active",
+        PhoneNumber: "0241763214",
+        TotalSpent: "$18",
+        Noofvisits: "19",
+        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+    },
+    {
+        name: "Leslie Livingston",
+        email: "leslie@flowbite.com",
+        img: "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+        Status: "Active",
+        PhoneNumber: "0241763214",
+        TotalSpent: "$18",
+        Noofvisits: "4",
+        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+    }
+];
+
 const Customers = () => {
-     const [open,setOpen] = useState(false)
+    const [open, setOpen] = useState(false)
     return (
         <div>
             <div>
 
-                <div className='w-[100%] h-[64px]  flex justify-between items-center' style={{borderBottom:"1px solid #EAECF0"}}>
+                <div className='w-[100%] h-[64px]  flex justify-between items-center' style={{ borderBottom: "1px solid #EAECF0" }}>
                     <div className='flex items-center  gap-[20px] text-[#121217] '>
                         <span className='font-semi font-bold text-[20px] pl-[20px] ml-[10px]' >Customers</span>
 
@@ -45,13 +98,7 @@ const Customers = () => {
                                     <p className='text-[#475467] font-Inter font-normal text-[14px]' >Dive deep into who your customers are</p>
 
                                 </div>
-                                <div>
-                                    <button className=' w-[161px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[10px] ' >
-                                        <Icon icon="uil:calender" width="24" height="24" style={{ color: "#344054" }} />
-                                        <p className='font-semibold text-[16px]  text-[#667085] ' >Select dates</p>
-                                    </button>
 
-                                </div>
                             </div>
                             <ul className=' w-[full] flex flex-wrap gap-[16px] ' >
                                 <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
@@ -110,13 +157,20 @@ const Customers = () => {
                             <p className='text-[#475467] font-Inter font-normal text-[14px]' >All the details about your customers</p>
 
                         </div>
-                        <div className='w-full flex items-center  ' >
+                        <div className='w-full flexflex-col items-center  ' >
                             <ul className='w-full flex  items-center justify-between ' >
-                                <li className=' w-full  flex items-center ' >
+                                <li className=' w-full gap-[12px] flex items-center ' >
                                     <button className='px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
                                         <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
                                         <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
                                     </button>
+                                   
+                                        <button className=' w-[121px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[9px] ' >
+                                            <Icon icon="uil:calender" width="24" height="24" style={{ color: "#667085" }} />
+                                            <p className='font-semibold text-[16px]  text-[#344054] ' >Select</p>
+                                        </button>
+
+                                
                                 </li>
                                 <li className='flex gap-[12px] ' >
                                     <div className="w-full max-w-[320px] flex items-center gap-2 border-[2px] border-[#EAECF0] bg-white px-3 py-2 rounded-[8px]">
@@ -127,7 +181,7 @@ const Customers = () => {
                                         />
                                         <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
                                     </div>
-                                    <div onClick={()=>setOpen(true)}  className=' w-full  flex items-center ' >
+                                    <div onClick={() => setOpen(true)} className=' w-full  flex items-center ' >
                                         <button className=' items-center px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
                                             <Icon icon="bitcoin-icons:export-outline" width="24" height="24" style={{ color: '#344054' }} />
                                             <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Export</p>
@@ -136,16 +190,52 @@ const Customers = () => {
                                 </li>
 
                             </ul>
-                            <div>
+                            <div className='w-full' >
+                                <div className="w-full overflow-x-auto mt-[20px] rounded-[10px] ">
+                                    <table className="min-w-[700px] w-full border border-[#EAECF0] text-sm text-left text-gray-500 bg-white rounded-[5px]">
+                                        <thead className="text-xs  text-[#475467] bg-[#F9FAFB] font-medium">
+                                            <tr className='w-full' >
+                                                <th className="px-6 py-3">Customer</th>
+                                                <th className="px-6 py-3">Status</th>
+                                                <th className="px-6 py-3">Phone Number</th>
+                                                <th className="px-6 py-3">Total Spent</th>
+                                                <th className="px-6 py-3">No of visits</th>
+                                                <th className="px-6 py-3">Date of Last Transaction</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {users.map((user, index) => (
+                                                <tr key={index} className="border-b border-[#EAECF0]">
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="flex items-center gap-3">
+                                                            <input
+                                                                type="checkbox"
+                                                                className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
+                                                            />
+                                                            <img className="w-10 h-10 rounded-full" src={user.img} alt={user.name} />
+                                                            <div>
+                                                                <div className="text-[#101828] font-medium">{user.name}</div>
+                                                                <div className="text-gray-500 text-sm">{user.email}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4">{user.Status}</td>
+                                                    <td className="px-6 py-4 text-[#101828]">{user.PhoneNumber}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">{user.TotalSpent}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">{user.Noofvisits}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">{user.Status}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">
+                                                        <Icon icon="bi:three-dots-vertical" width="16" height="16" />
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
 
                             </div>
                         </div>
-                    </div>
-                    
-
-                    <div>
-                        
-
                     </div>
 
                 </div>
@@ -153,7 +243,7 @@ const Customers = () => {
 
 
             </div>
-            {open? <Customerpopup setOpen={setOpen} />:""}
+            {open ? <Customerpopup setOpen={setOpen} /> : ""}
         </div>
     )
 }

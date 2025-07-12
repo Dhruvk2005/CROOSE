@@ -77,9 +77,15 @@ const Signupform = () => {
             severity: 'success',
           });
 
+          console.log(res)
+          
+
           if (res.token) {
             localStorage.setItem('token', res.token);
           }
+          // if(res.data){
+          //   localStorage.setItem("user",JSON.stringify(res.data))
+          // }
 
           
           router.push('/dashboard/space');

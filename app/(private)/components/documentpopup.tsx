@@ -66,7 +66,7 @@ const Documentpopup = (props:any) => {
 
           </div>
         </div>
-        <div className='flex justify-center items-center w-[458px] border-t-[1px] p-[20px] gap-[12px] ' >
+        <div className='flex justify-center items-center w-[458px] border-t-[1px] border-[#EAECF0] p-[20px] gap-[12px] ' >
           <button className='py-[8px] w-[203px] text-[#DC2626] font-sans font-semibold px-[16px] rounded-[8px] bg-[#FEF2F2] text-[]' >Remove All</button>
           <button className='py-[8px] w-[203px] rounded-[8px] font-sans font-semibold px-[16px] bg-[#685BC7] text-[#FFFFFF] ' >Add more</button>
         </div>
