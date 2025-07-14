@@ -1,5 +1,5 @@
 'use client';
-
+import { formatDbDate } from '@/app/(private)/utils/date';
 import React, { useEffect, useState } from 'react';
 import { appointmentList, updateAppointmentStatus } from '@/app/Apis/publicapi';
 
@@ -50,10 +50,10 @@ const AppointmentTable = () => {
       const updatedAppointments: any = appointments.map((appt: any) =>
         appt.id === id
           ? {
-              ...appt,
-              status: newStatus,
-              statusColor: statusColorMap[newStatus.toLowerCase()] || 'bg-gray-300',
-            }
+            ...appt,
+            status: newStatus,
+            statusColor: statusColorMap[newStatus.toLowerCase()] || 'bg-gray-300',
+          }
           : appt
       );
       setAppointments(updatedAppointments);
@@ -138,8 +138,19 @@ const AppointmentTable = () => {
                 value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
               <input type="text" required placeholder="Phone Number" className="w-full border p-2 rounded-md"
                 value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
-              <input type="datetime-local" required className="w-full border p-2 rounded-md"
-                value={formData.appointmentTime} onChange={(e) => setFormData({ ...formData, appointmentTime: e.target.value })} />
+             {/* DateTime input */}
+<input
+  type="datetime-local"
+  required
+  className="w-full border p-2 rounded-md"
+  value={formData.appointmentTime}
+  onChange={(e) =>{
+  console.log('Selected raw value →', e.target.value)
+   setFormData({ ...formData, appointmentTime: e.target.value })}}
+/>
+
+
+
               <select className="w-full border p-2 rounded-md"
                 value={formData.service} onChange={(e) => setFormData({ ...formData, service: e.target.value })}>
                 <option>Dental Cleaning</option>
@@ -179,7 +190,7 @@ const AppointmentTable = () => {
           <option value="Skin Consultation">Skin Consultation</option>
         </select>
         <input type="date" className="border p-2 rounded-md text-sm" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-        
+
       </div>
 
       <div className="mt-6 overflow-x-auto bg-white border rounded-lg">
@@ -198,7 +209,7 @@ const AppointmentTable = () => {
               <tr key={appt.id} className="hover:bg-gray-50 border-b">
                 <td className="px-4 py-3">{appt.customer_name}</td>
                 <td className="px-4 py-3">{appt.service_name || '-'}</td>
-                <td className="px-4 py-3">{appt.date}</td>
+                <td className="px-4 py-3">{formatDbDate(appt.date)}</td>
                 <td className="px-4 py-3">{appt.customer_number}</td>
                 <td className="px-4 py-3">
                   <select
@@ -218,8 +229,10 @@ const AppointmentTable = () => {
                 <td colSpan={5} className="text-center py-6 text-gray-400">No appointments found</td>
               </tr>
             )}
+
           </tbody>
         </table>
+
       </div>
     </div>
   );
