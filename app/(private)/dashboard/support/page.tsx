@@ -61,24 +61,20 @@ const Support = () => {
     let data = [
         {
             title: "What is CROOSE?",
-            description: "sdfwqdvadcsscdasdcascascds"
+            description: "Croose is a platform that helps you automate your small business using WhatsApp. You can manage bookings, payments, customer chats, and even run your inventory — all in one place. It’s like having your own 24/7 assistant on WhatsApp, giving your customers a smooth and modern experience. "
         },
         {
             title: "How do I set up the automated response?",
-            description: "sdfwqdvadcsscdasdcascascds"
+            description: "Once you complete your onboarding on Croose, your WhatsApp assistant is ready to go. You can customize automated responses by adding details about your business in your Space IQ and uploading any documents or information you want your assistant to use when talking to your customers. "
         },
         {
             title: "How do I cancel subscription?",
-            description: "sdfwqdvadcsscdasdcascascds"
+            description: "You can request cancellation anytime by contacting support through the Croose support bot or reaching us directly via WhatsApp. We’ll process your cancellation before your next billing cycle. Please note that cancellation stops your WhatsApp assistant from operating immediately after the current billing period ends. "
         },
         {
             title: "What payment methods do you accept?",
-            description: "sdfwqdvadcsscdasdcascascds"
+            description: "We accept payments via Stripe for international customers and mobile money for customers in Ghana. If you pay by mobile money, we’ll show you how many days remain in your subscription and remind you 5 days before renewal so you can top up on time. "
         },
-         {
-            title: "How do I set up the automated response?",
-            description: "sdfwqdvadcsscdasdcascascds"
-        }
 
     ]
 

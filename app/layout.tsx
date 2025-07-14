@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+// ✅ Import ModalProvider and ModalRoot
+import { ModalProvider } from "./context/modelcontext";
+import ModalRoot from "./(public)/component/Modalroot";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,13 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* ✅ Next.js will inject title/description from metadata automatically */}
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-        
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ModalProvider>
+          {children}
+          <ModalRoot />
+        </ModalProvider>
       </body>
     </html>
   );

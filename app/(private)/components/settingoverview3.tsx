@@ -1,7 +1,7 @@
 'use client';
 import React from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
-import SettingTwo from '../settingoverview2/page';
+import SettingTwo from './settingoverview2';
 
 
 

@@ -1,48 +1,43 @@
 "use client";
-
-import React, { useEffect } from 'react';
+import { useModal } from '@/app/context/modelcontext';
+import React, { useEffect, useState } from 'react';
 import { Squares2X2Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import { logoutapi } from '@/app/Apis/publicapi';
 import { useRouter } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
-import { useState } from 'react';
+
 const navItems = [
   { label: 'Overview', href: '/dashboard/maindashboard', icon: <Squares2X2Icon className="w-5.6 h-5.5 text-gray-100" /> },
-  // { label: 'Modules', href: '/dashboard/createnewspace', icon: <MagnifyingGlassIcon className="w-5.6 h-5.5 text-gray-100" /> },
   { label: 'Your Space', href: '/dashboard/createnewspace', icon: <Icon icon="hugeicons:sparkles" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Payments', href: '/dashboard/payments', icon: <Icon icon="solar:banknote-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Customers', href: '/dashboard/customers', icon: <Icon icon="lucide:book-user" className="w-5 h-5.5 text-gray-100" /> },
-  // { label: 'Analytics', href: '#', icon: <Icon icon="solar:chart-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Appointments', href: '/dashboard/appointment', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
   { label: 'Product/Services', href: '/dashboard/product', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
 ];
 
-
 export const Nav = ({ show, setShow }: any) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [userdata, setUser] = useState<any>()
+  const [userdata, setUser] = useState<any>();
+  
+  const { openSpecificSetting } = useModal(); // ✅ updated to use openSpecificSetting
+  const router = useRouter();
 
-  const router = useRouter()
+  useEffect(() => {
+    const storedUser = localStorage.getItem('userdata');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
-     useEffect(() => {
-      const storedUser = localStorage.getItem('userdata')
-      if (storedUser) {
-        setUser(JSON.parse(storedUser))
-      }
-
-
-    }, [])
-
-  const handlelogout = async () => {
+  const handleLogout = async () => {
     try {
       await logoutapi({});
       localStorage.removeItem("token");
       setSnackbarMessage('Logout successful');
       setOpenSnackbar(true);
-
 
       setTimeout(() => {
         router.push("/login");
@@ -51,7 +46,6 @@ export const Nav = ({ show, setShow }: any) => {
       setSnackbarMessage(err.message || "Logout failed");
       setOpenSnackbar(true);
     }
-
   };
 
   return (
@@ -78,7 +72,8 @@ export const Nav = ({ show, setShow }: any) => {
           <section style={{ position: "fixed", bottom: "0" }}>
             <div className="flex justify-center items-center flex-col w-full gap-[4px] -ml-[12px]">
               <ul className="flex flex-col gap-[4px] w-[80%] h-auto">
-                <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
+                {/* ✅ updated Settings onClick */}
+                <li onClick={() => openSpecificSetting('setting1')} className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB] transition-all cursor-pointer">
                   <div>
                     <Icon icon="mingcute:settings-4-line" width="24" height="24" color="white" />
                   </div>
@@ -86,8 +81,9 @@ export const Nav = ({ show, setShow }: any) => {
                     <span className="text-[14px] font-sans text-[#F2F4F7] font-normal">Settings</span>
                   </div>
                 </li>
+
                 <Link href='/dashboard/support'>
-                  <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
+                  <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB] transition-all">
                     <div>
                       <Icon icon="tabler:headphones" width="24" height="24" color='white' />
                     </div>
@@ -97,8 +93,7 @@ export const Nav = ({ show, setShow }: any) => {
                   </li>
                 </Link>
 
-
-                <li onClick={handlelogout} className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
+                <li onClick={handleLogout} className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB] transition-all cursor-pointer">
                   <div>
                     <Icon icon="material-symbols:logout" width="24" height="24" color="white" />
                   </div>
@@ -106,7 +101,6 @@ export const Nav = ({ show, setShow }: any) => {
                     <span className="text-[14px] font-sans text-[#F2F4F7] font-normal">Logout</span>
                   </div>
                 </li>
-
               </ul>
             </div>
 
@@ -116,14 +110,12 @@ export const Nav = ({ show, setShow }: any) => {
                 <div>
                   <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="40" height="40" rx="20" fill="#EAECF0" />
-                    <g clipPath="url(#clip0)">
-                      <circle cx="20" cy="16" r="8" fill="#ccc" />
-                    </g>
+                    <circle cx="20" cy="16" r="8" fill="#ccc" />
                   </svg>
                 </div>
                 <div className="flex flex-col w-[136px] h-auto">
-                  <p className="font-medium text-[14px] text-[#F2F4F7] ">{userdata?.data?.name || "naem" }</p>
-                  <p className="font-normal text-[12px] text-[#F2F4F7] ">{userdata?.data?.email || "email" }</p>
+                  <p className="font-medium text-[14px] text-[#F2F4F7]">{userdata?.data?.name || "name"}</p>
+                  <p className="font-normal text-[12px] text-[#F2F4F7]">{userdata?.data?.email || "email"}</p>
                 </div>
                 <div className="flex items-center">
                   <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
