@@ -13,6 +13,7 @@ const ProductServiceTabs = () => {
   const [data, setData] = useState<any>(initialData);
   const [showModal, setShowModal] = useState(false);
   const [formState, setFormState] = useState({
+    space_id : '',
     name: '',
     category: '',
     price: '',
@@ -54,39 +55,44 @@ const ProductServiceTabs = () => {
 
       if (activeTab === 'products') {
         const formData = new FormData();
+        formData.append('space_id' , formState.space_id);
         formData.append('name', formState.name);
         formData.append('description', formState.description);
         formData.append('price', formState.price);
         formData.append('category', formState.category);
         formData.append('type', formState.type || 'physical');
-        formData.append('unit', formState.unit);
+        // formData.append('unit', formState.unit);
         formData.append('stock', formState.stock);
         if (formState.image instanceof File) {
           formData.append('image', formState.image);
         }
+// ↳ right above addProduct/addServices
+console.log('payload space_id →', formState.space_id);
 
         const added = await addProduct(formData);
         normalized = {
           ...added,
+          space_id : formState.space_id,
           name: formState.name,
           description: formState.description,
           price: formState.price,
           category: formState.category,
           type: formState.type || 'physical',
-          unit: formState.unit,
+          // unit: formState.unit,
           stock: formState.stock,
-          createdAt: added.created_at || new Date().toISOString(),
+          // createdAt: added.created_at || new Date().toISOString(),
           image: added.image_url || null,
         };
       } else {
         const serviceData = {
+           space_id : formState.space_id,
           name: formState.name,
           description: formState.description,
           duration_minutes: parseInt(formState.duration),
           price: parseFloat(formState.price),
           category: formState.category,
           type: formState.type || 'custom',
-          unit: formState.unit,
+          // unit: formState.unit,
           buffer_minutes: parseInt(formState.buffer_minutes),
           available_days: formState.available_days
             .split(',')
@@ -99,7 +105,8 @@ const ProductServiceTabs = () => {
         const added = await addServices(serviceData);
         normalized = {
           ...added,
-          createdAt: added.created_at || new Date().toISOString(),
+          ...(formState.space_id && { space_id: formState.space_id }),
+          //createdAt: added.created_at || new Date().toISOString(),
         };
       }
 
@@ -117,6 +124,7 @@ const ProductServiceTabs = () => {
       }
 
       setFormState({
+        space_id: '',
         name: '',
         category: '',
         price: '',
@@ -157,18 +165,19 @@ const ProductServiceTabs = () => {
     const items = activeTab === 'products' ? data.products : data.services;
     return items.map((item: any, idx: number) => (
       <tr key={item.id || item.name + idx} className="hover:bg-gray-50 border-b border-[#EAECF0]">
+        <td className="px-4 py-3">{item.space_id}</td>
         <td className="px-4 py-3">{item.name}</td>
         <td className="px-4 py-3">{item.category}</td>
         <td className="px-4 py-3">{item.price}</td>
-        <td className="px-4 py-3">{item.type}</td>
-        <td className="px-4 py-3">{item.unit || '-'}</td>
-        <td className="px-4 py-3">{item.stock || '-'}</td>
+        {/* <td className="px-4 py-3">{item.type}</td> */}
+        {/* <td className="px-4 py-3">{item.unit || '-'}</td> */}
+        {/* <td className="px-4 py-3">{item.stock || '-'}</td> */}
         {activeTab === 'services' && (
           <>
             <td className="px-4 py-3">{item.duration_minutes ? `${item.duration_minutes} mins` : '-'}</td>
-            <td className="px-4 py-3">{item.buffer_minutes || '-'}</td>
+            {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */}
             <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
-            <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td>
+            {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */}
           </>
         )}
         <td className="px-4 py-3">
@@ -176,7 +185,7 @@ const ProductServiceTabs = () => {
             <img src={item.image} alt="" className="w-10 h-10 object-cover" />
           ) : '-'}
         </td>
-        <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td>
+        {/* <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td> */}
       </tr>
     ));
   };
@@ -197,22 +206,23 @@ const ProductServiceTabs = () => {
       <table className="w-full text-sm text-left">
         <thead className="bg-gray-100">
           <tr>
+            <th className="px-4 py-2">Space Id</th>
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">Category</th>
             <th className="px-4 py-2">Price</th>
-            <th className="px-4 py-2">Type</th>
-            <th className="px-4 py-2">Unit</th>
-            <th className="px-4 py-2">Stock</th>
+            {/* <th className="px-4 py-2">Type</th> */}
+            {/* <th className="px-4 py-2">Unit</th> */}
+            {/* <th className="px-4 py-2">Stock</th> */}
             {activeTab === 'services' && (
               <>
                 <th className="px-4 py-2">Duration</th>
-                <th className="px-4 py-2">Buffer</th>
+                {/* <th className="px-4 py-2">Buffer</th> */}
                 <th className="px-4 py-2">Available Days</th>
-                <th className="px-4 py-2">AI Tags</th>
+                {/* <th className="px-4 py-2">AI Tags</th> */}
               </>
             )}
             <th className="px-4 py-2">Image</th>
-            <th className="px-4 py-2">Created</th>
+            {/* <th className="px-4 py-2">Created</th> */}
           </tr>
         </thead>
         <tbody>{renderTableRows()}</tbody>
@@ -223,6 +233,10 @@ const ProductServiceTabs = () => {
           <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
             <h3 className="text-lg font-semibold mb-4">Add {activeTab === 'products' ? 'Product' : 'Service'}</h3>
             <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
+               <label className="col-span-2">
+                <span>Space ID</span>
+                <input value={formState.space_id} onChange={(e) => setFormState(f => ({ ...f, space_id: e.target.value }))} type="number" required className="border p-2 rounded w-full mt-1" />
+              </label>
               <label className="col-span-2">
                 <span>Name</span>
                 <input value={formState.name} onChange={(e) => setFormState(f => ({ ...f, name: e.target.value }))} type="text" required className="border p-2 rounded w-full mt-1" />
@@ -240,7 +254,7 @@ const ProductServiceTabs = () => {
                 <span>Price</span>
                 <input value={formState.price} onChange={(e) => setFormState(f => ({ ...f, price: e.target.value }))} type="text" required className="border p-2 rounded w-full mt-1" />
               </label>
-              <label>
+              {/* <label>
                 <span>Type</span>
                 <select value={formState.type} onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded w-full mt-1" required>
                   <option value="">Select Type</option>
@@ -248,18 +262,18 @@ const ProductServiceTabs = () => {
                     ? ['in_store', 'at_home', 'virtual'].map(type => <option key={type} value={type}>{type}</option>)
                     : productTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
-              </label>
+              </label> */}
 
               {activeTab === 'products' && (
                 <>
-                  <label>
+                  {/* <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
-                  <label>
+                  </label> */}
+                  {/* <label>
                     <span>Stock</span>
                     <input value={formState.stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
+                  </label> */}
                   <label className="col-span-2">
                     <span>Image</span>
                     <input
@@ -289,22 +303,22 @@ const ProductServiceTabs = () => {
                     <span>Duration (minutes)</span>
                     <input value={formState.duration} onChange={(e) => setFormState(f => ({ ...f, duration: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label>
-                  <label>
+                  {/* <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
-                  <label>
+                  </label> */}
+                  {/* <label>
                     <span>Buffer Minutes</span>
                     <input value={formState.buffer_minutes} onChange={(e) => setFormState(f => ({ ...f, buffer_minutes: e.target.value }))} type="number" className="border p-2 rounded w-full mt-1" />
-                  </label>
+                  </label> */}
                   <label className="col-span-2">
                     <span>Available Days (e.g., monday,wednesday)</span>
                     <input value={formState.available_days} onChange={(e) => setFormState(f => ({ ...f, available_days: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label>
-                  <label className="col-span-2">
+                  {/* <label className="col-span-2">
                     <span>AI Tags (comma separated)</span>
                     <input value={formState.ai_tags} onChange={(e) => setFormState(f => ({ ...f, ai_tags: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
+                  </label> */}
                 </>
               )}
 
