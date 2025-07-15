@@ -54,6 +54,19 @@ export const appointmentList = async () => {
   }
 };
 
+export const BussinessCategories = async () => {
+  try {
+    
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/business_categories`,
+      
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
 export const updateAppointmentStatus = async (id: number, status: string) => {
   try {
     const token = localStorage.getItem("token");
@@ -74,6 +87,31 @@ export const updateAppointmentStatus = async (id: number, status: string) => {
     throw err;
   }
 };
+//https://joincroose.com/croose/api/space
+export const GetSpaceId = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Token not found in localStorage");
+    }
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/space`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Fetched spaces from API →", res); // Log just the data
+    return res; // ✅ Only return the data part
+  } catch (err) {
+    console.error("Error fetching space data:", err);
+    throw err;
+  }
+};
+
 
 export const addProduct = async (formData: FormData) => {
   const token = localStorage.getItem("token");
