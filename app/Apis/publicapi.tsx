@@ -1,4 +1,5 @@
 // utils/axiosRequest.ts
+
 import axios, { AxiosRequestConfig } from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -37,6 +38,59 @@ export const axiosRequest = async ({
     );
   }
 };
+
+
+
+export const createSpace = async (formData: FormData) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.post(
+      "https://joincroose.com/croose/api/create_space",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // Do NOT set Content-Type for FormData, Axios handles it.
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+
+
+
+export const getSpaceList = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    console.log("Token:", token);
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `https://joincroose.com/croose/api/space`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Space List Response:", res);
+    return res;
+
+  } catch (err: any) {
+    if (err.response) {
+      console.error("Error Response Data:", err.response.data);
+      console.error("Error Response Status:", err.response.status);
+    } else {
+      console.error("Error:", err.message);
+    }
+  }
+};
+
+
 
 export const appointmentList = async () => {
   try {
