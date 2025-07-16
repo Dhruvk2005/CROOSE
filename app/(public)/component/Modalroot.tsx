@@ -16,7 +16,7 @@ const ModalRoot = () => {
       {activeSetting === 'setting1' && <Setting1 closeModal={closeSettings} />}
       {activeSetting === 'setting2' && <SettingTwo closeSettingTwo={closeSettings} />}
       {activeSetting === 'deletePopup' && <DeletePopup closeDeletePopup={closeSettings} />}
-      {activeSetting === 'setting4' && <Setting4 closeSetting4={closeSettings} />}
+      {activeSetting === 'setting4' && <Setting4 closeModal={closeSettings} />}
     </>
   );
 };

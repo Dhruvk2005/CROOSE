@@ -26,7 +26,7 @@ const SettingTwo = ({ closeSettingTwo }: any) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-100 p-4 sm:p-6" style={{ backgroundColor: 'grey' }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 p-4 sm:p-6">
       <div className="relative w-full max-w-[717px] bg-white rounded-[16px] border border-[#E2E4E84D] shadow-lg">
         {/* Header */}
         <section className="w-full flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
