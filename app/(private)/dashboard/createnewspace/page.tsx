@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Spacenav from '../../components/spacenav';
 import { getSpaceList } from '@/app/Apis/publicapi';
+import Link from 'next/link';
 
 interface Space {
   id: number;
@@ -53,92 +54,96 @@ const Newspace = () => {
             </div>
           </div>
 
-          <div  className='w-full flex flex-col gap-[30px]'>
+          <div className='w-full flex flex-col gap-[30px]'>
             <ul className='flex flex-wrap gap-[30px]'>
               {loading ? (
                 <p>Loading...</p>
               ) : spaceData.length === 0 ? (
                 <p>No spaces found</p>
               ) : (
+
                 spaceData.map((space) => (
-                  <li
-                    key={space.id}
-                    className='w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0]'
-                  >
-                    <div>
-                      <div className='flex flex-col justify-end p-[20px] w-[289px] rounded-[16px] h-[127px] bg-[#685BC70D]'>
-                        <ul className='flex -space-x-4 rtl:space-x-reverse'>
-                          <li>
-                            <img
-                              src={space.image_url || "/profile-picture-1.png"}
-                              alt={space.name}
-                              className='w-10 h-10  rounded-full'
-                            />
-                          </li>
-                          <li>
-                            <img
-                              src="/profile-picture-2.png"
-                              alt="profile2"
-                              className='w-10 h-10  rounded-full'
-                            />
-                          </li>
-                          <li>
-                            <img
-                              src="/profile-picture-3.png"
-                              alt="profile3"
-                              className='w-10 h-10 rounded-full'
-                            />
-                          </li>
-                          <li>
-                            <img
-                              src="/profile-picture-4.png"
-                              alt="profile4"
-                              className='w-10 h-11  rounded-full'
-                            />
-                          </li>
-                        </ul>
-                      </div>
-                      <section>
-                        <div className='w-[289px] h-auto p-[16px] flex flex-col gap-[16px]'>
-                          <ul className='flex justify-between items-center'>
-                            <li className='list-none text-[#1D2939] font-normal text-[14px]'>
-                              {space.name}
-                            </li>
-                            <li className='flex justify-center items-center list-none w-[50px] h-auto rounded-[12px] border-[1px] border-[#FDA29B] text-[#D92D20] font-400 text-[12px] pt-[1px] pr-[4px] pb-[1px] pl-[4px]'>
-                              Live
-                            </li>
-                          </ul>
-
-                          <ul className='flex justify-center items-center p-[8px] bg-[#0097A714] w-[124px] h-auto gap-[3px] rounded-[30px]'>
-                            <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
-                              Business
-                            </li>
-                            <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
-                              Category
-                            </li>
-                          </ul>
-
-                          <div className='flex gap-[12px]'>
-                            <ul>
+                  <Link
+                    href={`/dashboard/space?name=${encodeURIComponent(space.name)}`}                  >
+                    <li
+                      key={space.id}
+                      className='w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0]'
+                    >
+                      <div>
+                        <div className='flex flex-col justify-end p-[20px] w-[289px] rounded-[16px] h-[127px] bg-[#685BC70D]'>
+                          <ul className='flex -space-x-4 rtl:space-x-reverse'>
+                            <li>
                               <img
-                                src="/mainprofile.png"
-                                alt='profile'
-                                className='w-[48px] h-[48px] rounded-full'
+                                src={space.image_url || "/profile-picture-1.png"}
+                                alt={space.name}
+                                className='w-10 h-10  rounded-full'
                               />
-                            </ul>
-                            <ul className='flex flex-col gap-[8px]'>
-                              <li className='text-[#1D2939] font-bold text-[12px] font-Inter'>
-                                {space.client_name || "Unknown"}
-                              </li>
-                              <li className='font-normal text-[12px] text-[#101828]'>
-                                Last update: {space.updated_at ? new Date(space.updated_at).toLocaleDateString() : "N/A"}
-                              </li>
-                            </ul>
-                          </div>
+                            </li>
+                            <li>
+                              <img
+                                src="/profile-picture-2.png"
+                                alt="profile2"
+                                className='w-10 h-10  rounded-full'
+                              />
+                            </li>
+                            <li>
+                              <img
+                                src="/profile-picture-3.png"
+                                alt="profile3"
+                                className='w-10 h-10 rounded-full'
+                              />
+                            </li>
+                            <li>
+                              <img
+                                src="/profile-picture-4.png"
+                                alt="profile4"
+                                className='w-10 h-11  rounded-full'
+                              />
+                            </li>
+                          </ul>
                         </div>
-                      </section>
-                    </div>
-                  </li>
+                        <section>
+                          <div className='w-[289px] h-auto p-[16px] flex flex-col gap-[16px]'>
+                            <ul className='flex justify-between items-center'>
+                              <li className='list-none text-[#1D2939] font-normal text-[14px]'>
+                                {space.name}
+                              </li>
+                              <li className='flex justify-center items-center list-none w-[50px] h-auto rounded-[12px] border-[1px] border-[#FDA29B] text-[#D92D20] font-400 text-[12px] pt-[1px] pr-[4px] pb-[1px] pl-[4px]'>
+                                Live
+                              </li>
+                            </ul>
+
+                            <ul className='flex justify-center items-center p-[8px] bg-[#0097A714] w-[124px] h-auto gap-[3px] rounded-[30px]'>
+                              <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
+                                Business
+                              </li>
+                              <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
+                                Category
+                              </li>
+                            </ul>
+
+                            <div className='flex gap-[12px]'>
+                              <ul>
+                                <img
+                                  src="/mainprofile.png"
+                                  alt='profile'
+                                  className='w-[48px] h-[48px] rounded-full'
+                                />
+                              </ul>
+                              <ul className='flex flex-col gap-[8px]'>
+                                <li className='text-[#1D2939] font-bold text-[12px] font-Inter'>
+                                  {space.client_name || "Unknown"}
+                                </li>
+                                <li className='font-normal text-[12px] text-[#101828]'>
+                                  Last update: {space.updated_at ? new Date(space.updated_at).toLocaleDateString() : "N/A"}
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+                    </li>
+                  </Link>
                 ))
               )}
             </ul>
