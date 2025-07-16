@@ -4,10 +4,10 @@ import React from 'react'
 import { Icon } from '@iconify/react'
 import Selectbox from '@/app/(public)/component/selectbox'
 import { useFormik } from 'formik'
-import { useModal } from '@/app/context/modelcontext' // ✅ import modal context
+import { useModal } from '@/app/context/modelcontext' 
 
 const Setting1 = ({ closeModal }: any) => {
-  const { openSpecificSetting } = useModal(); // ✅ destructure function to open specific setting modals
+  const { openSpecificSetting } = useModal(); 
 
   const formik = useFormik({
     initialValues: {

@@ -6,6 +6,7 @@ import Spaceiqcolor from './spaceiqcolor'
 import Upgradetopro from './upgradetopro'
 import Scanqrpage from './scanqr'
 import Spacenav from './spacenav'
+import { useSearchParams } from 'next/navigation'
 
 const Myspace = () => {
 
@@ -14,7 +15,8 @@ const Myspace = () => {
   const [spaceipcoloropen, setSpaceiqcoloropen] = useState(false)
   const [proopen, setProopen] = useState(false)
   const [scanopen, setScanopen] = useState(false)
-
+  const searchParams = useSearchParams();
+  const spaceName = searchParams.get('name') || 'Space Name';
   return (
     <div>
       <Spacenav />
@@ -33,7 +35,7 @@ const Myspace = () => {
             ></img>
           </div>
           <div className="w-[50%] sm:w-[70%] text-[13px] sm:text-[1.125rem] text-[#101828] ml-[18px] font-sans font-semibold text-lg leading-7 tracking-normal align-middle h-[28px]">
-            Space Name
+           {spaceName}
           </div>
           <div className="w-[180px] sm:w-[211px] right-[0px] flex flex-row  gap-[8px] h-[36px]">
             <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px] flex flex-row pt-2 pr-4 pb-2 bg-[#EAECF0] pl-4 gap-[10px] rounded-[8px] border-[0]">

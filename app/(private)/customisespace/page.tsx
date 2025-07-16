@@ -1,12 +1,15 @@
 'use client'
 import { createSpace } from '@/app/Apis/publicapi';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Customisespace = () => {
     const [spaceName, setSpaceName] = useState("");
     const [loading, setLoading] = useState(false)
     const [number, setNumber] = useState("");
     const [image, setImage] = useState<File | null>(null);
+    const router = useRouter()
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,6 +26,8 @@ const Customisespace = () => {
         try {
             const res = await createSpace(formData);
             console.log("Space created:", res);
+            router.push("/dashboard/createnewspace")
+
         } catch (err) {
             console.log("Space not created:", err);
         } finally {
