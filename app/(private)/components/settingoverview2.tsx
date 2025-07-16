@@ -3,36 +3,30 @@
 import React, { useState, useEffect } from 'react'
 import { Icon } from '@iconify/react'
 import DeletePopup from './settingoverview3'
-import { useModal } from '@/app/context/modelcontext' // ✅ import useModal for navigation
+import { useModal } from '@/app/context/modelcontext'
 
 const SettingTwo = ({ closeSettingTwo }: any) => {
   const [openDeletePopup, setOpenDeletePopup] = useState(false)
-  const { openSpecificSetting } = useModal(); // ✅ use global modal context
+  const { openSpecificSetting } = useModal();
 
   useEffect(() => {
-    if (openDeletePopup) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
+    document.body.style.overflow = openDeletePopup ? 'hidden' : 'auto';
   }, [openDeletePopup])
 
   const handleBillingClick = () => {
-    openSpecificSetting('setting4'); // ✅ open billing modal globally
+    openSpecificSetting('setting4');
   }
 
   const handleProfileClick = () => {
-    openSpecificSetting('setting1'); // ✅ navigate back to Profile modal
+    openSpecificSetting('setting1');
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 p-4 sm:p-6">
-      <div className="relative w-full max-w-[717px] bg-white rounded-[16px] border border-[#E2E4E84D] shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-4 sm:p-6">
+      <div className="relative w-full max-w-[717px] h-[671px] bg-white rounded-[16px] border border-[#E2E4E84D] shadow-lg">
         {/* Header */}
         <section className="w-full flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
-          <span className="font-inter font-semibold text-[18px] sm:text-[20px] text-[#1D2939]">
-            Settings
-          </span>
+          <span className="font-inter font-semibold text-[18px] sm:text-[20px] text-[#1D2939]">Settings</span>
           <span
             onClick={closeSettingTwo}
             className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA] cursor-pointer"
@@ -41,7 +35,7 @@ const SettingTwo = ({ closeSettingTwo }: any) => {
           </span>
         </section>
 
-        {/* Tabs */}
+        {/* Content */}
         <section className="w-full px-4 py-6 sm:px-[64px] sm:py-[32px] flex flex-col gap-8">
           <div className="flex flex-col gap-6">
             <div className="flex flex-wrap gap-2">

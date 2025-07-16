@@ -4,12 +4,14 @@ import React from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useModal } from '@/app/context/modelcontext';
 
-const Setting4 = ({ closeModal, backToSetting1, closeSetting4 }: any) => {
+const Setting4 = ({ closeModal }: any) => {
+  const { openSpecificSetting } = useModal();
+
   // Tab data
   const tabs = [
-    { name: "Profile", active: false },
-    { name: "Security", active: false },
-    { name: "Billing", active: true },
+    { name: "Profile", active: false, onClick: () => openSpecificSetting('setting1') },
+    { name: "Security", active: false, onClick: () => openSpecificSetting('setting2') },
+    { name: "Billing", active: true, onClick: () => {} },
   ];
 
   // Billing history data
@@ -22,24 +24,19 @@ const Setting4 = ({ closeModal, backToSetting1, closeSetting4 }: any) => {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-30">
+    <div className="fixed inset-0 z-50 flex justify-center items-center bg-[rgba(0,0,0,0.5)] bg-opacity-30">
       <div className="relative w-full max-w-[717px] h-[671px] bg-white rounded-[16px] border border-[#E2E4E84D]">
         
         {/* Header */}
-        <section className="w-full flex justify-between items-center border-b border-[#E5E5E5] px-4 py-2">
-          <span className="font-inter font-semibold text-[18px] sm:text-[20px] text-[#111015]">
-            Settings
-          </span>
-          <span
-            onClick={() => {
-              console.log("close clicked");
-              closeModal();
-            }}
-            className="w-9 h-9 rounded-full border flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA] cursor-pointer"
-          >
-            <Icon icon="iconamoon:close-bold" width="24" height="24" style={{ color: "#000" }} />
-          </span>
-        </section>
+        <section className="w-full flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px]  py-3 sm:px-[20px] sm:py-[12px]">
+                 <span className="font-inter font-semibold text-[18px] sm:text-[20px] text-[#1D2939]">Settings</span>
+                 <span
+                   onClick={closeModal}
+                   className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA] cursor-pointer"
+                 >
+                   <Icon icon="iconamoon:close-bold" width="24" height="24" color="#000" />
+                 </span>
+               </section>
 
         {/* Content */}
         <section className="w-full px-4 py-6 sm:px-[64px] bg-white h-[611px] sm:py-[32px] flex flex-col gap-8">
@@ -51,8 +48,9 @@ const Setting4 = ({ closeModal, backToSetting1, closeSetting4 }: any) => {
                 {tabs.map((tab, index) => (
                   <button
                     key={index}
+                    onClick={tab.onClick}
                     className={`rounded-sm text-sm px-3 py-2 ${
-                      tab.active ? "bg-[#F9F5FF] w-[131px]" : ""
+                      tab.active ? "bg-[#F9F5FF] w-[68px]" : ""
                     }`}
                   >
                     <span
