@@ -5,40 +5,40 @@ import Link from 'next/link';
 
 const slideData = [
   {
-    image: "/bag.png",
+    image: "/dashboard/bag.png",
     name: "Create a space",
     description: "Create a space that fits your business perfectly. Hair Salon or Groomer? We’ve got you, E-Commerce startup? Yes! Let’s go!",
     bg: "#FAEEDC",
     link:"/dashboard/home"
   },
   {
-    image: "/brain.png",
+    image: "/dashboard/brain.png",
     name: "Improve your space IQ",
     description: "Upload price lists, service menus, or FAQs so that your AI can answer questions correctly. The more information you add here, the smarter your assistant becomes!",
     bg: "#FCE1D9",
     link:""
   },
-  {
-    image: "/machine.png",
-    name: "Enable payments",
-    description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
-    bg: "#E7ECEE",
-    link:""
-  },
-  {
-    image: "/post.png",
-    name: "Verify your email",
-    description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
-    bg: "#E2EBF3",
-    link:""
-  },
-  {
-    image: "/bank.png",
-    name: "Add bank details",
-    description: "Add your company bank details to the platform. This way your business can get paid refunds or other payments due to you by the platform or your customers.",
-    bg: "#F0EBE5",
-    link:""
-  },
+  // {
+  //   image: "/machine.png",
+  //   name: "Enable payments",
+  //   description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
+  //   bg: "#E7ECEE",
+  //   link:""
+  // },
+  // {
+  //   image: "/post.png",
+  //   name: "Verify your email",
+  //   description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
+  //   bg: "#E2EBF3",
+  //   link:""
+  // },
+  // {
+  //   image: "/bank.png",
+  //   name: "Add bank details",
+  //   description: "Add your company bank details to the platform. This way your business can get paid refunds or other payments due to you by the platform or your customers.",
+  //   bg: "#F0EBE5",
+  //   link:""
+  // },
 ];
 
 const MainDashboard = () => {
@@ -103,7 +103,7 @@ const MainDashboard = () => {
         </div>
 
         
-        <div className='w-full px-[24px] py-[30px] overflow-x-auto'>
+        {/* <div className='w-full px-[24px] py-[30px] overflow-x-auto'>
           <ul className='flex flex-nowrap gap-[16px]'>
             {slideData.map((values:any, index) => (
               <li key={index} className='min-w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'>
@@ -132,7 +132,48 @@ const MainDashboard = () => {
               </li>
             ))}
           </ul>
+        </div> */}
+        <div className='w-full px-[24px] py-[30px]'>
+  <ul className='w-full flex flex-wrap gap-[16px] '>
+    {slideData.map((values: any, index) => (
+      <li
+        key={index}
+        className='w-full sm:w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'
+      >
+        <div>
+          <div
+            className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center '
+            style={{ backgroundColor: values.bg }}
+          >
+            {values.image ? (
+              <img
+                className='w-[100px] h-[100px] object-contain '
+                src={values.image}
+                alt={values.name}
+              />
+            ) : (
+              <div className='w-[40px] h-[40px] bg-gray-300 rounded'></div>
+            )}
+          </div>
+          <div className='p-[20px] flex flex-col gap-[5px]'>
+            <p className='text-[#1D2939] font-semibold font-Archivo'>
+              {values.name}
+            </p>
+            <p className='text-[#667085] text-[14px]'>{values.description}</p>
+          </div>
         </div>
+        <div className='p-[20px]'>
+          <Link href={values.link}>
+            <button className='py-[8px] px-[16px] bg-[#F2F4F7] rounded-[8px]'>
+              Proceed
+            </button>
+          </Link>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
       </div>
     </div>
   );
