@@ -3,64 +3,104 @@ import React from 'react'
 import Customerspace from '../customerspace/page'
 import { Icon } from "@iconify/react";
 import UserTable from '../../components/table';
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import Customerpopup from '../../components/customerpopup';
-
-const users = [
-    {
-        name: "Neil Sims",
-        email: "neil.sims@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "12",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    },
-    {
-        name: "Bonnie Green",
-        email: "bonnie@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "3",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    },
-    {
-        name: "Jese Leos",
-        email: "jese@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "6",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    },
-    {
-        name: "Thomas Lean",
-        email: "thomes@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "19",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    },
-    {
-        name: "Leslie Livingston",
-        email: "leslie@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "4",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    }
-];
+import { getCustomer } from '@/app/Apis/publicapi';
+// const users = [
+//     {
+//         name: "Neil Sims",
+//         email: "neil.sims@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "12",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     },
+//     {
+//         name: "Bonnie Green",
+//         email: "bonnie@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "3",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     },
+//     {
+//         name: "Jese Leos",
+//         email: "jese@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "6",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     },
+//     {
+//         name: "Thomas Lean",
+//         email: "thomes@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "19",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     },
+//     {
+//         name: "Leslie Livingston",
+//         email: "leslie@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "4",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     }
+// ];
 
 const Customers = () => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+    const [users, setUsers] = useState<any[]>([]);
+
+  
+  useEffect(() => {
+  const fetchCustomers = async () => {
+    try {
+      const res = await getCustomer();
+      const data = await res.json(); // assuming API returns { data: [...] }
+
+      const customerArray = data?.data || data;
+      console.log("Fetched customer list:", customerArray);
+
+      if (!Array.isArray(customerArray)) {
+        console.warn("Expected array response but got:", customerArray);
+        return;
+      }
+
+      const simplified = customerArray.map((item) => ({
+        id: item.id,
+        name: item.name,
+        email: item.email,
+        status: item.Status,
+        phoneNumber: item.PhoneNumber,
+        totalSpent: item.TotalSpent,
+        noOfVisits: item.Noofvisits,
+        dateOfLastTransaction: item.DateofLastTransaction,
+        img: item.img
+      }));
+
+      setUsers(simplified);
+    } catch (err) {
+      console.error("Failed to load customers", err);
+    }
+  };
+
+  fetchCustomers();
+}, []);
+
+
+
     return (
         <div>
             <div>
@@ -205,32 +245,31 @@ const Customers = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {users.map((user, index) => (
-                                                <tr key={index} className="border-b border-[#EAECF0]">
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="flex items-center gap-3">
-                                                            <input
-                                                                type="checkbox"
-                                                                className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-                                                            />
-                                                            <img className="w-10 h-10 rounded-full" src={user.img} alt={user.name} />
-                                                            <div>
-                                                                <div className="text-[#101828] font-medium">{user.name}</div>
-                                                                <div className="text-gray-500 text-sm">{user.email}</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-6 py-4">{user.Status}</td>
-                                                    <td className="px-6 py-4 text-[#101828]">{user.PhoneNumber}</td>
-                                                    <td className="px-6 py-4 text-[#475467]">{user.TotalSpent}</td>
-                                                    <td className="px-6 py-4 text-[#475467]">{user.Noofvisits}</td>
-                                                    <td className="px-6 py-4 text-[#475467]">{user.Status}</td>
-                                                    <td className="px-6 py-4 text-[#475467]">
-                                                        <Icon icon="bi:three-dots-vertical" width="16" height="16" />
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
+                                          {users.map((user, index) => (
+    <tr key={user.id || index} className="border-b border-[#EAECF0]">
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
+          />
+          <div>
+            <div className="text-[#101828] font-medium">Customer #{user.customer_id}</div>
+            <div className="text-gray-500 text-sm">{user.source}</div>
+          </div>
+        </div>
+      </td>
+      <td className="px-6 py-4">Active</td>
+      <td className="px-6 py-4 text-[#101828]">N/A</td>
+      <td className="px-6 py-4 text-[#475467]">$0</td>
+      <td className="px-6 py-4 text-[#475467]">N/A</td>
+      <td className="px-6 py-4 text-[#475467]">{user.first_interaction_at}</td>
+      <td className="px-6 py-4 text-[#475467]">
+        <Icon icon="bi:three-dots-vertical" width="16" height="16" />
+      </td>
+    </tr>
+  ))}
+</tbody>
                                     </table>
                                 </div>
 

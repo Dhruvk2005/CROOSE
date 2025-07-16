@@ -32,7 +32,7 @@ export const Nav = ({ show, setShow }: any) => {
     }
   }, []);
 
-  const handleLogout = async () => {
+ const handleLogout = async () => {
     try {
       await logoutapi({});
       localStorage.removeItem("token");

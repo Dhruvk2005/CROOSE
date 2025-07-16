@@ -61,6 +61,31 @@ export const createSpace = async (formData: FormData) => {
   }
 };
 
+export const getCustomer = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    console.log("Token:", token);
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `https://joincroose.com/croose/api/getCustomer`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Space List Response:", res);
+    return res;
+
+  } catch (err: any) {
+    if (err.response) {
+      console.error("Error Response Data:", err.response.data);
+      console.error("Error Response Status:", err.response.status);
+    } else {
+      console.error("Error:", err.message);
+    }
+  }
+};
 
 
 

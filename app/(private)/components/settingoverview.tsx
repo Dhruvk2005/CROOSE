@@ -4,10 +4,27 @@ import React from 'react'
 import { Icon } from '@iconify/react'
 import Selectbox from '@/app/(public)/component/selectbox'
 import { useFormik } from 'formik'
-import { useModal } from '@/app/context/modelcontext' 
+import { useModal } from '@/app/context/modelcontext'
+import { logoutapi } from '@/app/Apis/publicapi'
+import { useRouter } from 'next/navigation'
+
 
 const Setting1 = ({ closeModal }: any) => {
-  const { openSpecificSetting } = useModal(); 
+  const { openSpecificSetting } = useModal();
+  const Router  = useRouter()
+
+  const handleLogout = async()=>{
+    try{
+
+      await logoutapi({})
+      localStorage.removeItem("token")
+      Router.push("/login")
+      
+
+    }catch(err){
+console.log(err)
+    }
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -22,21 +39,19 @@ const Setting1 = ({ closeModal }: any) => {
   })
 
   const handleSecurityClick = () => {
-    openSpecificSetting('setting2'); // ✅ open SettingTwo via context globally
+    openSpecificSetting('setting2');
   }
 
   const handleBillingClick = () => {
-    openSpecificSetting('setting4'); // ✅ open Setting4 via context globally
+    openSpecificSetting('setting4');
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-4 sm:p-6">
-      <div className="relative w-full max-w-[717px] bg-white rounded-[16px] border border-[#E2E4E84D] shadow-lg">
+      <div className="relative w-full max-w-[717px] h-[671px] bg-white rounded-[16px] border border-[#E2E4E84D] shadow-lg">
         {/* Header */}
         <section className="w-full flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
-          <span className="font-inter font-semibold text-[18px] sm:text-[20px] text-[#1D2939]">
-            Settings
-          </span>
+          <span className="font-inter font-semibold text-[18px] sm:text-[20px] text-[#1D2939]">Settings</span>
           <span
             onClick={closeModal}
             className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA] cursor-pointer"
@@ -58,7 +73,7 @@ const Setting1 = ({ closeModal }: any) => {
               <button onClick={handleBillingClick} className="rounded-sm text-sm px-3 py-2">
                 <span className="font-semibold text-[14px] text-[#667085]">Billing</span>
               </button>
-              <button className="rounded-sm text-sm px-3 py-2">
+              <button onClick={handleLogout} className="rounded-sm text-sm px-3 py-2">
                 <span className="font-semibold text-[14px] text-[#667085]">Log Out</span>
               </button>
             </div>
