@@ -4,10 +4,14 @@ import React from "react";
 import Myspace from "../../components/myspace";
 import Spaceiq from "../../components/spaceiq";
 import Spaceiqcolor from "../../components/spaceiqcolor";
+import { Suspense } from "react";
 const Page = () => {
   return (
     <>
-      <Myspace/>
+    <Suspense >
+ <Myspace/>
+    </Suspense>
+     
 
        
 

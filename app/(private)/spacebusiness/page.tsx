@@ -63,6 +63,7 @@ const Spacebusiness = () => {
           businessname: item.name,
           description: item.template,
         }));
+        
 
         setBoxes(simplified);
       } catch (err) {
