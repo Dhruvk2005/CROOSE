@@ -12,6 +12,23 @@ import React from 'react'
     number: "+233847048730", sms: "How much exactly does all your",  time:"19:45", batton:"General",  count:"5", img: "/Profile.png",},
     {number:"+233456789012"}
  ]
+ const table=[
+  { img:"/chat.png",heading:" Total Chats" ,num:"896"},
+  { img:"/message.png",heading:" Live  Chats" ,num:"126"},
+  { img:"/timer.png",heading:" Avg. Response Time " ,num:"0.5s"},
+  { img:"/party-popper.png",heading:" Sales" ,num:"12"},
+ ]
+
+ const message=[
+  {text:"Hello there!", time:"14:37"},
+   {text:"Hey there! I was looking on Internet and I saw this template from you guys!", time:"14:37"},
+   {img:"/Icon.png",btext:"The #1 full-service Webflow Agency | BRIX Templates",stext:"Are you looking for a top-notch Webflow Agency?",url:"https://brixtemplates.com/webflow-design-agency" ,time:"14:38",icon:<Icon icon="charm:tick-double" width="16" height="16" />},
+  
+   
+
+ ]
+
+
 
 const Page = () => {
   return (
@@ -73,60 +90,21 @@ const Page = () => {
         
 
         <div className=" flex flex-row flex-wrap gap-[20px] justify-center w-[100%]   rounded-lg">
+         {table.map((tables,index)=>(
+          <div key={index} className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
+            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+              <img src={tables.img} />
+              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                {tables.heading}
+              </div>
+            </div>
+            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+             {tables.num}
+            </div>
+          </div>
+))}
       
-          <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/chat.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                Total Chats
-              </div>
-            </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
-
-      
-          <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/message.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {" "}
-                Live Chats
-              </div>
-            </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
-
-          
-          <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/timer.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {" "}
-                Avg. Response Time
-              </div>
-            </div>
-             <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
-
-          
-          <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/party-popper.png" />
-              <div className="w-[100%] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {" "}
-                Sales
-              </div>
-            </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
+         
         </div>
 
   
@@ -249,29 +227,80 @@ const Page = () => {
 
 </div>
 <section className=" max-w-[752px] h-[547px] opacity-100 gap-6 pt-6 pr-3 pb-3 pl-3 bg-[lightblue]">
-    <section className= " max-w-[728px] h-[367.81px] flex gap-2  pl-3 opacity-100 bg-[pink]">
-     {/* <div className='w-[145px] h-[32px] opacity-100 rotate-0 bg-gray-100 rounded-md flex items-center justify-center'>
+    {/* <section className= " max-w-[728px] h-[367.81px] flex-col flex gap-2  pl-3 opacity-100 bg-[pink]">
+   {message.map((mss,index)=>(
+  <div className="bg-white shadow rounded-lg max-w-[298px] px-2 py-2 w-fit font-sans font-medium text-base leading-6 tracking-normal text-[#262628]">
+  {mss.text}
+  <section>
+    <section className='opacity-100 rounded-[8px] flex flex-row'>
    
-     </div>
-       */}
-       <div className="flex items-end space-x-1">
+      <span className=''>
+  <img src={mss.img} className={index === 2 ? 'w-[80px] h-[80px]' : ''} />
+</span>
+      <section className='max-w-[210px] rotate-0 opacity-100 gap-[0.5px] p-[8px_10px]'>
+        <span className='font-medium text-[14px] leading-[16px] tracking-[-0.5px] font-[SF Pro Text]'>{mss.btext}</span>
+        <span className='font-normal text-[13px] leading-[16px] tracking-[-0.41px] font-[SF Pro Text]'>{mss.stext}</span>
+      </section>
+    </section>
+    <span className='font-normal text-[14px] leading-[16px] tracking-[-0.41px] font-[SF Pro Text] underline decoration-solid decoration-[0px] underline-offset-[0px]'>{mss.url}</span>
+  </section>
+  <span className='w-[100%] h-[16px] font-normal text-[13px] leading-[16px] tracking-[-0.41px] gap-2 text-[#9C9CA3] flex justify-end'>{mss.time} {mss.icon}</span> 
+</div>
+))}
+
+
+   
   
-  <div className="w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[10px] border-r-white rounded-bl-[2px]"></div>
 
  
-  <div className="bg-white text-black px-4 py-2 rounded-xl rounded-bl-none shadow max-w-xs">
-    <p className="text-[16px] leading-tight">
-      Hey there! I was looking on Internet<br />
-      and I saw this template from you guys!
-    </p>
-    <p className="text-xs text-gray-400 text-right pt-1">14:37</p>
-  </div>
-</div>
 
 
 
 
+
+
+    </section> */}
+
+    <section className="max-w-[728px] h-[367.81px] flex-col flex gap-2 pl-3 opacity-100 bg-[pink]">
+  {message.map((mss, index) => (
+    <div key={index} className="bg-white shadow rounded-lg max-w-[298px] px-2 py-2 w-fit font-sans font-medium text-base leading-6 tracking-normal text-[#262628]">
+      {mss.text}
+      <section>
+        <section className="opacity-100 rounded-[8px] flex flex-row">
+          <span className="">
+            <img src={mss.img} className={index === 2 ? 'w-[80px] h-[80px]' : ''} />
+          </span>
+        <span className='bg-[#F2F2F2]'>
+  {(mss.btext || mss.stext) && (
+    <section className="max-w-[210px] h-auto flex flex-col rotate-0 opacity-100 gap-y-[2px] ">
+      {mss.btext && (
+        <span className="font-medium text-[14px] leading-[14px] font-[SF Pro Text]">
+          {mss.btext}
+        </span>
+      )}
+      {mss.stext && (
+        <span className="font-normal text-[13px] leading-[13px] font-[SF Pro Text]">
+          {mss.stext}
+        </span>
+      )}
     </section>
+  )}
+</span>
+
+        </section>
+
+       <span className="font-normal text-[14px] text-[#468CF7] leading-[16px] tracking-[-0.41px] font-[SF Pro Text] underline decoration-solid decoration-[1px] underline-offset-[2px]">
+  {mss.url}
+</span>
+      </section>
+
+      <span className="w-full h-[16px] font-normal text-[13px] leading-[16px] tracking-[-0.41px] gap-2 text-[#9C9CA3] flex justify-end">
+        {mss.time} {mss.icon}
+      </span>
+    </div>
+  ))}
+</section>
+
 </section>
     </section>
   </section>

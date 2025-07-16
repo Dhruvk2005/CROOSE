@@ -19,14 +19,14 @@ const slideData = [
     link:""
   },
   {
-    image: "/machine.png",
+    image: "/payment.png",
     name: "Enable payments",
     description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
     bg: "#E7ECEE",
     link:""
   },
   {
-    image: "/post.png",
+    image: "/email.png",
     name: "Verify your email",
     description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
     bg: "#E2EBF3",
@@ -109,11 +109,11 @@ const MainDashboard = () => {
               <li key={index} className='min-w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'>
                 <div>
                   <div
-                    className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center justify-center'
+                    className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center '
                     style={{ backgroundColor: values.bg }}
                   >
                     {values.image ? (
-                      <img className='w-[40px] h-[40px] object-contain' src={values.image} alt={values.name} />
+                      <img className='w-[80px] h-[80px]  object-contain' src={values.image} alt={values.name} />
                     ) : (
                       <div className='w-[40px] h-[40px] bg-gray-300 rounded'></div>
                     )}
