@@ -58,10 +58,21 @@ import { getCustomer } from '@/app/Apis/publicapi';
 //         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
 //     }
 // ];
+interface SimplifiedCustomer {
+  id: number;
+  name: string;
+  whatsapp_number: string;
+  address: string;
+  pin_code: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 
 const Customers = () => {
     const [open, setOpen] = useState(false);
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<SimplifiedCustomer[]>([]);
+
 
   
 useEffect(() => {
@@ -74,15 +85,15 @@ useEffect(() => {
 
       const customerArray = data?.data || [];
 
-      const simplified = customerArray.map(item => ({
-        id: item.id,
-        name : item.name,
-        whatsapp_number : item.whatsapp_number,
-        address: item.address,
-       pin_code: item.pin_code,
-        createdAt: item.created_at,
-        updatedAt: item.updated_at,
-      }));
+  const simplified: SimplifiedCustomer[] = customerArray.map((item : any) => ({
+  id: item.id,
+  name: item.name,
+  whatsapp_number: item.whatsapp_number,
+  address: item.address,
+  pin_code: item.pin_code,
+  createdAt: item.created_at,
+  updatedAt: item.updated_at,
+}));
 
       setUsers(simplified);
     } catch (err) {
