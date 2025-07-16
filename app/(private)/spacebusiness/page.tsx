@@ -1,50 +1,76 @@
 'use client'
 import Link from 'next/link';
-import React, { useState } from 'react';
-
+import React, { useState  , useEffect} from 'react';
+import { BussinessCategories , GetSpaceId } from '@/app/Apis/publicapi';
 const Spacebusiness = () => {
 
     const [selectedBusiness, setSelectedBusiness] = useState('');
+  const [boxes, setBoxes] = useState<
+    { businessname: string; description: string }[]
+  >([]);// top of the component
 
-    const boxes = [
-        {
-            businessname: "Hair Salon",
-            description: "Accept recurring payments via mobile money. Setup instantly."
-        },
-        {
-            businessname: "Barbershop",
-            description: "Increase sales with a seamless payment experience."
-        },
-        {
-            businessname: "E-Commerce platform",
-            description: "Introduce your customers to modern loans on-demand."
-        },
-        {
-            businessname: "Logistics",
-            description: "Create unique links your customers can pay with via social media or messaging platforms"
-        },
-        {
-            businessname: "Health & Wellness",
-            description: "Create automated deductions from hundreds of thousands of Government workers in Ghana."
-        },
-        {
-            businessname: "Online Educator",
-            description: "Link your platform to mobile money wallets and bank accounts seamlessly via a self service portal."
-        },
-        {
-            businessname: "Event Planning & Decorating",
-            description: "Integrate brand new services for your customers directly onto your mobile app"
-        },
-        {
-            businessname: "Real Estate Agent",
-            description: "Integrate brand new services for your customers directly onto your mobile app"
-        },
-        {
-            businessname: "Therapist & Counsellor",
-            description: "Integrate brand new services for your customers directly onto your mobile app"
-        },
-    ];
+    // const boxes = [
+    //     {
+    //         businessname: "Hair Salon",
+    //         description: "Accept recurring payments via mobile money. Setup instantly."
+    //     },
+    //     {
+    //         businessname: "Barbershop",
+    //         description: "Increase sales with a seamless payment experience."
+    //     },
+    //     {
+    //         businessname: "E-Commerce platform",
+    //         description: "Introduce your customers to modern loans on-demand."
+    //     },
+    //     {
+    //         businessname: "Logistics",
+    //         description: "Create unique links your customers can pay with via social media or messaging platforms"
+    //     },
+    //     {
+    //         businessname: "Health & Wellness",
+    //         description: "Create automated deductions from hundreds of thousands of Government workers in Ghana."
+    //     },
+    //     {
+    //         businessname: "Online Educator",
+    //         description: "Link your platform to mobile money wallets and bank accounts seamlessly via a self service portal."
+    //     },
+    //     {
+    //         businessname: "Event Planning & Decorating",
+    //         description: "Integrate brand new services for your customers directly onto your mobile app"
+    //     },
+    //     {
+    //         businessname: "Real Estate Agent",
+    //         description: "Integrate brand new services for your customers directly onto your mobile app"
+    //     },
+    //     {
+    //         businessname: "Therapist & Counsellor",
+    //         description: "Integrate brand new services for your customers directly onto your mobile app"
+    //     },
+    // ];
 
+
+    useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const res = await BussinessCategories();  // your axios helper
+        const data = res?.data;                   // Axios puts JSON here
+
+        // API might return an array directly or wrap it; handle both:
+        const arr = Array.isArray(data) ? data : data?.data ?? [];
+
+        // take ONLY name & template (rename for UI)
+        const simplified = arr.map((item: any) => ({
+          businessname: item.name,
+          description: item.template,
+        }));
+
+        setBoxes(simplified);
+      } catch (err) {
+        console.error('Failed to load categories', err);
+      }
+    };
+    getCategories();
+  }, []);
     return (
         <div className='w-full min-h-screen px-[20px] py-[14px]'>
             <div className='w-full flex flex-col items-center gap-[32px]'>

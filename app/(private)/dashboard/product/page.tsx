@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { addProduct, addServices, getAllProducts, getAllServices } from '@/app/Apis/publicapi';
+import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId } from '@/app/Apis/publicapi';
 
 const initialData = {
   products: [],
@@ -11,9 +11,13 @@ const initialData = {
 const ProductServiceTabs = () => {
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
-  const [showModal, setShowModal] = useState(false);
+  const [spaces, setSpaces] = useState<{ id: number; name: string }[]>([]);
+
+const [selectedSpaceId, setSelectedSpaceId] = useState('');
+ const [error, setError] = useState<string | null>(null);
+const [showModal, setShowModal] = useState(false);
   const [formState, setFormState] = useState({
-    space_id : '',
+    space_id: '',
     name: '',
     category: '',
     price: '',
@@ -47,6 +51,37 @@ const ProductServiceTabs = () => {
     fetchData();
   }, []);
 
+useEffect(() => {
+  const GetSpaceID = async () => {
+    try {
+      const res = await GetSpaceId(); // this returns { data: [ spaces ] }
+      const spaceArray = res?.spaces;
+      //res?.data?.spaces || res?.data;
+      // Log it to confirm at runtime
+      console.log("Fetched space list:", spaceArray);
+
+      if (!Array.isArray(spaceArray)) {
+        console.warn("Expected array response but got:", spaceArray);
+        return;
+      }
+
+      const simplified = spaceArray.map((item: any) => ({
+        id: item.id,        // Ensure it's a string for use inside dropdown `value`
+        name: item.name
+      }));
+
+      setSpaces(simplified);
+    } catch (err) {
+      console.error("Failed to load space IDs", err);
+    }
+  };
+
+  GetSpaceID();
+}, []);
+
+
+  
+
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -77,7 +112,7 @@ console.log('payload space_id →', formState.space_id);
           description: formState.description,
           price: formState.price,
           category: formState.category,
-          type: formState.type || 'physical',
+          // type: formState.type || 'physical',
           // unit: formState.unit,
           stock: formState.stock,
           // createdAt: added.created_at || new Date().toISOString(),
@@ -91,7 +126,7 @@ console.log('payload space_id →', formState.space_id);
           duration_minutes: parseInt(formState.duration),
           price: parseFloat(formState.price),
           category: formState.category,
-          type: formState.type || 'custom',
+          // type: formState.type,
           // unit: formState.unit,
           buffer_minutes: parseInt(formState.buffer_minutes),
           available_days: formState.available_days
@@ -102,6 +137,7 @@ console.log('payload space_id →', formState.space_id);
             .map(tag => tag.trim()),
         };
 
+console.log(serviceData);
         const added = await addServices(serviceData);
         normalized = {
           ...added,
@@ -189,7 +225,7 @@ console.log('payload space_id →', formState.space_id);
       </tr>
     ));
   };
-
+ 
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
@@ -233,23 +269,50 @@ console.log('payload space_id →', formState.space_id);
           <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
             <h3 className="text-lg font-semibold mb-4">Add {activeTab === 'products' ? 'Product' : 'Service'}</h3>
             <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
-               <label className="col-span-2">
-                <span>Space ID</span>
-                <input value={formState.space_id} onChange={(e) => setFormState(f => ({ ...f, space_id: e.target.value }))} type="number" required className="border p-2 rounded w-full mt-1" />
-              </label>
-              <label className="col-span-2">
-                <span>Name</span>
-                <input value={formState.name} onChange={(e) => setFormState(f => ({ ...f, name: e.target.value }))} type="text" required className="border p-2 rounded w-full mt-1" />
-              </label>
+ <select
+  className="col-span-2 border px-3 py-2"
+  value={formState.space_id}
+  onChange={(e) => {
+    const space_id = e.target.value;
+    const selectedSpace = spaces.find((s) => String(s.id) === space_id);
+    setFormState((f) => ({
+      ...f,
+      space_id,
+      name: selectedSpace?.name || ''
+    }));
+  }}
+>
+  <option value="">Select Space ID</option>
+  {spaces.map((space) => (
+    <option key={space.id} value={String(space.id)}>
+      {space.id}
+    </option>
+  ))}
+</select>
+
+<label className="col-span-2">
+  <span>Name</span>
+  <input
+    value={formState.name}
+    onChange={(e) =>
+      setFormState((f) => ({ ...f, name: e.target.value }))
+    }
+    type="text"
+    required
+    className="border p-2 rounded w-full mt-1"
+  />
+</label>
+
               <label>
                 <span>Category</span>
                 <select value={formState.category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border p-2 rounded w-full mt-1" required>
                   <option value="">Select category</option>
                   {activeTab === 'products'
                     ? productCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)
-                    : ['Wellness', 'Spa', 'Yoga'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                    : ['in_store', 'at_home', 'virtual'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
               </label>
+              {/* in_store,at_home,virtual */}
               <label>
                 <span>Price</span>
                 <input value={formState.price} onChange={(e) => setFormState(f => ({ ...f, price: e.target.value }))} type="text" required className="border p-2 rounded w-full mt-1" />
