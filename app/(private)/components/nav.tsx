@@ -22,7 +22,7 @@ export const Nav = ({ show, setShow }: any) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [userdata, setUser] = useState<any>();
   
-  const { openSpecificSetting } = useModal(); // ✅ updated to use openSpecificSetting
+  const { openSpecificSetting } = useModal(); 
   const router = useRouter();
 
   useEffect(() => {
@@ -32,21 +32,21 @@ export const Nav = ({ show, setShow }: any) => {
     }
   }, []);
 
- const handleLogout = async () => {
-    try {
-      await logoutapi({});
-      localStorage.removeItem("token");
-      setSnackbarMessage('Logout successful');
-      setOpenSnackbar(true);
+//  const handleLogout = async () => {
+//     try {
+//       await logoutapi({});
+//       localStorage.removeItem("token");
+//       setSnackbarMessage('Logout successful');
+//       setOpenSnackbar(true);
 
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
-    } catch (err: any) {
-      setSnackbarMessage(err.message || "Logout failed");
-      setOpenSnackbar(true);
-    }
-  };
+//       setTimeout(() => {
+//         router.push("/login");
+//       }, 1000);
+//     } catch (err: any) {
+//       setSnackbarMessage(err.message || "Logout failed");
+//       setOpenSnackbar(true);
+//     }
+//   };
 
   return (
     <div className={`${show ? "block" : "hidden"} ${show ? "fixed" : "relative"} xl:block z-1 bg-[#13102E] w-[272px] h-[100%] max-w-[272px]`}>
@@ -72,7 +72,7 @@ export const Nav = ({ show, setShow }: any) => {
           <section style={{ position: "fixed", bottom: "0" }}>
             <div className="flex justify-center items-center flex-col w-full gap-[4px] -ml-[12px]">
               <ul className="flex flex-col gap-[4px] w-[80%] h-auto">
-                {/* ✅ updated Settings onClick */}
+                
                 <li onClick={() => openSpecificSetting('setting1')} className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB] transition-all cursor-pointer">
                   <div>
                     <Icon icon="mingcute:settings-4-line" width="24" height="24" color="white" />
@@ -93,14 +93,14 @@ export const Nav = ({ show, setShow }: any) => {
                   </li>
                 </Link>
 
-                <li onClick={handleLogout} className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB] transition-all cursor-pointer">
+                {/* <li onClick={handleLogout} className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB] transition-all cursor-pointer">
                   <div>
                     <Icon icon="material-symbols:logout" width="24" height="24" color="white" />
                   </div>
                   <div>
                     <span className="text-[14px] font-sans text-[#F2F4F7] font-normal">Logout</span>
                   </div>
-                </li>
+                </li> */}
               </ul>
             </div>
 

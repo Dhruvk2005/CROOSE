@@ -183,8 +183,8 @@ export const GetSpaceId = async () => {
       },
     });
 
-    console.log("Fetched spaces from API →", res); // Log just the data
-    return res; // ✅ Only return the data part
+    console.log("Fetched spaces from API →", res); 
+    return res; 
   } catch (err) {
     console.error("Error fetching space data:", err);
     throw err;

@@ -17,7 +17,7 @@ const slideData = [
     name: "Improve your space IQ",
     description: "Upload price lists, service menus, or FAQs so that your AI can answer questions correctly. The more information you add here, the smarter your assistant becomes!",
     bg: "#FCE1D9",
-    link: ""
+    link: "/dashboard/space"
   },
   // {   //   image: "/machine.png",   //   name: "Enable payments",   //   description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",   //   bg: "#E7ECEE",   //   link:""   // }, 
   // {   //   image: "/post.png",   //   name: "Verify your email",   //   description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",   //   bg: "#E2EBF3",   //   link:""   // },   //
