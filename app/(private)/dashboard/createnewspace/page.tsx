@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Spacenav from '../../components/spacenav';
 import { getSpaceList } from '@/app/Apis/publicapi';
 import Link from 'next/link';
+import { Icon } from '@iconify/react/dist/iconify.js';
+
 
 interface Space {
   id: number;
@@ -12,9 +14,11 @@ interface Space {
   updated_at?: string;
 }
 
+
 const Newspace = () => {
   const [spaceData, setSpaceData] = useState<Space[]>([]);
   const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +36,7 @@ const Newspace = () => {
     fetchData();
   }, []);
 
+
   return (
     <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col'>
       <div>
@@ -42,11 +47,11 @@ const Newspace = () => {
         <div className='w-[90%] min-h-[100vh] flex flex-col gap-[40px] mt-[30px]'>
           <div className='flex'>
             <Link
-            href="/spacebusiness"
+              href="/spacebusiness"
             >
-            <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500] items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px]'>
-              Create New Space
-            </button>
+              <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500] items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px]'>
+                Create New Space
+              </button>
             </Link>
           </div>
 
@@ -71,12 +76,12 @@ const Newspace = () => {
                     href={`/dashboard/space?name=${encodeURIComponent(space.name)}`}                  >
                     <li
                       key={space.id}
-                      className='w-[289px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0]'
+                      className='w-[352px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0]'
                     >
                       <div>
-                        <div className='flex flex-col justify-end p-[20px] w-[289px] rounded-[16px] h-[127px] bg-[#685BC70D]'>
+                        <div className='flex w-[352px] flex-col relative justify-end p-[20px] w-[289px] rounded-t-[16px] h-[127px] bg-[#9E77ED]'>
                           <ul className='flex -space-x-4 rtl:space-x-reverse'>
-                            <li>
+                            {/* <li>
                               <img
                                 src={space.image_url || "/profile-picture-1.png"}
                                 alt={space.name}
@@ -96,50 +101,57 @@ const Newspace = () => {
                                 alt="profile3"
                                 className='w-10 h-10 rounded-full'
                               />
-                            </li>
+                            </li> */}
                             <li>
                               <img
                                 src="/profile-picture-4.png"
                                 alt="profile4"
-                                className='w-10 h-11  rounded-full'
+                                className='w-[59px] h-[59px] absolute top-[75%]  rounded-full'
                               />
                             </li>
                           </ul>
                         </div>
                         <section>
-                          <div className='w-[289px] h-auto p-[16px] flex flex-col gap-[16px]'>
-                            <ul className='flex justify-between items-center'>
-                              <li className='list-none text-[#1D2939] font-normal text-[14px]'>
-                                {space.name}
-                              </li>
-                              <li className='flex justify-center items-center list-none w-[50px] h-auto rounded-[12px] border-[1px] border-[#FDA29B] text-[#D92D20] font-400 text-[12px] pt-[1px] pr-[4px] pb-[1px] pl-[4px]'>
-                                Live
-                              </li>
-                            </ul>
+                          <div className='w-[352px] h-auto p-[16px] flex flex-col gap-[16px]'>
+                            <div>
+                              <ul className='flex justify-between mt-[20px] items-center'>
+                                <li className='list-none text-[#1D2939] font-semibold  font-normal text-[14px]'>
+                                  {space.name}
+                                </li>
 
-                            <ul className='flex justify-center items-center p-[8px] bg-[#0097A714] w-[124px] h-auto gap-[3px] rounded-[30px]'>
-                              <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
-                                Business
-                              </li>
-                              <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
-                                Category
-                              </li>
-                            </ul>
+                                <li className='flex justify-center items-center list-none w-[50px] h-auto rounded-[12px] border-[1px] border-[#ABEFC6] bg-[#ECFDF3]   text-[#067647] font-400 text-[12px] pt-[1px] pr-[4px] pb-[1px] pl-[4px]'>
+                                  <Icon icon="icon-park-outline:dot" width="12" style={{ color: "#17B26A" }} />
+                                  Live
+                                </li>
+                              </ul>
 
-                            <div className='flex gap-[12px]'>
                               <ul>
-                                <img
+                                <li className='flex text-[#475467] -mt font-500 text-[12px] font-Inter'>
+                                  Hair salon
+                                </li>
+                                {/* <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
+                                Category
+                              </li> */}
+                              </ul>
+                            </div>
+
+                            <div className='flex justify-between'>
+                              <ul>
+                                {/* <img
                                   src="/mainprofile.png"
                                   alt='profile'
                                   className='w-[48px] h-[48px] rounded-full'
-                                />
+                                /> */}
+                                <li className='text-[12px] font-normal text-[#667085] font-Inter ' >
+                                  <p>created on</p>
+                                  <p className='text-[#101828]  ' >12th Aug, 2024</p>
+                                </li>
                               </ul>
                               <ul className='flex flex-col gap-[8px]'>
-                                <li className='text-[#1D2939] font-bold text-[12px] font-Inter'>
-                                  {space.client_name || "Unknown"}
-                                </li>
-                                <li className='font-normal text-[12px] text-[#101828]'>
-                                  Last update: {space.updated_at ? new Date(space.updated_at).toLocaleDateString() : "N/A"}
+                    
+                                <li className='text-[12px] font-normal text-[#667085] font-Inter'>
+                                 <p>Last update</p> 
+                                 <p className='text-[#101828]  ' >28th Jul, 2025</p>
                                 </li>
                               </ul>
                             </div>

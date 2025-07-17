@@ -39,7 +39,7 @@ const Customisespace = () => {
 
 
     return (
-        <form onSubmit={handleSubmit} >
+       
             <div>
                 {/* Header */}
                 <div className='flex justify-between w-full border-b-[1px] border-[#EAECF0] px-[20px] pt-[10px] pb-[20px]'>
@@ -107,7 +107,7 @@ const Customisespace = () => {
                         Previous
                     </button>
                     <button
-                       
+                       onClick={handleSubmit}
                         type='submit'
                         disabled={loading}
                         className='w-[200px] py-[10px] px-[14px] rounded-[8px] font-semibold font-inter text-[14px] bg-[#685BC7] text-white'
@@ -116,7 +116,7 @@ const Customisespace = () => {
                     </button>
                 </div>
             </div>
-        </form>
+       
     )
 }
 
