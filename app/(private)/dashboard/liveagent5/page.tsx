@@ -32,7 +32,7 @@ const users = [
     batton: "Complete Sale",
     img: "/Profiledummy.png",
   },
-  // {number:"+233456789012",img: "/Profiledummy.png" , batton:'Enquiry', time:"19:45" , sms:"How much exactly does all your ", },
+
   {
     number: "+233456789012",
     img: "/Profiledummy.png",
@@ -48,7 +48,8 @@ const users = [
     count: "5",
     img: "/Profile.png",
   },
-  { number: "+233456789012" },
+  { number: "+233456789012",   img: "/Profiledummy.png" },
+
 ];
 const table = [
   { img: "/chat.png", heading: " Total Chats", num: "896" },
@@ -75,6 +76,15 @@ const message = [
 const arrow = [
   { icon: <Icon icon="mdi:arrow-right-top-bold" width="24" height="24" /> },
 ];
+
+const rsms=[
+    {text:"Hi there! Nice to meet you!.", time:"14:40",icon:<Icon icon="charm:tick-double" width="16" height="16" />},
+     {text:"I'm John and today I'm going to help you to find your perfect Webflow Template 🙋🏻‍♂️", time:"14:40",icon:<Icon icon="charm:tick-double" width="16" height="16" />},
+      {text:"Sure! We have over 150+ templates fully customizable for any project", time:"14:58",icon:<Icon icon="charm:tick-double" width="16" height="16" />},
+        {text:"Our templates are based on blocks, so you can re-use these to create the perfect layout for your website.", time:"14:58",icon:<Icon icon="charm:tick-double" width="16" height="16" />},
+]
+
+
 
 const Page = () => {
   return (
@@ -300,27 +310,27 @@ const Page = () => {
               </section>
             </section>
 
-            <section className="w-full sm:w-[752px] h-auto sm:h-[603px] flex justify-center  flex-col opacity-100 rounded-[16px] rotate-0 border border-[#E4E4E7]">
-              <div className="w-full h-[56px] opacity-100 gap-2 rounded-t-[16px] flex items-center  border-[#E4E4E7] border border-b-[1px] p-[12px]">
-                <img className="w-[32px] h-[32px]" src="/Profiledummy.png" />
-                <div className="w-[628px] h-[14px] flex items-center opacity-100">
-                  <span className="font-sans font-semibold text-sm leading-[100%] text-[#0A0A0A] tracking-normal">
-                    +233847048730
-                  </span>
-                </div>
-                <div className="w-[52px] h-[20px] opacity-100 gap-[2px]">
-                  <div className="w-[52px] h-[20px] opacity-100 gap-[10px] flex items-center justify-center   bg-[#FEF3C7] rounded-[4px]">
-                    <span className="w-[46px] h-[16px] font-sans font-normal text-[#78350F] text-center flex items-center justify-center not-italic text-xs  ">
-                      Enquiry
-                    </span>
-                  </div>
-                </div>
-              </div>
-         <section className="super-thin-scrollbar w-full sm:w-[752px] h-auto sm:h-[603px] flex justify-center flex-col opacity-100 rounded-[16px] rotate-0 border border-[#E4E4E7] overflow-y-auto ">
+    <section className="w-full   sm:w-[752px] h-auto sm:h-[603px] flex justify-center flex-col rounded-[16px] rotate-0 border border-[#E4E4E7] 
+  ">
 
 
-  
-  <section className=" max-w-[752px] h-[547px] super-thin-scrollbar  overflow-y-auto scrollbar-hidden opacity-100 gap-6 pt-6 pr-3 pb-3 pl-3]">
+
+  <div className="w-full h-[56px] opacity-100 gap-2 rounded-t-[16px] flex items-center  border-none border border-b-[1px] p-[12px]">
+    <img className="w-[32px] h-[32px]" src="/Profiledummy.png" />
+    <div className="w-[628px] h-[14px] flex items-center opacity-100">
+      <span className="font-sans font-semibold text-sm leading-[100%] text-[#0A0A0A] tracking-normal">
+        +233847048730
+      </span>
+    </div>
+    <div className="w-[52px] h-[20px] opacity-100 gap-[2px]">
+      <div className="w-[52px] h-[20px] opacity-100 gap-[10px] flex items-center justify-center   bg-[#FEF3C7] rounded-[4px]">
+        <span className="w-[46px] h-[16px] font-sans font-normal text-[#78350F] text-center flex items-center justify-center not-italic text-xs  ">
+          Enquiry
+        </span>
+      </div>
+    </div>
+  </div>
+  <section className=" max-w-[752px] bg-[#F5F5F4] h-[547px] opacity-100 gap-6 pt-6 pr-3 pb-3 pl-3] super-thin-scrollbar overflow-y-auto scrollbar-hidden ">
     <section className="max-w-[728px]   h-[367.81px] flex-col flex gap-2 pl-3 opacity-100]">
       {message.map((mss, index) => (
         <div
@@ -330,8 +340,8 @@ const Page = () => {
           {/* ✅ Arrow icon - outside right, vertically centered */}
           <div className="absolute top-1/2 -translate-y-1/2 -right-12 opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
             <Icon
-                   icon="f7:arrowshape-turn-up-right-fill" width="2em" height="2em"
-              className="w-[35px] h-[35px] rounded-full bg-[#C9C4BB] text-[#E9E9EB] flex items-center justify-center"
+             icon="f7:arrowshape-turn-up-right-fill" width="2em" height="2em"
+              className="w-[35px] h-[35px] rounded-full bg-[#C9C4BB] text-[#E9E9EB] text-[16px] flex items-center justify-center"
             />
           </div>
 
@@ -382,10 +392,49 @@ const Page = () => {
         </div>
       ))}
     </section>
+     <section className="flex flex-col gap-1">
+    <section className="w-full h-auto opacity-100 gap-[4px] pr-[10px]  flex-col flex items-end ">
+        {rsms.map((sms, index)=>(
+        <div key={index} className="relative group max-w-[298px] rounded-[11px] w-fit flex  h-fit font-sans font-medium bg-[#E7FED8] text-base leading-6 tracking-normal text-[#262628]">
+         <div className="w-auto h-auto pt-[6px] flex  flex-col pr-[10px] pb-[8px] pl-[8px] rounded-[11px] opacity-100">
+       <span  className="font-sans font-normal text-base leading-6 text-[#171717] tracking-normal">{sms.text}</span>
+      <div className="relative w-full h-[16px]">
+  {/* Other content inside this container */}
+
+ 
+   <span className="w-auto h-[16px] font-normal text-[13px] leading-[16px] tracking-[-0.41px] gap-2 text-[#9C9CA3] flex justify-end mt-2">
+              {sms.time} {sms.icon}
+            </span>
+</div>
+
+      
+</div>
+
+        </div>
+        ))}
+    </section>
+  
+     </section>
   </section>
+
+
+<section className="w-full  h-[64px] flex items-center opacity-100 pt-[12px] pr-[4px] pb-[12px] pl-[4px] rounded-b-[12px] border-[#E4E4E7] border-t-[1px] rotate-0">
+    <div className="w-[32px] h-[32px] text-[#71717A] opacity-100 flex justify-center items-center rotate-0 gap-2 rounded-md p-2">
+<Icon icon="fa6-solid:plus" width="20" height="20" />
+</div>
+<div className="w-[90%] h-[40px] opacity-100 border-[#E4E4E7] border-[2px] rotate-0 gap-1 pt-1 pr-3 pb-1 pl-3 rounded-3xl  border-solid">
+<span className="w-[90%] h-[20px] rotate-0 opacity-100 flex gap-[12px]">
+
+</span>
+</div>
+<div className="w-[40px] h-[40px] opacity-100 rotate-0 gap-2 rounded-md p-2">
+    <Icon icon="eva:mic-outline" width="24" height="24"  className="border-[#71717A] text-[#71717A]" />
+
+</div>
+
+</section>
 </section>
 
-            </section>
           </section>
         </section>
       </div>

@@ -182,33 +182,7 @@ const Page = () => {
         </div>
 
         <section className="w-full h-auto  items-center  sm:h-[655px] opacity-100 flex flex-col gap-[16px] rotate-0">
-          <div className="w-full max-w-full sm:w-[1088px] h-auto sm:h-[36px] flex flex-col sm:flex-row items-start sm:items-center bg-[#ffffff] gap-2 px-2 sm:px-0">
-  <div className="w-full sm:w-[936px] h-auto sm:h-[36px] gap-4 flex flex-col sm:flex-row items-start sm:items-center">
-    <div className="w-full sm:w-[165px] h-auto sm:h-[36px] pt-1 pr-[10px] pb-1 pl-1 bg-[#EFF6FF] border-[#BFDBFE] flex flex-row rounded-3xl border border-solid">
-      <div className="w-full sm:w-[165px] h-auto sm:h-[36px] gap-2 pr-[6px] pb-1 pl-[6px] flex items-center">
-        <span className="font-inter font-normal text-[16px] leading-4 tracking-[-0.1px]">
-          😎
-        </span>
-        <span className="w-auto sm:w-[80px] h-[20px] font-sans font-semibold text-xs leading-5 tracking-normal text-[#18181B] ml-1">
-          Main Account
-        </span>
-      </div>
-      <div className="w-[35px] h-[20px] flex justify-center items-center mt-1 text-center rounded-3xl bg-[#DC2626]">
-        <span className="w-[19px] h-[16px] font-sans font-semibold text-[10px] leading-4 tracking-normal text-[#ffffff]">
-          99+
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <div className="hidden sm:block w-[14px] mt-1 border-[#E4E4E7] h-0 border border-solid rotate-[-90deg]"></div>
-
-  <div className="w-full sm:w-[136px] h-[36px] gap-[10px] text-center py-1 rounded-lg border border-[#E4E4E7] bg-[#F4F4F5] flex justify-center items-center">
-    <span className="w-full h-[20px] font-sans font-semibold text-sm leading-5 tracking-normal text-center text-[#18181B]">
-      Add new space
-    </span>
-  </div>
-</div>
+  
 
 
           <section className="w-full h-auto sm:h-[603px] flex flex-col  sm:flex-row flex-wrap  justify-center bg-[#ffffff] opacity-100 gap-4">
@@ -309,7 +283,9 @@ const Page = () => {
               </section>
             </section>
 
-    <section className="w-full  sm:w-[752px] h-auto sm:h-[603px] flex justify-center flex-col overflow-y-auto scrollbar-hidden rounded-[16px] rotate-0 border border-[#E4E4E7]">
+    <section className="w-full  sm:w-[752px] h-auto sm:h-[603px] flex justify-center flex-col rounded-[16px] rotate-0 border border-[#E4E4E7] .super-thin-scrollbar::-webkit-scrollbar {
+  width: 2px;}">
+
 
 
   <div className="w-full h-[56px] opacity-100 gap-2 rounded-t-[16px] flex items-center  border-[#E4E4E7] border border-b-[1px] p-[12px]">
@@ -327,7 +303,7 @@ const Page = () => {
       </div>
     </div>
   </div>
-  <section className=" max-w-[752px] h-[547px] opacity-100 gap-6 pt-6 pr-3 pb-3 pl-3]">
+  <section className=" max-w-[752px] h-[547px] super-thin-scrollbar  overflow-y-auto scrollbar-hidden  opacity-100 gap-6 pt-6 pr-3 pb-3 pl-3]">
     <section className="max-w-[728px]   h-[367.81px] flex-col flex gap-2 pl-3 opacity-100]">
       {message.map((mss, index) => (
         <div
@@ -337,9 +313,7 @@ const Page = () => {
           {/* ✅ Arrow icon - outside right, vertically centered */}
           <div className="absolute top-1/2 -translate-y-1/2 -right-12 opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
             <Icon
-              icon="mdi:arrow-right-top-bold"
-              width="24"
-              height="24"
+                   icon="f7:arrowshape-turn-up-right-fill" width="2em" height="2em"
               className="w-[35px] h-[35px] rounded-full bg-[#C9C4BB] text-[#E9E9EB] flex items-center justify-center"
             />
           </div>
@@ -396,7 +370,7 @@ const Page = () => {
         {rsms.map((sms, index)=>(
         <div key={index} className="relative group max-w-[298px] rounded-[11px] w-fit flex  h-fit font-sans font-medium bg-[#E7FED8] text-base leading-6 tracking-normal text-[#262628]">
          <div className="w-auto h-auto pt-[6px] flex  flex-col pr-[10px] pb-[8px] pl-[8px] rounded-[11px] opacity-100">
-       <span  className="font-sans font-normal text-base leading-6 text-[#9C9CA3] tracking-normal">{sms.text}</span>
+       <span  className="font-sans font-normal text-base leading-6 text-[#171717] tracking-normal">{sms.text}</span>
       <div className="relative w-full h-[16px]">
   {/* Other content inside this container */}
 
