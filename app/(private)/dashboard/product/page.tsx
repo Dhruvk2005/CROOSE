@@ -278,7 +278,7 @@ console.log(serviceData);
     setFormState((f) => ({
       ...f,
       space_id,
-      name: selectedSpace?.name || ''
+   
     }));
   }}
 >
