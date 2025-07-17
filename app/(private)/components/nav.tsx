@@ -11,7 +11,7 @@ import Snackbar from '@mui/material/Snackbar';
 const navItems = [
   { label: 'Overview', href: '/dashboard/maindashboard', icon: <Squares2X2Icon className="w-5.6 h-5.5 text-gray-100" /> },
   { label: 'Your Space', href: '/dashboard/createnewspace', icon: <Icon icon="hugeicons:sparkles" className="w-5 h-5.5 text-gray-100" /> },
-  { label: 'Payments', href: '/dashboard/payments', icon: <Icon icon="solar:banknote-outline" className="w-5 h-5.5 text-gray-100" /> },
+  // { label: 'Payments', href: '/dashboard/payments', icon: <Icon icon="solar:banknote-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Customers', href: '/dashboard/customers', icon: <Icon icon="lucide:book-user" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Appointments', href: '/dashboard/appointment', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
   { label: 'Product/Services', href: '/dashboard/product', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },

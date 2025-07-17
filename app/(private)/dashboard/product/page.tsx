@@ -285,7 +285,7 @@ console.log(serviceData);
   <option value="">Select Space ID</option>
   {spaces.map((space) => (
     <option key={space.id} value={String(space.id)}>
-      {space.id}
+      {space.name}
     </option>
   ))}
 </select>
