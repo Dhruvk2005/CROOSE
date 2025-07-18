@@ -27,14 +27,23 @@ const slideData = [
 
 const MainDashboard = () => {
   const [spacesExist, setSpacesExist] = useState(false);
+  const [userdata, setUser] = useState<any>();
+  const [currentTime, setCurrentTime] = useState<string>("");
+  const [greeting, setGreeting] = useState<string>("");
+
 
   useEffect(() => {
     const fetchSpaces = async () => {
       try {
         const res = await getSpaceList();
-        console.log("Fetched spaces in dashboard:", res?.spaces);
-        if (res?.spaces && res.spaces.length > 0) {
+        console.log("Fetched spaces in dashboard:", res);
+
+        const spaces = res?.data || res?.spaces || [];
+
+        if (spaces.length > 0) {
           setSpacesExist(true);
+        } else {
+          setSpacesExist(false);
         }
       } catch (err) {
         console.log(err);
@@ -44,6 +53,66 @@ const MainDashboard = () => {
   }, []);
 
 
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('userdata');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+
+      // Format time
+      const options: Intl.DateTimeFormatOptions = {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      };
+      setCurrentTime(now.toLocaleString('en-US', options));
+
+      const hour = now.getHours();
+      if (hour >= 5 && hour < 12) {
+        setGreeting("Good Morning");
+      } else if (hour >= 12 && hour < 17) {
+        setGreeting("Good Afternoon");
+      } else if (hour >= 17 && hour < 20) {
+        setGreeting("Good Evening");
+      } else {
+        setGreeting("Good Night");
+      }
+
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+
+  const [loading, setLoading] = useState(true);
+
+
+useEffect(() => {
+  const fetchSpaces = async () => {
+    try {
+      const res = await getSpaceList();
+      const spaces = res?.data || res?.spaces || [];
+      setSpacesExist(spaces.length > 0);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchSpaces();
+}, []);
+
   const filteredSlideData = slideData.filter(slide => {
     if (slide.name === "Create a space" && spacesExist) {
       return false;
@@ -52,9 +121,9 @@ const MainDashboard = () => {
   });
 
   return (
-    
+
     <div className='w-full  '>
-      
+
       <div className='w-full py-[18px] px-[24px] h-[64px] flex justify-between items-center border-b-2 border-[#EAECF0]'>
         <div className='text-[#121217] text-[18px] font-semibold font-sans'>Overview</div>
         <div className='border-2 border-[#EAECF0] rounded-[8px] p-[10px]'>
@@ -63,12 +132,13 @@ const MainDashboard = () => {
       </div>
       <div className='w-full h-auto px-[24px] py-[40px] gap-[20px] flex flex-col'>
         <div className='w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-[10px]'>
-          <ul>             <li className='font-sans text-[18px] text-[#1D2939] font-semibold'>Good Afternoon, Isaac</li>
-            <li className='text-[#667085] font-normal'>16 June, 2025 - 21:23 PM</li>
-          </ul>            <ul className='flex gap-[8px] items-center'>
+          <ul>             <li className='font-sans text-[18px] text-[#1D2939] font-semibold'>{greeting}, {userdata?.data?.name}</li>
+            <li className='text-[#667085] font-normal'>{currentTime}</li>
+          </ul>
+          {/* <ul className='flex gap-[8px] items-center'>
             <li className='flex justify-center w-[60px] bg-[#F1F0FA] text-[#685BC7] py-[8px] px-[16px] rounded-[8px]'>CTA</li>
             <li className='flex justify-center w-[60px] bg-[#685BC7] text-[#F1F0FA] py-[8px] px-[16px] rounded-[8px]'>CTA</li>
-          </ul>
+          </ul> */}
         </div>
         <div className='w-full h-auto'>
           <ul className='w-full h-auto flex flex-wrap gap-[16px]'>
@@ -101,46 +171,43 @@ const MainDashboard = () => {
           </div>
         </div>
 
-        <div className='w-full px-[24px] py-[30px]'>
-          <ul className='w-full flex flex-wrap gap-[16px]'>
-            {filteredSlideData.map((values: any, index) => (
-              <li
-                key={index}
-                className='w-full sm:w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'
-              >
-                <div>
-                  <div
-                    className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center'
-                    style={{ backgroundColor: values.bg }}
-                  >
-                    {values.image ? (
-                      <img
-                        className='w-[100px] h-[100px] object-contain'
-                        src={values.image}
-                        alt={values.name}
-                      />
-                    ) : (
-                      <div className='w-[40px] h-[40px] bg-gray-300 rounded'></div>
-                    )}
-                  </div>
-                  <div className='p-[20px] flex flex-col gap-[5px]'>
-                    <p className='text-[#1D2939] font-semibold font-Archivo'>
-                      {values.name}
-                    </p>
-                    <p className='text-[#667085] text-[14px]'>{values.description}</p>
-                  </div>
-                </div>
-                <div className='p-[20px]'>
-                  <Link href={values.link}>
-                    <button className='py-[8px] px-[16px] bg-[#F2F4F7] rounded-[8px]'>
-                      Proceed
-                    </button>
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+       {!loading && (
+  <div className='w-full px-[24px] py-[30px]'>
+    <ul className='w-full flex flex-wrap gap-[16px]'>
+      {filteredSlideData.map((values: any, index) => (
+        <li key={index} className='w-full sm:w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'>
+          {/* your card content here */}
+          <div>
+            <div
+              className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center'
+              style={{ backgroundColor: values.bg }}
+            >
+              {values.image ? (
+                <img
+                  className='w-[100px] h-[100px] object-contain'
+                  src={values.image}
+                  alt={values.name}
+                />
+              ) : (
+                <div className='w-[40px] h-[40px] bg-gray-300 rounded'></div>
+              )}
+            </div>
+            <div className='p-[20px] flex flex-col gap-[5px]'>
+              <p className='text-[#1D2939] font-semibold font-Archivo'>{values.name}</p>
+              <p className='text-[#667085] text-[14px]'>{values.description}</p>
+            </div>
+          </div>
+          <div className='p-[20px]'>
+            <Link href={values.link}>
+              <button className='py-[8px] px-[16px] bg-[#F2F4F7] rounded-[8px]'>Proceed</button>
+            </Link>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
       </div>
     </div>
   );

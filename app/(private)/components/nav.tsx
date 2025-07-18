@@ -117,11 +117,11 @@ export const Nav = ({ show, setShow }: any) => {
                   <p className="font-medium text-[14px] text-[#F2F4F7]">{userdata?.data?.name || "name"}</p>
                   <p className="font-normal text-[12px] text-[#F2F4F7]">{userdata?.data?.email || "email"}</p>
                 </div>
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0.833344 10.5002L5.00001 14.6668L9.16668 10.5002M0.833344 5.50016L5.00001 1.3335L9.16668 5.50016" stroke="#EAECF0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                </div>
+                </div> */}
               </div>
             </div>
           </section>

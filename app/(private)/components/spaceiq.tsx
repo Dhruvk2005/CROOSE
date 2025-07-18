@@ -1,21 +1,43 @@
 'use client'
+import { BussinessCategories } from '@/app/Apis/publicapi'
 import React from 'react'
 import { useState,useEffect } from 'react'
 
-const Spaceiq = (props: any) => {
-  const [spaceDesc, setSpaceDesc] = useState<any>()
+interface Category {
+  id:number,
+  name:string,
+  description:string,
+  template:string,
+  created_at:string,
+  updated_at:string,
+   deleted_at: null;
+  uuid: any;
 
-  useEffect(()=>{
-    try{
-   let storedData = localStorage.getItem('spaceDesc')
-   if(storedData){
-    setSpaceDesc(JSON.parse(storedData))
+}
+
+const Spaceiq = (props:any) => {
+
+  const [spaceData,setSpaceData] = useState<Category[]>([])
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
+useEffect(()=>{
+  const SpaceCategories = async()=>{
+
+
+  try{
+    const res  = await BussinessCategories()
+    setSpaceData(res.data)
+console.log(res.data)
+
+
+  }catch(err){
+    console.log(err)
+
+  }
    }
-    }catch(err){
-      console.log(err)
-    }
+   SpaceCategories()
 
-  },[])
+},[])
+
   return (
     <div>
       <div className="relative z-10">
@@ -42,7 +64,7 @@ const Spaceiq = (props: any) => {
                   </span>
                 </div>
 
-                <div className="sm:w-[80%] h-[396px] flex flex-col items-center px-4 py-6 rounded-lg gap-6">
+                <div className="sm:w-[80%]  flex flex-col items-center px-4 py-6 rounded-lg gap-6"> 
                   
                   <div className="w-[80%] h-[186px]  flex flex-col items-center gap-3">
                     <span className="text-[#18181B] font-sans font-medium text-base leading-6">
@@ -51,7 +73,7 @@ const Spaceiq = (props: any) => {
                     
                    <div className="w-[80%] h-[150px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
   <div className="text-[#71717A] font-sans text-sm leading-5">
-   <p>{spaceDesc?.description}</p>
+   <p>{spaceData[selectedIndex]?.description}</p>
   </div>
   <div className="flex items-center justify-end gap-2 mt-auto">
     <span className="text-[10px] text-[#71717A] font-sans">Write with</span>
@@ -62,11 +84,11 @@ const Spaceiq = (props: any) => {
 
                   </div>
 
-                  <div className="w-[70%]">
+                  {/* <div className="w-[70%]">
                     <img src="/Line 10.png" alt="line" className="w-[90%]" />
-                  </div>
+                  </div> */}
 
-                  <div className="w-[80%] h-[116px]  flex flex-col items-center gap-3">
+                  {/* <div className="w-[80%] h-[116px]  flex flex-col items-center gap-3">
                     <span className="text-[#18181B]  h-[24px] font-sans font-medium text-base leading-6">
                       Documents
                     </span>
@@ -82,7 +104,7 @@ const Spaceiq = (props: any) => {
                         <img src="/Featured icon.png" className="h-10 w-10" />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
              

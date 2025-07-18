@@ -9,7 +9,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 interface Space {
   id: number;
   name: string;
-  image_url?: string;
+  image?: string;
   client_name?: string;
   updated_at?: string;
 }
@@ -25,8 +25,9 @@ const Newspace = () => {
       setLoading(true);
       try {
         let res = await getSpaceList();
-        console.log("Fetched space list:", res);
-        setSpaceData(res?.spaces || []);
+
+        setSpaceData(res?.data || []);
+        console.log("yo", res?.data)
       } catch (err) {
         console.log(err);
       } finally {
@@ -35,7 +36,7 @@ const Newspace = () => {
     };
     fetchData();
   }, []);
-
+  // const IMAGE_BASE_URL = "http://localhost:3000";
 
   return (
     <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col'>
@@ -58,7 +59,7 @@ const Newspace = () => {
           <div className='w-full flex flex-col justify-center -mt-[10px]'>
             <div className='flex justify-between items-center w-full h-auto'>
               <h1 className='text-[#121217] font-[600] text-[24px] font-sans'>
-                Agents you have created
+                Assistants you have created
               </h1>
             </div>
           </div>
@@ -104,10 +105,12 @@ const Newspace = () => {
                             </li> */}
                             <li>
                               <img
-                                src="/profile-picture-4.png"
-                                alt="profile4"
-                                className='w-[59px] h-[59px] absolute top-[75%]  rounded-full'
+                                // src={`${IMAGE_BASE_URL}/${space.image}`}
+                                 src="/profile-picture-4.png"
+                                alt={space.name}
+                                className='w-[59px] h-[59px] absolute top-[75%] rounded-full'
                               />
+
                             </li>
                           </ul>
                         </div>
@@ -148,10 +151,10 @@ const Newspace = () => {
                                 </li>
                               </ul>
                               <ul className='flex flex-col gap-[8px]'>
-                    
+
                                 <li className='text-[12px] font-normal text-[#667085] font-Inter'>
-                                 <p>Last update</p> 
-                                 <p className='text-[#101828]  ' >28th Jul, 2025</p>
+                                  <p>Last update</p>
+                                  <p className='text-[#101828]  ' >28th Jul, 2025</p>
                                 </li>
                               </ul>
                             </div>
