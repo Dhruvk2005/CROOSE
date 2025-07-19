@@ -207,7 +207,7 @@ console.log(serviceData);
         <td className="px-4 py-3">{item.price}</td>
         {/* <td className="px-4 py-3">{item.type}</td> */}
         {/* <td className="px-4 py-3">{item.unit || '-'}</td> */}
-        {/* <td className="px-4 py-3">{item.stock || '-'}</td> */}
+        <td className="px-4 py-3">{item.stock || '-'}</td>
         {activeTab === 'services' && (
           <>
             <td className="px-4 py-3">{item.duration_minutes ? `${item.duration_minutes} mins` : '-'}</td>
@@ -246,9 +246,22 @@ console.log(serviceData);
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">Category</th>
             <th className="px-4 py-2">Price</th>
+          
             {/* <th className="px-4 py-2">Type</th> */}
             {/* <th className="px-4 py-2">Unit</th> */}
-            {/* <th className="px-4 py-2">Stock</th> */}
+            
+
+                     {activeTab === 'products' && (
+              <>
+                 <th className="px-4 py-2">Stock</th> 
+                {/* <th className="px-4 py-2">Buffer</th> */}
+                <th className="px-4 py-2">Image</th>
+                {/* <th className="px-4 py-2">AI Tags</th> */}
+              </>
+            )}
+            
+
+
             {activeTab === 'services' && (
               <>
                 <th className="px-4 py-2">Duration</th>
@@ -257,7 +270,7 @@ console.log(serviceData);
                 {/* <th className="px-4 py-2">AI Tags</th> */}
               </>
             )}
-            <th className="px-4 py-2">Image</th>
+            
             {/* <th className="px-4 py-2">Created</th> */}
           </tr>
         </thead>
@@ -333,10 +346,10 @@ console.log(serviceData);
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label> */}
-                  {/* <label>
+                   <label>
                     <span>Stock</span>
                     <input value={formState.stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
+                  </label> 
                   <label className="col-span-2">
                     <span>Image</span>
                     <input
