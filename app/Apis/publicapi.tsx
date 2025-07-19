@@ -45,7 +45,7 @@ export const createSpace = async (formData: FormData) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.post(
-      "https://joincroose.com/croose/api/create_space",
+     `${BASE_URL}/api/create_space`,
       formData,
       {
         headers: {
@@ -68,7 +68,7 @@ export const getCustomer = async () => {
 
     const res = await axiosRequest({
       method: "get",
-      url: `https://joincroose.com/croose/api/getCustomer`,
+      url: `${BASE_URL}/api/getCustomer`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -96,7 +96,7 @@ export const getSpaceList = async () => {
 
     const res = await axiosRequest({
       method: "get",
-      url: `https://joincroose.com/croose/api/space`,
+      url: `${BASE_URL}/api/get_space_list`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -183,8 +183,8 @@ export const GetSpaceId = async () => {
       },
     });
 
-    console.log("Fetched spaces from API →", res); // Log just the data
-    return res; // ✅ Only return the data part
+    console.log("Fetched spaces from API →", res); 
+    return res; 
   } catch (err) {
     console.error("Error fetching space data:", err);
     throw err;
@@ -227,7 +227,7 @@ export const getAllProducts = async () => {
     const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: "get",
-      url: `${BASE_URL}/api/products/products_list`,
+      url: `${BASE_URL}/api/products`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -242,7 +242,7 @@ export const getAllProducts = async () => {
 export const getAllServices = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.get(`${BASE_URL}/api/services/get_services`, {
+    const res = await axios.get(`${BASE_URL}/api/services`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
