@@ -58,37 +58,42 @@ import { getCustomer } from '@/app/Apis/publicapi';
 //         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
 //     }
 // ];
+interface SimplifiedCustomer {
+  id: number;
+  name: string;
+  whatsapp_number: string;
+  address: string;
+  pin_code: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 
 const Customers = () => {
     const [open, setOpen] = useState(false);
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<SimplifiedCustomer[]>([]);
+
 
   
-  useEffect(() => {
+useEffect(() => {
   const fetchCustomers = async () => {
     try {
-      const res = await getCustomer();
-      const data = await res.json(); // assuming API returns { data: [...] }
+     const data = await getCustomer();
 
-      const customerArray = data?.data || data;
-      console.log("Fetched customer list:", customerArray);
+      console.log("API response:", data);
+      
 
-      if (!Array.isArray(customerArray)) {
-        console.warn("Expected array response but got:", customerArray);
-        return;
-      }
+      const customerArray = data?.data || [];
 
-      const simplified = customerArray.map((item) => ({
-        id: item.id,
-        name: item.name,
-        email: item.email,
-        status: item.Status,
-        phoneNumber: item.PhoneNumber,
-        totalSpent: item.TotalSpent,
-        noOfVisits: item.Noofvisits,
-        dateOfLastTransaction: item.DateofLastTransaction,
-        img: item.img
-      }));
+  const simplified: SimplifiedCustomer[] = customerArray.map((item : any) => ({
+  id: item.id,
+  name: item.name,
+  whatsapp_number: item.whatsapp_number,
+  address: item.address,
+  pin_code: item.pin_code,
+  createdAt: item.created_at,
+  updatedAt: item.updated_at,
+}));
 
       setUsers(simplified);
     } catch (err) {
@@ -98,6 +103,7 @@ const Customers = () => {
 
   fetchCustomers();
 }, []);
+
 
 
 
@@ -238,9 +244,9 @@ const Customers = () => {
                                                 <th className="px-6 py-3">Customer</th>
                                                 <th className="px-6 py-3">Status</th>
                                                 <th className="px-6 py-3">Phone Number</th>
-                                                <th className="px-6 py-3">Total Spent</th>
-                                                <th className="px-6 py-3">No of visits</th>
-                                                <th className="px-6 py-3">Date of Last Transaction</th>
+                                                <th className="px-6 py-3">Address</th>
+                                                <th className="px-6 py-3">Pin Code</th>
+                                                {/* <th className="px-6 py-3">Date of Last Transaction</th> */}
 
                                             </tr>
                                         </thead>
@@ -254,16 +260,15 @@ const Customers = () => {
             className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
           />
           <div>
-            <div className="text-[#101828] font-medium">Customer #{user.customer_id}</div>
-            <div className="text-gray-500 text-sm">{user.source}</div>
+            <div className="text-[#101828] font-medium">{user.name}</div>
+            <div className="text-gray-500 text-sm"></div>
           </div>
         </div>
       </td>
       <td className="px-6 py-4">Active</td>
-      <td className="px-6 py-4 text-[#101828]">N/A</td>
-      <td className="px-6 py-4 text-[#475467]">$0</td>
-      <td className="px-6 py-4 text-[#475467]">N/A</td>
-      <td className="px-6 py-4 text-[#475467]">{user.first_interaction_at}</td>
+      <td className="px-6 py-4 text-[#101828]">{user.whatsapp_number}</td>
+      <td className="px-6 py-4 text-[#475467]">{user.address}</td>
+      <td className="px-6 py-4 text-[#475467]">{user.pin_code}</td>
       <td className="px-6 py-4 text-[#475467]">
         <Icon icon="bi:three-dots-vertical" width="16" height="16" />
       </td>
