@@ -68,7 +68,7 @@ export const getCustomer = async () => {
 
     const res = await axiosRequest({
       method: "get",
-      url: `https://joincroose.com/croose/api/getCustomer`,
+      url: `${BASE_URL}/api/getCustomer`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -9,9 +9,11 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 interface Space {
   id: number;
   name: string;
-  image?: string;
+  image?: "spaces/1752839531.jpeg";
   client_name?: string;
   updated_at?: string;
+  created_at?:string;
+
 }
 
 
@@ -36,7 +38,7 @@ const Newspace = () => {
     };
     fetchData();
   }, []);
-  // const IMAGE_BASE_URL = "http://localhost:3000";
+  const IMAGE_BASE_URL = "http://localhost:5000";
 
   return (
     <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col'>
@@ -106,10 +108,11 @@ const Newspace = () => {
                             <li>
                               <img
                                 // src={`${IMAGE_BASE_URL}/${space.image}`}
-                                 src="/profile-picture-4.png"
+                                src="/profile-picture-4.png"
                                 alt={space.name}
                                 className='w-[59px] h-[59px] absolute top-[75%] rounded-full'
                               />
+
 
                             </li>
                           </ul>
@@ -138,7 +141,7 @@ const Newspace = () => {
                               </ul>
                             </div>
 
-                            <div className='flex justify-between'>
+                            <div className='flex gap-[80px] justify-between'>
                               <ul>
                                 {/* <img
                                   src="/mainprofile.png"
@@ -147,14 +150,14 @@ const Newspace = () => {
                                 /> */}
                                 <li className='text-[12px] font-normal text-[#667085] font-Inter ' >
                                   <p>created on</p>
-                                  <p className='text-[#101828]  ' >12th Aug, 2024</p>
+                                  <p className='text-[#101828]  ' >{space.created_at}</p>
                                 </li>
                               </ul>
                               <ul className='flex flex-col gap-[8px]'>
 
                                 <li className='text-[12px] font-normal text-[#667085] font-Inter'>
                                   <p>Last update</p>
-                                  <p className='text-[#101828]  ' >28th Jul, 2025</p>
+                                  <p className='text-[#101828]  ' >{space.updated_at}</p>
                                 </li>
                               </ul>
                             </div>
