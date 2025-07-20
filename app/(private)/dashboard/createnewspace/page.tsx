@@ -1,5 +1,6 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React from 'react'
+import { Icon } from "@iconify/react";
 import Spacenav from '../../components/spacenav';
 import { getSpaceList } from '@/app/Apis/publicapi';
 import Link from 'next/link';
@@ -41,9 +42,9 @@ const Newspace = () => {
   const IMAGE_BASE_URL = "http://localhost:5000";
 
   return (
-    <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col'>
+    <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col' >
       <div>
-        <Spacenav />
+        <Spacenav/>
       </div>
 
       <section className='flex flex-wrap justify-center'>
@@ -59,11 +60,21 @@ const Newspace = () => {
           </div>
 
           <div className='w-full flex flex-col justify-center -mt-[10px]'>
-            <div className='flex justify-between items-center w-full h-auto'>
+            <div className='flex justify-between items-center w-[100%] h-auto'>
               <h1 className='text-[#121217] font-[600] text-[24px] font-sans'>
                 Assistants you have created
               </h1>
+              <ul className='flex gap-[10px] mr-[70px] items-center'>
+                <li className='flex items-center justify-center gap-[10px] px-[16px] py-[8px] bg-[#F4F4F5] border border-[#E4E4E7] rounded-full font-sans font-[600] text-[14px] text-[#18181B]'>
+                  <span>All</span>
+                  <Icon icon="charm:tick" width="16" height="16" style={{ color: "black" }} />
+                </li>
+                <li className='text-[#71717A] font-sans font-[600] text-[14px] list-none'>
+                  Active
+                </li>
+              </ul>
             </div>
+
           </div>
 
           <div className='w-full flex flex-col gap-[30px]'>
@@ -169,11 +180,16 @@ const Newspace = () => {
                 ))
               )}
             </ul>
+           
+
           </div>
+
+
         </div>
       </section>
+     
     </div>
-  );
-};
+  )
+}
 
-export default Newspace;
+export default Newspace

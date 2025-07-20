@@ -57,10 +57,10 @@ const AppointmentTable = () => {
       const updatedAppointments: any = appointments.map((appt: any) =>
         appt.id === id
           ? {
-            ...appt,
-            status: newStatus,
-            statusColor: statusColorMap[newStatus.toLowerCase()] || 'bg-gray-300',
-          }
+              ...appt,
+              status: newStatus,
+              statusColor: statusColorMap[newStatus.toLowerCase()] || 'bg-gray-300',
+            }
           : appt
       );
       setAppointments(updatedAppointments);
@@ -298,7 +298,7 @@ const AppointmentTable = () => {
               <tr key={appt.id} className="hover:bg-gray-50 border-b">
                 <td className="px-4 py-3">{appt.customer_name}</td>
                 <td className="px-4 py-3">{appt.service_name || '-'}</td>
-                <td className="px-4 py-3">{formatDbDate(appt.date)}</td>
+                <td className="px-4 py-3">{appt.date}</td>
                 <td className="px-4 py-3">{appt.customer_number}</td>
                 <td className="px-4 py-3">
                   <select
@@ -318,10 +318,8 @@ const AppointmentTable = () => {
                 <td colSpan={5} className="text-center py-6 text-gray-400">No appointments found</td>
               </tr>
             )}
-
           </tbody>
         </table>
-
       </div>
     </div>
   );
