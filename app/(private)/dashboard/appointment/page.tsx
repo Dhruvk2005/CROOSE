@@ -1,6 +1,6 @@
 'use client';
 import { formatDbDate } from '@/app/(private)/utils/date';
-import React, { useEffect, useState , useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { appointmentList, updateAppointmentStatus } from '@/app/Apis/publicapi';
 import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download } from "lucide-react";
 import { DateSelectButton } from '../../components/DateSelectButton';
@@ -15,7 +15,7 @@ const AppointmentTable = () => {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [showModal, setShowModal] = useState(false);
-    const [formDate, setDate] = useState<{ appointmentTime: string }>({
+  const [formDate, setDate] = useState<{ appointmentTime: string }>({
     appointmentTime: "",
   });
 
@@ -131,55 +131,59 @@ const AppointmentTable = () => {
           <h2 className="text-xl font-semibold">Appointments</h2>
           <p className="text-sm text-gray-500">Dive deep into who your customers are</p>
         </div>
-  <DateSelectButton
-        appointmentTime={formData.appointmentTime}
-        setDate={setDate}
-      />
+        <div className='border-none' >
+        <DateSelectButton
+
+
+          appointmentTime={formData.appointmentTime}
+          setDate={setDate}
+        />
+        </div>
 
 
       </div>
-      
-        
-                    <div className='w-full h-full flex flex-wrap flex-col gap-[64px]  ' >
-                        <div className='w-full h-auto p-[32px] flex flex-col gap-[24px] '>
-                           
-                            <ul className=' w-[full] flex flex-wrap gap-[16px] ' >
-                                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Appointments</p>
-                                    <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >12</p>
-                                        <img className='w-[71px] ' src={"/100.png"} alt='badge' />
-                                    </div>
-                                </li>
-                                
-                            
-                            
-                                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Total Appointments</p>
-                                    <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >50</p>
-                                         <img className='w-[71px] ' src={"/100.png"} alt='badge' />
-                                    </div>
-                                </li>
-                              
-                                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Canceled Appointments</p>
-                                    <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >$28</p>
-                                       
-                                        <img className='w-[71px] ' src={"/35.png"} alt='badge' />
-                                    </div>
-                                </li>
-                            </ul>
-                        
 
-                    </div>
-         
 
-     {/* <div className="p-6">
+      <div className='w-full h-full flex flex-wrap flex-col gap-[64px]  ' >
+        <div className='w-full h-auto p-[32px] flex flex-col gap-[24px] '>
+
+          <ul className=' w-[full] flex flex-wrap gap-[16px] ' >
+            <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+              <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Appointments</p>
+              <div className='flex items-center gap-[16px] justify-between  '>
+                <p className='font-semibold text-[#101828] text-[30px] ' >12</p>
+                <img className='w-[71px] ' src={"/100.png"} alt='badge' />
+              </div>
+            </li>
+
+
+
+            <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+              <p className='text-[#475467] text-[14px] font-medium font-Inter' >Total Appointments</p>
+              <div className='flex items-center gap-[16px] justify-between  '>
+                <p className='font-semibold text-[#101828] text-[30px] ' >50</p>
+                <img className='w-[71px] ' src={"/100.png"} alt='badge' />
+              </div>
+            </li>
+
+            <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+              <p className='text-[#475467] text-[14px] font-medium font-Inter' >Canceled Appointments</p>
+              <div className='flex items-center gap-[16px] justify-between  '>
+                <p className='font-semibold text-[#101828] text-[30px] ' >$28</p>
+
+                <img className='w-[71px] ' src={"/35.png"} alt='badge' />
+              </div>
+            </li>
+          </ul>
+
+
+        </div>
+
+
+        {/* <div className="p-6">
       <div className="flex justify-between items-center border-b border-[#EAECF0] pb-4">
        <h2 className="text-xl font-semibold text-[#121217]">Appointment</h2> */}
-         {/* <button
+        {/* <button
           onClick={() => setShowModal(true)}
           className="border px-4 py-2 rounded-md text-sm font-medium text-white bg-[#685BC7] hover:bg-[#5a4bb3]"
         >
@@ -196,9 +200,9 @@ const AppointmentTable = () => {
                 value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
               <input type="text" required placeholder="Phone Number" className="w-full border p-2 rounded-md"
                 value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
-             
-             
-             {/* DateTime input */}
+
+
+              {/* DateTime input */}
               <select className="w-full border p-2 rounded-md"
                 value={formData.service} onChange={(e) => setFormData({ ...formData, service: e.target.value })}>
                 <option>Dental Cleaning</option>
@@ -222,52 +226,52 @@ const AppointmentTable = () => {
         </div>
       )}
 
-        
 
-        <div className="flex flex-wrap gap-2 justify-between mb-4 ">
-          <h3 className="text-lg font-semibold mb-4 px-8">Appointments</h3>
-            <ul className='w-full flex  items-center justify-between px-8' >
-                                <li className=' w-full gap-[12px] flex items-center ' >
-                                    <button className='px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
-                                        <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
-                                        <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
-                                    </button>
-                                    <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
-          <option value="">All Status</option>
-          {statusOptions.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
-<select value={serviceFilter} onChange={(e) => setServiceFilter(e.target.value)} className="px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
-          <option value="">All Services</option>
-          <option value="Dental Cleaning">Dental Cleaning</option>
-          <option value="Eye Checkup">Eye Checkup</option>
-          <option value="Skin Consultation">Skin Consultation</option>
-        </select>
-                                
-                                </li>
-                                <li className='flex gap-[12px] ' >
-                                    <div className="w-full max-w-[320px] flex items-center gap-2 border-[2px] border-[#EAECF0] bg-white px-3 py-2 rounded-[8px]">
-                                        <input
-                                            type="text"
-                                            placeholder="Search"
-                                            className="outline-none text-sm text-[#101828] placeholder-[#667085] font-Inter bg-transparent"
-                                            value={search} onChange={(e) => setSearch(e.target.value)}
-                                        />
-                                        <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
-                                    </div>
-                                    <div className=' w-full  flex items-center ' >
-                                        <button className=' items-center px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
-                                            <Icon icon="bitcoin-icons:export-outline" width="24" height="24" style={{ color: '#344054' }} />
-                                            <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Export</p>
-                                        </button>
-                                    </div>
-                                </li>
 
-                            </ul>
-          </div>
-      
-      
+      <div className="flex flex-wrap gap-2 justify-between mb-4 ">
+        <h3 className="text-lg font-semibold mb-4 px-8">Appointments</h3>
+        <ul className='w-full flex  items-center justify-between px-8' >
+          <li className=' w-full gap-[12px] flex items-center ' >
+            <button className='px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
+              <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
+              <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
+            </button>
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
+              <option value="">All Status</option>
+              {statusOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+            <select value={serviceFilter} onChange={(e) => setServiceFilter(e.target.value)} className="px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
+              <option value="">All Services</option>
+              <option value="Dental Cleaning">Dental Cleaning</option>
+              <option value="Eye Checkup">Eye Checkup</option>
+              <option value="Skin Consultation">Skin Consultation</option>
+            </select>
+
+          </li>
+          <li className='flex gap-[12px] ' >
+            <div className="w-full max-w-[320px] flex items-center gap-2 border-[2px] border-[#EAECF0] bg-white px-3 py-2 rounded-[8px]">
+              <input
+                type="text"
+                placeholder="Search"
+                className="outline-none text-sm text-[#101828] placeholder-[#667085] font-Inter bg-transparent"
+                value={search} onChange={(e) => setSearch(e.target.value)}
+              />
+              <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
+            </div>
+            <div className=' w-full  flex items-center ' >
+              <button className=' items-center px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
+                <Icon icon="bitcoin-icons:export-outline" width="24" height="24" style={{ color: '#344054' }} />
+                <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Export</p>
+              </button>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+
+
       {/* <div class
       Name="mt-6 flex flex-wrap gap-4 items-end px-8">
         <input type="text" placeholder="Search..." className="border p-2 rounded-md w-64 text-sm"
@@ -278,7 +282,7 @@ const AppointmentTable = () => {
 
       </div> */}
 
-      <div className="mt-6 overflow-x-auto bg-white border rounded-lg">
+      <div className="mt-6 overflow-x-auto bg-white border-2 border-[#EAECF0] rounded-lg">
         <table className="min-w-full text-sm text-left text-gray-700">
           <thead className="bg-gray-100">
             <tr>

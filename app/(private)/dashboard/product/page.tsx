@@ -278,20 +278,16 @@ const renderTableRows = () => {
       
         {/* <td className="px-4 py-3">{item.type}</td> */}
         {/* <td className="px-4 py-3">{item.unit || '-'}</td> */}
-        {/* <td className="px-4 py-3">{item.stock || '-'}</td> */}
-        {activeTab === 'services' && (
-          <>
-            <td className="px-4 py-3">{item.duration_minutes ? `${item.duration_minutes} mins` : '-'}</td>
-            {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */}
-            <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
-            {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */}
-          </>
-        )}
-        <td className="px-4 py-3">
-          {item.image ? (
-            <img src={item.image} alt="" className="w-10 h-10 object-cover" />
-          ) : '-'}
-        </td>
+       
+        // {activeTab === 'services' && (
+           {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */}
+        {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */}
+        
+        //   <>
+          
+        //      </>
+        // )}
+
         {/* <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td> */}
   //     </tr>
   //   ));
@@ -453,21 +449,17 @@ const renderTableRows = () => {
             <th className="px-4 py-2">Product Name</th>
                <th className="px-4 py-2">Stock</th>
             <th className="px-4 py-2">Price</th>
+    </>
+  )}
+            {/* <th className="px-4 py-2">Photos</th>
+            <th className="px-4 py-2">Space Name</th>
+            <th className="px-4 py-2"> Name</th> */}
+            
+            {/* <th className="px-4 py-2">Stock</th>
+            <th className="px-4 py-2">Price</th> */}
             {/* <th className="px-4 py-2">Type</th> */}
             {/* <th className="px-4 py-2">Unit</th> */}
-            
-
-                     {activeTab === 'products' && (
-              <>
-                 <th className="px-4 py-2">Stock</th> 
-                {/* <th className="px-4 py-2">Buffer</th> */}
-                <th className="px-4 py-2">Image</th>
-                {/* <th className="px-4 py-2">AI Tags</th> */}
-              </>
-            )}
-            
-
-
+            {/* <th className="px-4 py-2">Stock</th> */}
             {activeTab === 'services' && (
               <>
 
@@ -482,7 +474,7 @@ const renderTableRows = () => {
                 {/* <th className="px-4 py-2">AI Tags</th> */}
               </>
             )}
-            <th className="px-4 py-2">Image</th>
+            {/* <th className="px-4 py-2">Image</th> */}
             {/* <th className="px-4 py-2">Created</th> */}
           </tr>
         </thead>
@@ -571,10 +563,10 @@ const renderTableRows = () => {
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label> */}
-                   <label>
+                  {/* <label>
                     <span>Stock</span>
                     <input value={formState.stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> 
+                  </label> */}
                   <label className="col-span-2">
                     <span>Image</span>
                     <input
