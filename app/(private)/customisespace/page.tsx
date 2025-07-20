@@ -1,4 +1,8 @@
+'use client'
 import React from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createSpace } from '@/app/Apis/publicapi';
 
 const Customisespace = () => {
     const [spaceName, setSpaceName] = useState("");

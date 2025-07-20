@@ -3,7 +3,7 @@ import React from 'react'
 import Customerspace from '../customerspace/page'
 import { Icon } from "@iconify/react";
 import UserTable from '../../components/table';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Customerpopup from '../../components/customerpopup';
 import { getCustomer } from '@/app/Apis/publicapi';
 // const users = [

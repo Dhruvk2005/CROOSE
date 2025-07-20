@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react'
 import Link from 'next/link';
 import { getSpaceList } from '@/app/Apis/publicapi';
 import { Nav } from '../../components/nav';
+import {useState, useEffect} from 'react'
 
 const slideData = [
   {

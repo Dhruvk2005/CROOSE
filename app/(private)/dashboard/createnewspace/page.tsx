@@ -1,10 +1,11 @@
 'use client'
 import React from 'react'
-import { Icon } from "@iconify/react";
+
 import Spacenav from '../../components/spacenav';
 import { getSpaceList } from '@/app/Apis/publicapi';
 import Link from 'next/link';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { useState, useEffect } from 'react';
 
 
 interface Space {
@@ -13,7 +14,7 @@ interface Space {
   image?: "spaces/1752839531.jpeg";
   client_name?: string;
   updated_at?: string;
-  created_at?:string;
+  created_at?: string;
 
 }
 
@@ -44,7 +45,7 @@ const Newspace = () => {
   return (
     <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col' >
       <div>
-        <Spacenav/>
+        <Spacenav />
       </div>
 
       <section className='flex flex-wrap justify-center'>
@@ -180,14 +181,14 @@ const Newspace = () => {
                 ))
               )}
             </ul>
-           
+
 
           </div>
 
 
         </div>
       </section>
-     
+
     </div>
   )
 }
