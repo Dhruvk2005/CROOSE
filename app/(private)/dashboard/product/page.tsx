@@ -546,7 +546,7 @@ const renderTableRows = () => {
                 <span>Price</span>
                 <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, price: e.target.value }))} type="text" required className="border border-[#F1F2F3] p-2 py-3 rounded w-full mt-1" />
               </label>
-              <label>
+              {/* <label>
                 <span>Type</span>
                 <select value={formState.type} onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded w-full mt-1" required>
                   <option value="">Select Type</option>
@@ -554,7 +554,7 @@ const renderTableRows = () => {
                     ? ['in_store', 'at_home', 'virtual'].map(type => <option key={type} value={type}>{type}</option>)
                     : productTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
-              </label>
+              </label> */}
 
               {activeTab === 'products' && (
                 <>
@@ -564,7 +564,7 @@ const renderTableRows = () => {
                   </label>
                   <label>
                     <span>Stock</span>
-                    <input value={formState.stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
+                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label>
                   <label className="col-span-2">
                     <span>Image</span>
