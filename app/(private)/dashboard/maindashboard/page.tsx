@@ -2,6 +2,8 @@
 import React from 'react'
 import { Icon } from '@iconify/react'
 import Link from 'next/link';
+import { getSpaceList } from '@/app/Apis/publicapi';
+import { Nav } from '../../components/nav';
 
 const slideData = [
   {
@@ -43,8 +45,9 @@ const slideData = [
 
 const MainDashboard = () => {
   return (
-    <div className='w-full'>
-      {/* Header */}
+    
+    <div className='w-full  '>
+      
       <div className='w-full py-[18px] px-[24px] h-[64px] flex justify-between items-center border-b-2 border-[#EAECF0]'>
         <div className='text-[#121217] text-[18px] font-semibold font-sans'>Overview</div>
         <div className='border-2 border-[#EAECF0] rounded-[8px] p-[10px]'>
