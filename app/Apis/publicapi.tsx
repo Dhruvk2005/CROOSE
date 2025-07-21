@@ -45,7 +45,7 @@ export const createSpace = async (formData: FormData) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.post(
-      "https://joincroose.com/croose/api/create_space",
+      `${BASE_URL}/api/create_space`,
       formData,
       {
         headers: {
@@ -68,7 +68,7 @@ export const getCustomer = async () => {
 
     const res = await axiosRequest({
       method: "get",
-      url: `https://joincroose.com/croose/api/getCustomer`,
+      url: `${BASE_URL}/api/getCustomer`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -96,7 +96,7 @@ export const getSpaceList = async () => {
 
     const res = await axiosRequest({
       method: "get",
-      url: `https://joincroose.com/croose/api/space`,
+   url: ` ${BASE_URL}/api/space`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
