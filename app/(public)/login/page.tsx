@@ -34,7 +34,7 @@ const Login = () => {
 
         return router.push("/login")
       }
-        router.push("/dashboard/maindashboard")
+        router.push("/dashboard/space")
     }
     catch (err) {
       router.push("/login")

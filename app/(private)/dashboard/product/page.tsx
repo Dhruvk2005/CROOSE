@@ -491,7 +491,7 @@ const renderTableRows = () => {
               
                 {/* <th className="px-4 py-2">Buffer</th> */}
                 <th className="px-4 py-2">Available Days</th>
-                {/* <th className="px-4 py-2">AI Tags</th> */}
+                <th className="px-4 py-2">AI Tags</th>
               </>
             )}
             {/* <th className="px-4 py-2">Image</th> */}
@@ -568,7 +568,7 @@ const renderTableRows = () => {
                 <span>Price</span>
                 <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
               </label>
-              {/* <label>
+              <label>
                 <span>Type</span>
                 <select value={formState.type} onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded w-full mt-1" required>
                   <option value="">Select Type</option>
@@ -576,11 +576,11 @@ const renderTableRows = () => {
                     ? ['in_store', 'at_home', 'virtual'].map(type => <option key={type} value={type}>{type}</option>)
                     : productTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
-              </label> */}
+              </label>
 
               {activeTab === 'products' && (
                 <>
-                  {/* <label>
+                  <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label> */}
@@ -637,8 +637,8 @@ const renderTableRows = () => {
                   {/* <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
-                  {/* <label>
+                  </label>
+                  <label>
                     <span>Buffer Minutes</span>
                     <input value={formState.buffer_minutes} onChange={(e) => setFormState(f => ({ ...f, buffer_minutes: e.target.value }))} type="number" className="border p-2 rounded w-full mt-1" />
                   </label> */}
@@ -672,7 +672,7 @@ const renderTableRows = () => {
                   {/* <label className="col-span-2">
                     <span>AI Tags (comma separated)</span>
                     <input value={formState.ai_tags} onChange={(e) => setFormState(f => ({ ...f, ai_tags: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
+                  </label>
                 </>
               )}
 

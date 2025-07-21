@@ -1,6 +1,6 @@
 'use client';
-import { formatDbDate } from '@/app/(private)/utils/date';
-import React, { useEffect, useState , useRef } from 'react';
+// import { formatDbDate } from '@/app/(private)/utils/date';
+import React, { useEffect, useState, useRef } from 'react';
 import { appointmentList, updateAppointmentStatus } from '@/app/Apis/publicapi';
 import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download } from "lucide-react";
 import { DateSelectButton } from '../../components/DateSelectButton';
@@ -17,7 +17,7 @@ const AppointmentTable = () => {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [showModal, setShowModal] = useState(false);
-    const [formDate, setDate] = useState<{ appointmentTime: string }>({
+  const [formDate, setDate] = useState<{ appointmentTime: string }>({
     appointmentTime: "",
   });
 
@@ -68,10 +68,10 @@ const AppointmentTable = () => {
       const updatedAppointments: any = appointments.map((appt: any) =>
         appt.id === id
           ? {
-            ...appt,
-            status: newStatus,
-            statusColor: statusColorMap[newStatus.toLowerCase()] || 'bg-gray-300',
-          }
+              ...appt,
+              status: newStatus,
+              statusColor: statusColorMap[newStatus.toLowerCase()] || 'bg-gray-300',
+            }
           : appt
       );
       setAppointments(updatedAppointments);
@@ -149,55 +149,59 @@ const AppointmentTable = () => {
           <h2 className="text-xl font-semibold">Appointments</h2>
           <p className="text-sm text-gray-500">Dive deep into who your customers are</p>
         </div>
-  <DateSelectButton
-        appointmentTime={formData.appointmentTime}
-        setDate={setDate}
-      />
+        <div className='border-none' >
+        <DateSelectButton
+
+
+          appointmentTime={formData.appointmentTime}
+          setDate={setDate}
+        />
+        </div>
 
 
       </div>
-      
-        
-                    <div className='w-full h-full flex flex-wrap flex-col gap-[64px]  ' >
-                        <div className='w-full h-auto p-[32px] flex flex-col gap-[24px] '>
-                           
-                            <ul className=' w-[full] flex flex-wrap gap-[16px] ' >
-                                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Appointments</p>
-                                    <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >12</p>
-                                        <img className='w-[71px] ' src={"/100.png"} alt='badge' />
-                                    </div>
-                                </li>
-                                
-                            
-                            
-                                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Total Appointments</p>
-                                    <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >50</p>
-                                         <img className='w-[71px] ' src={"/100.png"} alt='badge' />
-                                    </div>
-                                </li>
-                              
-                                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Canceled Appointments</p>
-                                    <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >$28</p>
-                                       
-                                        <img className='w-[71px] ' src={"/35.png"} alt='badge' />
-                                    </div>
-                                </li>
-                            </ul>
-                        
 
-                    </div>
-         
 
-     {/* <div className="p-6">
+      <div className='w-full h-full flex flex-wrap flex-col gap-[64px]  ' >
+        <div className='w-full h-auto p-[32px] flex flex-col gap-[24px] '>
+
+          <ul className=' w-[full] flex flex-wrap gap-[16px] ' >
+            <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+              <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Appointments</p>
+              <div className='flex items-center gap-[16px] justify-between  '>
+                <p className='font-semibold text-[#101828] text-[30px] ' >12</p>
+                <img className='w-[71px] ' src={"/100.png"} alt='badge' />
+              </div>
+            </li>
+
+
+
+            <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+              <p className='text-[#475467] text-[14px] font-medium font-Inter' >Total Appointments</p>
+              <div className='flex items-center gap-[16px] justify-between  '>
+                <p className='font-semibold text-[#101828] text-[30px] ' >50</p>
+                <img className='w-[71px] ' src={"/100.png"} alt='badge' />
+              </div>
+            </li>
+
+            <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+              <p className='text-[#475467] text-[14px] font-medium font-Inter' >Canceled Appointments</p>
+              <div className='flex items-center gap-[16px] justify-between  '>
+                <p className='font-semibold text-[#101828] text-[30px] ' >$28</p>
+
+                <img className='w-[71px] ' src={"/35.png"} alt='badge' />
+              </div>
+            </li>
+          </ul>
+
+
+        </div>
+
+
+        {/* <div className="p-6">
       <div className="flex justify-between items-center border-b border-[#EAECF0] pb-4">
        <h2 className="text-xl font-semibold text-[#121217]">Appointment</h2> */}
-         {/* <button
+        {/* <button
           onClick={() => setShowModal(true)}
           className="border px-4 py-2 rounded-md text-sm font-medium text-white bg-[#685BC7] hover:bg-[#5a4bb3]"
         >
@@ -214,9 +218,9 @@ const AppointmentTable = () => {
                 value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
               <input type="text" required placeholder="Phone Number" className="w-full border p-2 rounded-md"
                 value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
-             
-             
-             {/* DateTime input */}
+
+
+              {/* DateTime input */}
               <select className="w-full border p-2 rounded-md"
                 value={formData.service} onChange={(e) => setFormData({ ...formData, service: e.target.value })}>
                 <option>Dental Cleaning</option>
@@ -240,7 +244,7 @@ const AppointmentTable = () => {
         </div>
       )}
 
-        
+
 
         <div className="flex flex-wrap gap-2 justify-between mb-4 ">
           <h3 className="text-lg font-semibold mb-4 px-8">Appointments</h3>
@@ -282,10 +286,10 @@ const AppointmentTable = () => {
                                     </div>
                                 </li>
 
-                            </ul>
-          </div>
-      
-      
+        </ul>
+      </div>
+
+
       {/* <div class
       Name="mt-6 flex flex-wrap gap-4 items-end px-8">
         <input type="text" placeholder="Search..." className="border p-2 rounded-md w-64 text-sm"
@@ -373,7 +377,6 @@ const AppointmentTable = () => {
                 <td colSpan={5} className="text-center py-6 text-gray-400">No appointments found</td>
               </tr>
             )}
-
           </tbody>
         </table>
 

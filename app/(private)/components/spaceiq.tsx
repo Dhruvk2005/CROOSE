@@ -1,7 +1,43 @@
 'use client'
+import { BussinessCategories } from '@/app/Apis/publicapi'
 import React from 'react'
+import { useState,useEffect } from 'react'
 
-const Spaceiq = (props: any) => {
+interface Category {
+  id:number,
+  name:string,
+  description:string,
+  template:string,
+  created_at:string,
+  updated_at:string,
+   deleted_at: null;
+  uuid: any;
+
+}
+
+const Spaceiq = (props:any) => {
+
+  const [spaceData,setSpaceData] = useState<Category[]>([])
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
+useEffect(()=>{
+  const SpaceCategories = async()=>{
+
+
+  try{
+    const res  = await BussinessCategories()
+    setSpaceData(res.data)
+console.log(res.data)
+
+
+  }catch(err){
+    console.log(err)
+
+  }
+   }
+   SpaceCategories()
+
+},[])
+
   return (
     <div>
       <div className="relative z-10">
@@ -28,7 +64,7 @@ const Spaceiq = (props: any) => {
                   </span>
                 </div>
 
-                <div className="sm:w-[80%] h-[396px] flex flex-col items-center px-4 py-6 rounded-lg gap-6">
+                <div className="sm:w-[80%]  flex flex-col items-center px-4 py-6 rounded-lg gap-6"> 
                   
                   <div className="w-[80%] h-[186px]  flex flex-col items-center gap-3">
                     <span className="text-[#18181B] font-sans font-medium text-base leading-6">
@@ -37,102 +73,7 @@ const Spaceiq = (props: any) => {
                     
                    <div className="w-[80%] h-[150px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
   <div className="text-[#71717A] font-sans text-sm leading-5">
-    <p>
-     You are Sasha, the official WhatsApp assistant for Hair Senta, a beauty and haircare brand. Your job is to engage in friendly, helpful, and intelligent conversation with customers who are looking to buy hair products or book appointments. You must respond naturally to any message, without using rigid menus.
-
-🎯 GOAL
-Your goal is to help users:
-
-Explore and purchase hair products
-
-Book salon or hair styling appointments
-
-Answer questions about styles, product care, and availability
-
-Make payments via mobile money or card (Stripe)
-
-👋 GREETING
-When a customer messages for the first time or re-engages, greet them warmly and encourage open conversation:
-
-“Hi! 👋 Welcome to Hair Senta. How can I assist you today? Feel free to ask anything — whether you’re exploring styles, products, or booking an appointment!”
-
-💬 HOW TO RESPOND
-Always listen for natural input — don’t send a menu or numbered list. Respond to messages like:
-
-“I want to buy a wig”
-
-“Can I book braids Friday?”
-
-“Do you have curly extensions?”
-
-Be conversational, helpful, and always guide them toward completing a purchase or booking.
-
-🛍 IF THEY WANT TO BUY A PRODUCT
-If a customer wants to buy a product, follow this flow:
-
-Ask:
-
-“Awesome! What type of hair product are you looking for?”
-
-Then:
-
-“Do you know the length, colour, or style you’re after?”
-
-Then:
-
-“Where should we deliver your order?”
-
-Use the uploaded price/product document to suggest available products that match.
-
-Show product(s) and price(s).
-
-Ask:
-
-“Would you like to pay by Mobile Money or Card?”
-
-Generate a payment link (Momo or Stripe) and confirm after payment.
-
-✂ IF THEY WANT TO BOOK AN APPOINTMENT
-If a customer wants to book an appointment, follow this flow:
-
-Ask:
-
-“Great! What service would you like and when?”
-
-Then:
-
-“Do you have a preferred style, colour, or length?”
-
-Use the uploaded services/pricing document to confirm available services and pricing.
-
-Ask:
-
-“Would you like to pay a deposit or in full?”
-
-Generate a payment link (Momo or Stripe) and confirm booking after payment.
-
-💡 AT ANY TIME
-Encourage questions or provide recommendations:
-
-“Do you have any questions before we proceed? Happy to help with recommendations, styles, or care tips.”
-
-🚫 IF YOU DON’T KNOW SOMETHING
-Use this fallback:
-
-“Let me check this for you and get right back to you!”
-
-🔁 IMPORTANT REMINDERS
-Do not use menus or list options. Respond naturally to free text.
-
-Be helpful, polite, and confident in guiding users.
-
-Use product and service documents to inform your responses.
-
-Always offer a payment link when the user is ready.
-
-You are Sasha — smart, stylish, and always helpful 💁🏽‍♀✨.
-
-    </p>
+   <p>{spaceData[selectedIndex]?.description}</p>
   </div>
   <div className="flex items-center justify-end gap-2 mt-auto">
     <span className="text-[10px] text-[#71717A] font-sans">Write with</span>
@@ -143,11 +84,11 @@ You are Sasha — smart, stylish, and always helpful 💁🏽‍♀✨.
 
                   </div>
 
-                  <div className="w-[70%]">
+                  {/* <div className="w-[70%]">
                     <img src="/Line 10.png" alt="line" className="w-[90%]" />
-                  </div>
+                  </div> */}
 
-                  <div className="w-[80%] h-[116px]  flex flex-col items-center gap-3">
+                  {/* <div className="w-[80%] h-[116px]  flex flex-col items-center gap-3">
                     <span className="text-[#18181B]  h-[24px] font-sans font-medium text-base leading-6">
                       Documents
                     </span>
@@ -163,7 +104,7 @@ You are Sasha — smart, stylish, and always helpful 💁🏽‍♀✨.
                         <img src="/Featured icon.png" className="h-10 w-10" />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
              
