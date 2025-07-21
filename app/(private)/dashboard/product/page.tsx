@@ -149,8 +149,7 @@ const ProductServiceTabs = () => {
         const added = await addServices(serviceData);
         normalized = {
           ...added,
-          ...(formState.space_id && { space_id: formState.space_id }),
-          //createdAt: added.created_at || new Date().toISOString(),
+          createdAt: added.created_at || new Date().toISOString(),
         };
       }
 
@@ -278,20 +277,16 @@ const renderTableRows = () => {
       
         {/* <td className="px-4 py-3">{item.type}</td> */}
         {/* <td className="px-4 py-3">{item.unit || '-'}</td> */}
-        {/* <td className="px-4 py-3">{item.stock || '-'}</td> */}
-        {activeTab === 'services' && (
-          <>
-            <td className="px-4 py-3">{item.duration_minutes ? `${item.duration_minutes} mins` : '-'}</td>
-            {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */}
-            <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
-            {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */}
-          </>
-        )}
-        <td className="px-4 py-3">
-          {item.image ? (
-            <img src={item.image} alt="" className="w-10 h-10 object-cover" />
-          ) : '-'}
-        </td>
+       
+        // {activeTab === 'services' && (
+           {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */}
+        {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */}
+        
+        //   <>
+          
+        //      </>
+        // )}
+
         {/* <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td> */}
   //     </tr>
   //   ));
@@ -453,21 +448,17 @@ const renderTableRows = () => {
             <th className="px-4 py-2">Product Name</th>
                <th className="px-4 py-2">Stock</th>
             <th className="px-4 py-2">Price</th>
+    </>
+  )}
+            {/* <th className="px-4 py-2">Photos</th>
+            <th className="px-4 py-2">Space Name</th>
+            <th className="px-4 py-2"> Name</th> */}
+            
+            {/* <th className="px-4 py-2">Stock</th>
+            <th className="px-4 py-2">Price</th> */}
             {/* <th className="px-4 py-2">Type</th> */}
             {/* <th className="px-4 py-2">Unit</th> */}
-            
-
-                     {activeTab === 'products' && (
-              <>
-                 <th className="px-4 py-2">Stock</th> 
-                {/* <th className="px-4 py-2">Buffer</th> */}
-                <th className="px-4 py-2">Image</th>
-                {/* <th className="px-4 py-2">AI Tags</th> */}
-              </>
-            )}
-            
-
-
+            {/* <th className="px-4 py-2">Stock</th> */}
             {activeTab === 'services' && (
               <>
 
@@ -479,10 +470,10 @@ const renderTableRows = () => {
               
                 {/* <th className="px-4 py-2">Buffer</th> */}
                 <th className="px-4 py-2">Available Days</th>
-                {/* <th className="px-4 py-2">AI Tags</th> */}
+                <th className="px-4 py-2">AI Tags</th>
               </>
             )}
-            <th className="px-4 py-2">Image</th>
+            {/* <th className="px-4 py-2">Image</th> */}
             {/* <th className="px-4 py-2">Created</th> */}
           </tr>
         </thead>
@@ -547,7 +538,7 @@ const renderTableRows = () => {
                   <option value="">Select category</option>
                   {activeTab === 'products'
                     ? productCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)
-                    : ['in_store', 'at_home', 'virtual'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                    : ['Wellness', 'Spa', 'Yoga'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
               </label> */}
               {/* in_store,at_home,virtual */}
@@ -555,7 +546,7 @@ const renderTableRows = () => {
                 <span>Price</span>
                 <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, price: e.target.value }))} type="text" required className="border border-[#F1F2F3] p-2 py-3 rounded w-full mt-1" />
               </label>
-              {/* <label>
+              <label>
                 <span>Type</span>
                 <select value={formState.type} onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded w-full mt-1" required>
                   <option value="">Select Type</option>
@@ -563,18 +554,18 @@ const renderTableRows = () => {
                     ? ['in_store', 'at_home', 'virtual'].map(type => <option key={type} value={type}>{type}</option>)
                     : productTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
-              </label> */}
+              </label>
 
               {activeTab === 'products' && (
                 <>
-                  {/* <label>
+                  <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
-                   <label>
+                  </label>
+                  <label>
                     <span>Stock</span>
                     <input value={formState.stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> 
+                  </label>
                   <label className="col-span-2">
                     <span>Image</span>
                     <input
@@ -604,22 +595,22 @@ const renderTableRows = () => {
                     <span>Duration (minutes)</span>
                     <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="text" className="border border-[#F1F2F3] px-2 py-3  rounded w-full mt-1" />
                   </label>
-                  {/* <label>
+                  <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
-                  {/* <label>
+                  </label>
+                  <label>
                     <span>Buffer Minutes</span>
                     <input value={formState.buffer_minutes} onChange={(e) => setFormState(f => ({ ...f, buffer_minutes: e.target.value }))} type="number" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
+                  </label>
                   <label className="col-span-2">
                     <span>Available Days (e.g., monday,wednesday)</span>
                     <input value={formState.available_days} onChange={(e) => setFormState(f => ({ ...f, available_days: e.target.value }))} type="text" className="border border-[#F1F2F3] px-2 py-3  rounded w-full mt-1" />
                   </label>
-                  {/* <label className="col-span-2">
+                  <label className="col-span-2">
                     <span>AI Tags (comma separated)</span>
                     <input value={formState.ai_tags} onChange={(e) => setFormState(f => ({ ...f, ai_tags: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
+                  </label>
                 </>
               )}
 
