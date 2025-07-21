@@ -1,18 +1,29 @@
 'use client';
 import { Search, Bell, X } from 'lucide-react';
+// import Select from "react-select";
 import React, { useState, useEffect } from 'react';
 import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId } from '@/app/Apis/publicapi';
 import { FiFilter, FiSliders, FiSearch, FiExternalLink } from "react-icons/fi";
+//import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
   products: [],
   services: [],
 };
+const options = [
+  { value: "monday", label: "Monday" },
+  { value: "tuesday", label: "Tuesday" },
+  { value: "wednesday", label: "Wednesday" },
+  { value: "thursday", label: "Thursday" },
+  { value: "friday", label: "Friday" },
+  { value: "saturday", label: "Saturday" },
+  { value: "sunday", label: "Sunday" }
+];
 
 const ProductServiceTabs = () => {
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
   const [spaces, setSpaces] = useState<{ id: number; name: string }[]>([]);
-
+  const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [selectedSpaceId, setSelectedSpaceId] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -28,12 +39,13 @@ const ProductServiceTabs = () => {
     product_stock: '',
     product_status: '',
 
+
     status: '',
     unit: '',
     type: '',
     image: null as File | null,
     buffer_minutes: '',
-    available_days: '',
+    available_days: [] as string[],
     ai_tags: '',
   });
 
@@ -115,13 +127,13 @@ const ProductServiceTabs = () => {
           ...added,
           space_id: formState.space_id,
           name: formState.space_name,
-          product_name : formState.product_name,
+          product_name: formState.product_name,
           // category: formState.category,
-           product_stock: formState.product_stock,
-            product_price: formState.product_price,
+          product_stock: formState.product_stock,
+          product_price: formState.product_price,
           // type: formState.type || 'physical',
           // unit: formState.unit,
-         
+
           // createdAt: added.created_at || new Date().toISOString(),
           image: added.image_url || null,
         };
@@ -137,9 +149,8 @@ const ProductServiceTabs = () => {
           // type: formState.type,
           // unit: formState.unit,
           buffer_minutes: parseInt(formState.buffer_minutes),
-          available_days: formState.available_days
-            .split(',')
-            .map(day => day.trim().toLowerCase()),
+          available_days: formState.available_days.map((day: string) => day.trim().toLowerCase()),
+
           ai_tags: formState.ai_tags
             .split(',')
             .map(tag => tag.trim()),
@@ -148,9 +159,11 @@ const ProductServiceTabs = () => {
         console.log(serviceData);
         const added = await addServices(serviceData);
         normalized = {
+          id: added.id || Date.now(),
+          ...serviceData,
           ...added,
-          createdAt: added.created_at || new Date().toISOString(),
         };
+
       }
 
       // Push into products or services based on active tab
@@ -168,21 +181,22 @@ const ProductServiceTabs = () => {
 
       setFormState({
         space_id: '',
-        space_name: '', 
+        space_name: '',
         service_name: '',
-    service_price: '',
-    service_duration: '',
-    service_category: '',
+        service_price: '',
+        service_duration: '',
+        service_category: '',
         product_name: '',
-          product_price: '',
-    product_stock: '',
-    product_status: '',
+        product_price: '',
+        product_stock: '',
+        product_status: '',
         status: '',
+
         unit: '',
         type: '',
         image: null,
         buffer_minutes: '',
-        available_days: '',
+        available_days: [] as string[],
         ai_tags: '',
       });
 
@@ -193,13 +207,13 @@ const ProductServiceTabs = () => {
   };
 
 
-  
 
-  // const productCategories = [
-  //   "Wigs", "Hair Extensions", "Hair Care Products", "Styling Tools & Accessories", "Makeup",
-  //   "Skincare", "Fragrances & Body Care", "Appointments & Services", "Bundles & Combos",
-  //   "Merch & Apparel"
-  // ];
+
+  const productCategories = [
+    "Wigs", "Hair Extensions", "Hair Care Products", "Styling Tools & Accessories", "Makeup",
+    "Skincare", "Fragrances & Body Care", "Appointments & Services", "Bundles & Combos",
+    "Merch & Apparel"
+  ];
 
   // const productTypes = [
   //   "Wigs", "Extensions", "Oils", "Brushes", "Custom Wigs", "Braids", "Haircuts", "Facials",
@@ -211,11 +225,11 @@ const ProductServiceTabs = () => {
   //   "Wave Caps", "Dye Kits", "Detanglers"
   // ];
 
-const renderTableRows = () => {
-  const items = activeTab === 'products' ? data.products : data.services;
+  const renderTableRows = () => {
+    const items = activeTab === 'products' ? data.products : data.services;
 
-  return items.map((item: any, idx: number) => (
-    <tr key={item.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
+    return items.map((item: any, idx: number) => (
+      <tr key={item.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="flex items-center gap-3">
             <input
@@ -232,62 +246,67 @@ const renderTableRows = () => {
             </div>
           </div>
         </td>
-      
-      <td className="px-4 py-3">{item.space_name}</td>
 
-      {activeTab === "products" && (
-            <>
-          <td className="px-4 py-3">{item.product_name}</td>
-         {/* <td className="px-4 py-3">{item.product_stock}</td>  */}
-          <td className="px-4 py-3">{item.product_stock || '-'}</td>
-         <td className="px-4 py-3">{item.product_price}</td>
-            </>
-          )}
+        <td className="px-4 py-3">{item.space_name}</td>
 
-         
-          {activeTab === "services" && (
-            <>
-               <td className="px-4 py-3">{item.service_name}</td>
-               <td className="px-4 py-3">{item.service_category}</td>
-                <td className="px-4 py-3">{item.service_duration ? `${item.service_duration} mins` : '-'}</td>
-             
-         
-         <td className="px-4 py-3">{item.service_price}</td>
-              
-              <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
-            </>
-          )}
-        </tr>
-  ));
-};
+        {activeTab === "products" && (
+          <>
+            <td className="px-4 py-3">{item.product_name}</td>
+            {/* <td className="px-4 py-3">{item.product_stock}</td>  */}
+            <td className="px-4 py-3">{item.product_stock || '-'}</td>
+            <td className="px-4 py-3">{item.product_price}</td>
+            <td className="px-4 py-3">
+              <button className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
+
+            </td>
+
+          </>
+        )}
+
+
+        {activeTab === "services" && (
+          <>
+            <td className="px-4 py-3">{item.service_name}</td>
+            <td className="px-4 py-3">{item.service_category}</td>
+            <td className="px-4 py-3">{item.service_duration ? `${item.service_duration} mins` : '-'}</td>
+
+
+            <td className="px-4 py-3">{item.service_price}</td>
+
+            <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
+          </>
+        )}
+      </tr>
+    ));
+  };
 
 
   // const renderTableRows = () => {
   //   const items = activeTab === 'products' ? data.products : data.services;
   //   return items.map((item: any, idx: number) => (
   //     <tr key={item.id || item.space_name + idx} className="hover:bg-gray-50 border-b border-[#EAECF0]">
-      
 
-        {/* <td className="px-4 py-3">
+
+  {/* <td className="px-4 py-3">
           {
             spaces.find(s => String(s.id) === String(item.space_id))?.name || "-"
           }
         </td> */}
-        // 
-      
-        {/* <td className="px-4 py-3">{item.type}</td> */}
-        {/* <td className="px-4 py-3">{item.unit || '-'}</td> */}
-       
-        // {activeTab === 'services' && (
-           {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */}
-        {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */}
-        
-        //   <>
-          
-        //      </>
-        // )}
+  // 
 
-        {/* <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td> */}
+  {/* <td className="px-4 py-3">{item.type}</td> */ }
+  {/* <td className="px-4 py-3">{item.unit || '-'}</td> */ }
+
+  // {activeTab === 'services' && (
+  {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */ }
+  {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */ }
+
+  //   <>
+
+  //      </>
+  // )}
+
+  {/* <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td> */ }
   //     </tr>
   //   ));
   // };
@@ -345,12 +364,12 @@ const renderTableRows = () => {
       letterSpacing: "0%",
       
     }}>Products & Services</h2> */}
-    <div className='flex gap-2 pb-2'>
-      <button className={`px-4 py-2 rounded ${activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('products')}>Products</button>
-          <button className={`px-4 py-2 rounded ${activeTab === 'services' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('services')}>Services</button>
-        
-    </div>
-            <p className=" text-[#475467]"
+          <div className='flex gap-2 pb-2'>
+            <button className={`px-4 py-2 rounded ${activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('products')}>Products</button>
+            <button className={`px-4 py-2 rounded ${activeTab === 'services' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('services')}>Services</button>
+
+          </div>
+          <p className=" text-[#475467]"
             style={
               {
                 fontFamily: "Inter",
@@ -376,7 +395,7 @@ const renderTableRows = () => {
           Add Service
         </button> */}
         <button onClick={() => setShowModal(true)} className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md"
-           style={
+          style={
             {
               fontFamily: "Inter",
               fontWeight: "600",
@@ -385,7 +404,7 @@ const renderTableRows = () => {
               letterSpacing: "0%",
 
             }}>Add {activeTab === 'products' ? 'Product' : 'Service'}</button>
-        
+
       </div>
 
       {/* Filters / Search / Export */}
@@ -438,22 +457,24 @@ const renderTableRows = () => {
       <table className="min-w-full text-sm text-left border  text-gray-900 bg-white rounded-md overflow-hidden p-4">
         <thead className="bg-[#F9FAFB] text-[#475467] text-xs font-medium">
           <tr>
-             <th className="px-4 py-2">Photos</th>
-               <th className="px-4 py-2">Space Name</th>
-{activeTab === 'products' && (
-    <>
-      
-      
-          
-            <th className="px-4 py-2">Product Name</th>
-               <th className="px-4 py-2">Stock</th>
-            <th className="px-4 py-2">Price</th>
-    </>
-  )}
+            <th className="px-4 py-2">Photos</th>
+            <th className="px-4 py-2">Space Name</th>
+            {activeTab === 'products' && (
+              <>
+
+
+
+                <th className="px-4 py-2">Product Name</th>
+                <th className="px-4 py-2">Stock</th>
+                <th className="px-4 py-2">Price</th>
+                <th className="px-4 py-2">Actions</th>
+
+              </>
+            )}
             {/* <th className="px-4 py-2">Photos</th>
             <th className="px-4 py-2">Space Name</th>
             <th className="px-4 py-2"> Name</th> */}
-            
+
             {/* <th className="px-4 py-2">Stock</th>
             <th className="px-4 py-2">Price</th> */}
             {/* <th className="px-4 py-2">Type</th> */}
@@ -462,12 +483,12 @@ const renderTableRows = () => {
             {activeTab === 'services' && (
               <>
 
-          
-            <th className="px-4 py-2">Service Name</th>
-            <th className="px-4 py-2">Category</th>
-              <th className="px-4 py-2">Duration</th>
-            <th className="px-4 py-2">Price</th>
-              
+
+                <th className="px-4 py-2">Service Name</th>
+                <th className="px-4 py-2">Category</th>
+                <th className="px-4 py-2">Duration</th>
+                <th className="px-4 py-2">Price</th>
+
                 {/* <th className="px-4 py-2">Buffer</th> */}
                 <th className="px-4 py-2">Available Days</th>
                 <th className="px-4 py-2">AI Tags</th>
@@ -485,11 +506,13 @@ const renderTableRows = () => {
           <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
             <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
               <h3 className="flex text-lg font-semibold mb-4">New {activeTab === 'products' ? 'Product' : 'Service'}</h3>
+
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
                 className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
               >
+
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -498,7 +521,7 @@ const renderTableRows = () => {
             <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
               <select
 
-                className="col-span-2 border border-[#F1F2F3] rounded px-3 py-3"
+                className="col-span-2 border border-bg-gray-100 rounded px-3 py-3"
                 value={formState.space_id}
                 onChange={(e) => {
                   const space_id = e.target.value;
@@ -506,12 +529,12 @@ const renderTableRows = () => {
                   setFormState((f) => ({
                     ...f,
                     space_id,
-
+                    space_name: selectedSpace?.name || '',
                   }));
                 }}
               >
 
-                <option value="">Select Space ID</option>
+                <option value="">Select Space Name</option>
                 {spaces.map((space) => (
                   <option key={space.id} value={String(space.id)}>
                     {space.name}
@@ -520,31 +543,30 @@ const renderTableRows = () => {
               </select>
 
               <label className="col-span-2 ">
-                <span>Name</span>
+                <span>Service Name</span>
                 <input
-                  value={formState.space_name}
+                  value={formState.service_name}
                   onChange={(e) =>
-                    setFormState((f) => ({ ...f, name: e.target.value }))
+                    setFormState((f) => ({ ...f, service_name: e.target.value }))
                   }
                   type="text"
                   required
-                  className="border border-[#F1F2F3] p-2 rounded w-full mt-1"
+                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
                 />
               </label>
 
-              {/* <label>
-                <span>Category</span>
-                <select value={formState.category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border border-[#F1F2F3] p-2 py-3 rounded w-full mt-1" required>
+
+              {/* <select value={formState.service_category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" required>
                   <option value="">Select category</option>
                   {activeTab === 'products'
                     ? productCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)
-                    : ['Wellness', 'Spa', 'Yoga'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                </select>
-              </label> */}
-              {/* in_store,at_home,virtual */}
+                    : ['in_store', 'at_home', 'virtual'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                </select> */}
+
               <label>
+
                 <span>Price</span>
-                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, price: e.target.value }))} type="text" required className="border border-[#F1F2F3] p-2 py-3 rounded w-full mt-1" />
+                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
               </label>
               {/* <label>
                 <span>Type</span>
@@ -577,7 +599,7 @@ const renderTableRows = () => {
                           setFormState(f => ({ ...f, image: file }));
                         }
                       }}
-                      className="border border-[#F1F2F3] px-2 py-3 rounded w-full mt-1"
+                      className="border  border-bg-gray-100 px-2 py-3 rounded w-full mt-1"
                       required
                     />
                   </label>
@@ -591,33 +613,88 @@ const renderTableRows = () => {
 
               {activeTab === 'services' && (
                 <>
+
+
+
+
                   <label>
                     <span>Duration (minutes)</span>
-                    <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="text" className="border border-[#F1F2F3] px-2 py-3  rounded w-full mt-1" />
+                    <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="number" className="border border-bg-gray-100 px-2 py-3  rounded w-full mt-1" />
                   </label>
                   <label>
+                    <span>Category</span>
+
+                    <input
+                      value={formState.service_category}
+                      onChange={(e) =>
+                        setFormState((f) => ({ ...f, service_category: e.target.value }))
+                      }
+                      type="text"
+                      required
+                      className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+                    />
+                  </label>
+                  {/* <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label>
                   <label>
                     <span>Buffer Minutes</span>
                     <input value={formState.buffer_minutes} onChange={(e) => setFormState(f => ({ ...f, buffer_minutes: e.target.value }))} type="number" className="border p-2 rounded w-full mt-1" />
-                  </label>
+                  </label> */}
                   <label className="col-span-2">
-                    <span>Available Days (e.g., monday,wednesday)</span>
-                    <input value={formState.available_days} onChange={(e) => setFormState(f => ({ ...f, available_days: e.target.value }))} type="text" className="border border-[#F1F2F3] px-2 py-3  rounded w-full mt-1" />
+                    <span>Available Days</span>
+                    {/* <Select
+                      className="border border-bg-gray-100"
+                      isMulti
+                      options={options}
+                      value={options.filter(o => formState.available_days.includes(o.value))}
+                      onChange={opts =>
+                        setFormState(f => ({
+                          ...f,
+                          available_days: opts.map(o => o.value)
+                        }))
+                      }
+                    /> */}
+
+                    {/* OPTIONAL: Show tags for selected days */}
+                    {/* <div className="flex flex-wrap gap-2 mt-2">
+    {formState.available_days.map(day => (
+      <span key={day} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+        {day.charAt(0).toUpperCase() + day.slice(1)}
+      </span>
+    ))}
+  </div> */}
                   </label>
-                  <label className="col-span-2">
+
+
+
+                  {/* <label className="col-span-2">
                     <span>AI Tags (comma separated)</span>
                     <input value={formState.ai_tags} onChange={(e) => setFormState(f => ({ ...f, ai_tags: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
+                  </label> */}
                 </>
               )}
 
               <div className="col-span-2 flex justify-end gap-2 mt-4">
-                <button type="button" onClick={() => setShowModal(false)} className="px-1 py-3 bg-gray-200 rounded-md">Cancel</button>
+                <button type="button" onClick={() => setShowModal(false)} className="px-12 py-2 bg-gray-200 rounded-md">Cancel</button>
                 <button type="submit" className="px-12 py-2 bg-[#685BC7] text-white rounded-md">Save</button>
+
               </div>
+              <button
+                type="button"
+
+                className="px-4 py-2 bg-[#685BC7] text-white rounded-md  "
+              >
+                Bulk Upload
+              </button>
+              <button
+                type="button"
+
+                className="px-4 py-2 bg-gray-200  rounded-md  "
+              >
+                Template Download
+              </button>
             </form>
           </div>
         </div>

@@ -46,6 +46,7 @@ export const createSpace = async (formData: FormData) => {
     const token = localStorage.getItem("token");
     const res = await axios.post(
       `${BASE_URL}/api/create_space`,
+      
       formData,
       {
         headers: {
@@ -69,6 +70,7 @@ export const getCustomer = async () => {
     const res = await axiosRequest({
       method: "get",
       url: `${BASE_URL}/api/getCustomer`,
+     
       headers: {
         Authorization: `Bearer ${token}`,
       },
