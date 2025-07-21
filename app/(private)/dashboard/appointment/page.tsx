@@ -6,6 +6,8 @@ import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download 
 import { DateSelectButton } from '../../components/DateSelectButton';
 import { Icon } from "@iconify/react";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import { dividerClasses } from '@mui/material/Divider';
+import Navbar from './component/Navbar';
 
 const AppointmentTable = () => {
   const [appointments, setAppointments] = useState([]);
@@ -18,6 +20,15 @@ const AppointmentTable = () => {
     const [formDate, setDate] = useState<{ appointmentTime: string }>({
     appointmentTime: "",
   });
+
+  const defaultTypography: React.CSSProperties = {
+  fontFamily: 'Inter, sans-serif',
+  fontWeight: 400,
+  fontSize: '14px',
+  lineHeight: '20px',
+  letterSpacing: '0',
+  color: '#475467',
+};
 
   const [formData, setFormData] = useState({
     name: '',
@@ -77,6 +88,7 @@ const AppointmentTable = () => {
     e.preventDefault();
     try {
       const payload = {
+       
         customer_name: formData.name,
         customer_number: formData.phone,
         service_name: formData.service,
@@ -115,8 +127,7 @@ const AppointmentTable = () => {
     const matchesDateTo = dateTo ? apptDate <= new Date(dateTo) : true;
 
     return matchesSearch && matchesStatus && matchesService && matchesDateFrom && matchesDateTo;
-  });
-
+  })
   const statusOptions = [
     { value: 'pending', label: '🟡 Pending' },
     { value: 'confirmed', label: '🟢 Confirmed' },
@@ -125,7 +136,14 @@ const AppointmentTable = () => {
   ];
 
   return (
+
+    <div>
+   
+   
+   <Navbar/>
+   
     <div className="p-6 space-y-6">
+    
       <div className="flex justify-between items-start px-8">
         <div>
           <h2 className="text-xl font-semibold">Appointments</h2>
@@ -232,13 +250,13 @@ const AppointmentTable = () => {
                                         <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
                                         <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
                                     </button>
-                                    <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
+                                    <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="text-[#344054] font-Inter font-semibold text-[14px]  px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
           <option value="">All Status</option>
           {statusOptions.map(opt => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
           ))}
         </select>
-<select value={serviceFilter} onChange={(e) => setServiceFilter(e.target.value)} className="px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
+<select value={serviceFilter} onChange={(e) => setServiceFilter(e.target.value)} className="text-[#344054] font-Inter font-semibold text-[14px]  px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
           <option value="">All Services</option>
           <option value="Dental Cleaning">Dental Cleaning</option>
           <option value="Eye Checkup">Eye Checkup</option>
@@ -278,25 +296,54 @@ const AppointmentTable = () => {
 
       </div> */}
 
-      <div className="mt-6 overflow-x-auto bg-white border rounded-lg">
+      <div className="mt-6 overflow-x-auto bg-white border border-[#EAECF0] rounded-lg">
         <table className="min-w-full text-sm text-left text-gray-700">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-3">Customer Name</th>
-              <th className="px-4 py-3">Service Name</th>
-              <th className="px-4 py-3">Appointment Time</th>
-              <th className="px-4 py-3">Phone</th>
-              <th className="px-4 py-3">Status</th>
-            </tr>
+          <thead className="bg-[#F9FAFB]">
+            
+           <tr>
+
+         <th className="px-4 py-3 text-[#475467] font-medium text-[12px] leading-[18px] tracking-[0] font-['Inter']">
+    Space Name
+  </th>    
+  <th className="px-4 py-3 text-[#475467] font-medium text-[12px] leading-[18px] tracking-[0] font-['Inter']">
+    Customer Name
+  </th>
+    <th className="px-4 py-3 text-[#475467] font-medium text-[12px] leading-[18px] tracking-[0] font-['Inter']">
+    Status
+  </th>
+    <th className="px-4 py-3 text-[#475467] font-medium text-[12px] leading-[18px] tracking-[0] font-['Inter']">
+    Phone Number
+  </th>
+  <th className="px-4 py-3 text-[#475467] font-medium text-[12px] leading-[18px] tracking-[0] font-['Inter']">
+    Service Name
+  </th>
+  <th className="px-4 py-3 text-[#475467] font-medium text-[12px] leading-[18px] tracking-[0] font-['Inter']">
+    Appointment Time
+  </th>
+
+
+</tr>
+
           </thead>
           <tbody>
             {filteredAppointments.map((appt: any) => (
-              <tr key={appt.id} className="hover:bg-gray-50 border-b">
-                <td className="px-4 py-3">{appt.customer_name}</td>
-                <td className="px-4 py-3">{appt.service_name || '-'}</td>
-                <td className="px-4 py-3">{formatDbDate(appt.date)}</td>
-                <td className="px-4 py-3">{appt.customer_number}</td>
-                <td className="px-4 py-3">
+             <tr key={appt.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
+        <td className="px-6  py-4 whitespace-nowrap">
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
+            />
+       <td className="px-4 py-3" style={defaultTypography}>
+        {appt.space_name || "_"}
+        {/* {spaces.find(s => String(s.id) === String(appt.space_id))?.name || "-"} */}
+      </td>
+
+          </div>
+        </td>
+         
+                <td className="px-4 py-3" style={defaultTypography}>{appt.customer_name}</td>
+                 <td className="px-4 py-3">
                   <select
                     value={appt.status}
                     onChange={(e) => handleStatusUpdate(appt.id, e.target.value)}
@@ -306,7 +353,19 @@ const AppointmentTable = () => {
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
                   </select>
+                  
                 </td>
+                <td className="px-4 py-3 text-[#101828] " style={{
+                  font:"Inter",
+                  fontWeight: "500",
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  letterSpacing: "0%"
+                }} >{appt.customer_number}</td>
+                <td className="px-4 py-3" style={defaultTypography}>{appt.service_name || '-'}</td>
+                <td className="px-4 py-3" style={defaultTypography}>{formatDbDate(appt.date)}</td>
+                
+               
               </tr>
             ))}
             {filteredAppointments.length === 0 && (
@@ -320,6 +379,7 @@ const AppointmentTable = () => {
 
       </div>
     </div>
+     </div>
   );
 };
 

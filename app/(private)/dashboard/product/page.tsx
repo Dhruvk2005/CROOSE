@@ -1,18 +1,29 @@
 'use client';
 import { Search, Bell, X } from 'lucide-react';
+import Select from "react-select";
 import React, { useState, useEffect } from 'react';
 import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId } from '@/app/Apis/publicapi';
 import { FiFilter, FiSliders, FiSearch, FiExternalLink } from "react-icons/fi";
+//import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
   products: [],
   services: [],
 };
+const options = [
+  { value: "monday", label: "Monday" },
+  { value: "tuesday", label: "Tuesday" },
+  { value: "wednesday", label: "Wednesday" },
+  { value: "thursday", label: "Thursday" },
+  { value: "friday", label: "Friday" },
+  { value: "saturday", label: "Saturday" },
+  { value: "sunday", label: "Sunday" }
+];
 
 const ProductServiceTabs = () => {
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
   const [spaces, setSpaces] = useState<{ id: number; name: string }[]>([]);
-
+  const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [selectedSpaceId, setSelectedSpaceId] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -28,12 +39,13 @@ const ProductServiceTabs = () => {
     product_stock: '',
     product_status: '',
 
+           
     status: '',
     unit: '',
     type: '',
     image: null as File | null,
     buffer_minutes: '',
-    available_days: '',
+   available_days: [] as string[], 
     ai_tags: '',
   });
 
@@ -137,21 +149,21 @@ const ProductServiceTabs = () => {
           // type: formState.type,
           // unit: formState.unit,
           buffer_minutes: parseInt(formState.buffer_minutes),
-          available_days: formState.available_days
-            .split(',')
-            .map(day => day.trim().toLowerCase()),
+         available_days: formState.available_days.map((day: string) => day.trim().toLowerCase()),
+
           ai_tags: formState.ai_tags
             .split(',')
             .map(tag => tag.trim()),
         };
 
         console.log(serviceData);
-        const added = await addServices(serviceData);
-        normalized = {
-          ...added,
-          ...(formState.space_id && { space_id: formState.space_id }),
-          //createdAt: added.created_at || new Date().toISOString(),
-        };
+       const added = await addServices(serviceData);
+normalized = {
+  id: added.id || Date.now(),
+  ...serviceData,
+  ...added,
+};
+
       }
 
       // Push into products or services based on active tab
@@ -179,11 +191,12 @@ const ProductServiceTabs = () => {
     product_stock: '',
     product_status: '',
         status: '',
+      
         unit: '',
         type: '',
         image: null,
         buffer_minutes: '',
-        available_days: '',
+       available_days: [] as string[], 
         ai_tags: '',
       });
 
@@ -196,11 +209,11 @@ const ProductServiceTabs = () => {
 
   
 
-  // const productCategories = [
-  //   "Wigs", "Hair Extensions", "Hair Care Products", "Styling Tools & Accessories", "Makeup",
-  //   "Skincare", "Fragrances & Body Care", "Appointments & Services", "Bundles & Combos",
-  //   "Merch & Apparel"
-  // ];
+  const productCategories = [
+    "Wigs", "Hair Extensions", "Hair Care Products", "Styling Tools & Accessories", "Makeup",
+    "Skincare", "Fragrances & Body Care", "Appointments & Services", "Bundles & Combos",
+    "Merch & Apparel"
+  ];
 
   // const productTypes = [
   //   "Wigs", "Extensions", "Oils", "Brushes", "Custom Wigs", "Braids", "Haircuts", "Facials",
@@ -241,7 +254,12 @@ const renderTableRows = () => {
           <td className="px-4 py-3">{item.product_name}</td>
          {/* <td className="px-4 py-3">{item.product_stock}</td>  */}
           <td className="px-4 py-3">{item.product_stock || '-'}</td>
-         <td className="px-4 py-3">{item.product_price}</td>
+         <td className="px-4 py-3">{item.product_price}</td> 
+         <td className="px-4 py-3">
+          <button  className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
+   
+          </td> 
+        
             </>
           )}
 
@@ -449,6 +467,8 @@ const renderTableRows = () => {
             <th className="px-4 py-2">Product Name</th>
                <th className="px-4 py-2">Stock</th>
             <th className="px-4 py-2">Price</th>
+            <th className="px-4 py-2">Actions</th>
+           
     </>
   )}
             {/* <th className="px-4 py-2">Photos</th>
@@ -486,11 +506,13 @@ const renderTableRows = () => {
           <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
             <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
               <h3 className="flex text-lg font-semibold mb-4">New {activeTab === 'products' ? 'Product' : 'Service'}</h3>
+           
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
                 className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
               >
+                
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -499,7 +521,7 @@ const renderTableRows = () => {
             <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
               <select
 
-                className="col-span-2 border border-[#F1F2F3] rounded px-3 py-3"
+                className="col-span-2 border border-bg-gray-100 rounded px-3 py-3"
                 value={formState.space_id}
                 onChange={(e) => {
                   const space_id = e.target.value;
@@ -507,12 +529,12 @@ const renderTableRows = () => {
                   setFormState((f) => ({
                     ...f,
                     space_id,
-
+  space_name: selectedSpace?.name || '',
                   }));
                 }}
               >
 
-                <option value="">Select Space ID</option>
+                <option value="">Select Space Name</option>
                 {spaces.map((space) => (
                   <option key={space.id} value={String(space.id)}>
                     {space.name}
@@ -521,31 +543,30 @@ const renderTableRows = () => {
               </select>
 
               <label className="col-span-2 ">
-                <span>Name</span>
+                <span>Service Name</span>
                 <input
-                  value={formState.space_name}
+                  value={formState.service_name}
                   onChange={(e) =>
-                    setFormState((f) => ({ ...f, name: e.target.value }))
+                    setFormState((f) => ({ ...f, service_name: e.target.value }))
                   }
                   type="text"
                   required
-                  className="border border-[#F1F2F3] p-2 rounded w-full mt-1"
+                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
                 />
               </label>
 
-              {/* <label>
-                <span>Category</span>
-                <select value={formState.category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border border-[#F1F2F3] p-2 py-3 rounded w-full mt-1" required>
+             
+                {/* <select value={formState.service_category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" required>
                   <option value="">Select category</option>
                   {activeTab === 'products'
                     ? productCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)
                     : ['in_store', 'at_home', 'virtual'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                </select>
-              </label> */}
-              {/* in_store,at_home,virtual */}
+                </select> */}
+             
               <label>
+
                 <span>Price</span>
-                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, price: e.target.value }))} type="text" required className="border border-[#F1F2F3] p-2 py-3 rounded w-full mt-1" />
+                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
               </label>
               {/* <label>
                 <span>Type</span>
@@ -563,10 +584,10 @@ const renderTableRows = () => {
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label> */}
-                  {/* <label>
+                  <label>
                     <span>Stock</span>
-                    <input value={formState.stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
+                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 rounded w-full mt-1" />
+                  </label>
                   <label className="col-span-2">
                     <span>Image</span>
                     <input
@@ -578,7 +599,7 @@ const renderTableRows = () => {
                           setFormState(f => ({ ...f, image: file }));
                         }
                       }}
-                      className="border border-[#F1F2F3] px-2 py-3 rounded w-full mt-1"
+                      className="border  border-bg-gray-100 px-2 py-3 rounded w-full mt-1"
                       required
                     />
                   </label>
@@ -592,10 +613,27 @@ const renderTableRows = () => {
 
               {activeTab === 'services' && (
                 <>
+
+
+
+
                   <label>
                     <span>Duration (minutes)</span>
-                    <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="text" className="border border-[#F1F2F3] px-2 py-3  rounded w-full mt-1" />
+                    <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="number" className="border border-bg-gray-100 px-2 py-3  rounded w-full mt-1" />
                   </label>
+                   <label>
+                <span>Category</span>
+                  
+                <input
+                  value={formState.service_category}
+                  onChange={(e) =>
+                    setFormState((f) => ({ ...f, service_category: e.target.value }))
+                  }
+                  type="text"
+                  required
+                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+                /> 
+                </label>
                   {/* <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
@@ -604,10 +642,33 @@ const renderTableRows = () => {
                     <span>Buffer Minutes</span>
                     <input value={formState.buffer_minutes} onChange={(e) => setFormState(f => ({ ...f, buffer_minutes: e.target.value }))} type="number" className="border p-2 rounded w-full mt-1" />
                   </label> */}
-                  <label className="col-span-2">
-                    <span>Available Days (e.g., monday,wednesday)</span>
-                    <input value={formState.available_days} onChange={(e) => setFormState(f => ({ ...f, available_days: e.target.value }))} type="text" className="border border-[#F1F2F3] px-2 py-3  rounded w-full mt-1" />
-                  </label>
+  <label className="col-span-2">
+  <span>Available Days</span>
+  <Select 
+ className="border border-bg-gray-100"
+  isMulti
+  options={options}
+  value={options.filter(o => formState.available_days.includes(o.value))}
+  onChange={opts =>
+    setFormState(f => ({
+      ...f,
+      available_days: opts.map(o => o.value)
+    }))
+  }
+/>
+
+  {/* OPTIONAL: Show tags for selected days */}
+  {/* <div className="flex flex-wrap gap-2 mt-2">
+    {formState.available_days.map(day => (
+      <span key={day} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+        {day.charAt(0).toUpperCase() + day.slice(1)}
+      </span>
+    ))}
+  </div> */}
+ </label>
+
+
+
                   {/* <label className="col-span-2">
                     <span>AI Tags (comma separated)</span>
                     <input value={formState.ai_tags} onChange={(e) => setFormState(f => ({ ...f, ai_tags: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
@@ -616,9 +677,24 @@ const renderTableRows = () => {
               )}
 
               <div className="col-span-2 flex justify-end gap-2 mt-4">
-                <button type="button" onClick={() => setShowModal(false)} className="px-1 py-3 bg-gray-200 rounded-md">Cancel</button>
+                <button type="button" onClick={() => setShowModal(false)} className="px-12 py-2 bg-gray-200 rounded-md">Cancel</button>
                 <button type="submit" className="px-12 py-2 bg-[#685BC7] text-white rounded-md">Save</button>
+        
               </div>
+                     <button
+      type="button"
+     
+      className="px-4 py-2 bg-[#685BC7] text-white rounded-md  "
+    >
+      Bulk Upload
+    </button>
+                   <button
+      type="button"
+    
+      className="px-4 py-2 bg-gray-200  rounded-md  "
+    >
+      Template Download
+    </button>
             </form>
           </div>
         </div>
