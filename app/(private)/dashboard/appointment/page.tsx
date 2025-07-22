@@ -1,5 +1,5 @@
 'use client';
-// import { formatDbDate } from '@/app/(private)/utils/date';
+//import { formatDbDate } from '@/app/(private)/utils/date';
 import React, { useEffect, useState, useRef } from 'react';
 import { appointmentList, updateAppointmentStatus } from '@/app/Apis/publicapi';
 import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download } from "lucide-react";
@@ -332,19 +332,18 @@ const AppointmentTable = () => {
           <tbody>
             {filteredAppointments.map((appt: any) => (
              <tr key={appt.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
-        <td className="px-6  py-4 whitespace-nowrap">
-          <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-            />
-       <td className="px-4 py-3" style={defaultTypography}>
-        {appt.space_name || "_"}
-        {/* {spaces.find(s => String(s.id) === String(appt.space_id))?.name || "-"} */}
-      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+  <div className="flex items-center gap-3">
+    <input
+      type="checkbox"
+      className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
+    />
+    <span style={defaultTypography}>
+      {appt.space_name || "_"}
+    </span>
+  </div>
+</td>
 
-          </div>
-        </td>
          
                 <td className="px-4 py-3" style={defaultTypography}>{appt.customer_name}</td>
                  <td className="px-4 py-3">
@@ -367,7 +366,7 @@ const AppointmentTable = () => {
                   letterSpacing: "0%"
                 }} >{appt.customer_number}</td>
                 <td className="px-4 py-3" style={defaultTypography}>{appt.service_name || '-'}</td>
-                <td className="px-4 py-3" style={defaultTypography}>{formatDbDate(appt.date)}</td>
+                {/* <td className="px-4 py-3" style={defaultTypography}>{formatDbDate(appt.date)}</td> */}
                 
                
               </tr>

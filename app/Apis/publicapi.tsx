@@ -196,20 +196,48 @@ export const addProduct = async (formData: FormData) => {
   const token = localStorage.getItem("token");
   return await axiosRequest({
     method: "post",
-    url: `${BASE_URL}/api/products`,
+    url: `${BASE_URL}/api/services/163`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
     formData,
   });
 };
-
+//update product
+export const updateProduct = async (formData: FormData) => {
+  const token = localStorage.getItem("token");
+  return await axiosRequest({
+    method: "post",
+    url: `${BASE_URL}/api/products/{products_id}`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    formData,
+  });
+};
 export const addServices = async (data: any) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: 'post',
       url: `${BASE_URL}/api/services`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: data,
+    });
+    return res;
+  } catch (err: any) {
+    console.log(err);
+    throw new Error(err?.message || "Failed to add service.");
+  }
+};
+export const updateServices = async (data: any) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: 'post',
+      url: `${BASE_URL}/api/services/163`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -317,6 +345,10 @@ export const registerApi = async (data: any) => {
     console.log(err);
   }
 };
+
+
+
+
 
 export const countryApi = async () => {
   try {

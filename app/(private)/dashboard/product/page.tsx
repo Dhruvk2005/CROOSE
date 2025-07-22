@@ -1,9 +1,9 @@
 'use client';
 import { Search, Bell, X } from 'lucide-react';
 import Select from "react-select";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useRef } from 'react';
 import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId } from '@/app/Apis/publicapi';
-import { FiFilter, FiSliders, FiSearch, FiExternalLink } from "react-icons/fi";
+import {  FiSliders,FiExternalLink  } from "react-icons/fi";
 //import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
   products: [],
@@ -19,14 +19,18 @@ const options = [
   { value: "sunday", label: "Sunday" }
 ];
 
-const ProductServiceTabs = () => {
+const ProductServiceTabs = ({type = 'product'}) => {
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  
+
   const [spaces, setSpaces] = useState<{ id: number; name: string }[]>([]);
-  const [selectedDays, setSelectedDays] = useState<string[]>([]);
-  const [selectedSpaceId, setSelectedSpaceId] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showBulkModal, setShowBulkModal] = useState(false);
+   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [formState, setFormState] = useState({
     space_id: '',
     space_name: '',
@@ -48,6 +52,21 @@ const ProductServiceTabs = () => {
    available_days: [] as string[], 
     ai_tags: '',
   });
+
+   useEffect(() => {
+    if (showBulkModal && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setModalPosition({
+        top: rect.bottom + window.scrollY + 8, // 8px gap
+        left: rect.left + window.scrollX,
+      });
+    }
+  }, [showBulkModal]);
+
+  const templateUrl =
+    activeTab === 'services'
+      ? 'http://68.183.108.227/croose/public/storage/Bulk_upload_templates/new_services_template.xlsx'
+      : 'http://68.183.108.227/croose/public/storage/Bulk_upload_templates/New_products_template.xlsx';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -207,7 +226,33 @@ normalized = {
   };
 
 
-  
+  const handleEdit = (item: any) => {
+  const selectedSpace = spaces.find(s => String(s.id) === String(item.space_id));
+
+  setFormState({
+    ...item,
+    space_id: item.space_id,
+    space_name: selectedSpace?.name || '',
+    service_name: item.service_name,
+    service_category: item.service_category,
+    service_duration: item.service_duration,
+    service_price: item.service_price,
+    available_days: item.available_days || [],
+    unit: item.unit,
+    product_stock: item.product_stock,
+        product_name: item.product_name,
+    product_price: item.product_price,
+ 
+
+              
+    status: item.status,
+ 
+    image: null,
+  });
+
+  setShowUpdateModal(true);
+};
+
 
   const productCategories = [
     "Wigs", "Hair Extensions", "Hair Care Products", "Styling Tools & Accessories", "Makeup",
@@ -221,7 +266,7 @@ normalized = {
   //   "Hair Coloring", "Retouching", "Dreadlocks", "Cornrows", "Nails", "Pedicure", "Manicure",
   //   "Loc Maintenance", "Styling Tools", "Bonnets", "Edge Control", "Mousse", "Shampoo",
   //   "Conditioner", "Body Butter", "Lip Gloss", "Foundation", "Lashes", "Appointments",
-  //   "Consultations", "Gift Cards", "Bundles", "Accessories", "Clippers", "Durags",
+  //   "Consultations", "Gift Cards",  "Bundles", "Accessories", "Clippers", "Durags",
   //   "Wave Caps", "Dye Kits", "Detanglers"
   // ];
 
@@ -256,7 +301,10 @@ const renderTableRows = () => {
           <td className="px-4 py-3">{item.product_stock || '-'}</td>
          <td className="px-4 py-3">{item.product_price}</td> 
          <td className="px-4 py-3">
-          <button  className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
+          <button onClick={() => {
+
+  
+  setShowUpdateModal(true); }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
    
           </td> 
         
@@ -274,6 +322,13 @@ const renderTableRows = () => {
          <td className="px-4 py-3">{item.service_price}</td>
               
               <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
+                <td className="px-4 py-3">
+          <button        onClick={() => {
+
+  
+  setShowUpdateModal(true); }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
+   
+          </td> 
             </>
           )}
         </tr>
@@ -351,19 +406,9 @@ const renderTableRows = () => {
 
 
 
-      {/* Products & Services */}
       <div className="flex justify-between items-center p-4 ">
         <div>
-          {/* <h2 className="text-md font-semibold text-[#101828]"
-      style={
-    {
-      fontFamily: "Inter",
-      fontWeight: "600",
-      fontSize: "18px",
-      lineHeight: "28px",
-      letterSpacing: "0%",
-      
-    }}>Products & Services</h2> */}
+        
     <div className='flex gap-2 pb-2'>
       <button className={`px-4 py-2 rounded ${activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('products')}>Products</button>
           <button className={`px-4 py-2 rounded ${activeTab === 'services' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('services')}>Services</button>
@@ -380,22 +425,14 @@ const renderTableRows = () => {
 
               }}>All the details about your customers</p>
         </div>
-        {/* <button
-          onClick={() => setShowModal(true)}
-          className="px-4 py-2 rounded-md text-sm font-medium bg-[#F9F5FF] text-[#685BC7] hover:bg-violet-200"
-          style={
-            {
-              fontFamily: "Inter",
-              fontWeight: "600",
-              fontSize: "14px",
-              lineHeight: "20px",
-              letterSpacing: "0%",
+       
+        <button 
+        
+       onClick={() => {
 
-            }}>
-          Add Service
-        </button> */}
-        <button onClick={() => setShowModal(true)} className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md"
-           style={
+  
+  setShowModal(true);
+}}   style={
             {
               fontFamily: "Inter",
               fontWeight: "600",
@@ -424,19 +461,36 @@ const renderTableRows = () => {
           Filters
         </button>
 
-        {/* Right: Search & Export */}
-        <div className="flex flex-row gap-4 items-center">
+        
+        
           {/* Search Input */}
-          <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white max-w-xs w-full">
+          {/* <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white max-w-xs w-full">
             <FiSearch className="w-5 h-" />
             <input
               type="text"
               placeholder="Search"
               className="flex-1 outline-none bg-transparent text-sm text-gray-700"
             />
-          </div>
+          </div> */}
 
           {/* Export Button */}
+         < div className="flex flex-row gap-4 items-center">
+          <button
+            ref={buttonRef}
+        onClick={() => setShowBulkModal(true)}
+        className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
+        style={
+              {
+                fontFamily: "Inter",
+                fontWeight: "500",
+                fontSize: "14px",
+                lineHeight: "20px",
+                letterSpacing: "0%",
+
+              }}>
+       <img src="/icons/bulk_uplod.svg" alt="" />
+        Bulk upload
+      </button>
           <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
             style={
               {
@@ -491,7 +545,7 @@ const renderTableRows = () => {
               
                 {/* <th className="px-4 py-2">Buffer</th> */}
                 <th className="px-4 py-2">Available Days</th>
-                <th className="px-4 py-2">AI Tags</th>
+               <th className="px-4 py-2">Actions</th>
               </>
             )}
             {/* <th className="px-4 py-2">Image</th> */}
@@ -568,7 +622,7 @@ const renderTableRows = () => {
                 <span>Price</span>
                 <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
               </label>
-              <label>
+              {/* <label>
                 <span>Type</span>
                 <select value={formState.type} onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded w-full mt-1" required>
                   <option value="">Select Type</option>
@@ -576,14 +630,14 @@ const renderTableRows = () => {
                     ? ['in_store', 'at_home', 'virtual'].map(type => <option key={type} value={type}>{type}</option>)
                     : productTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
-              </label>
+              </label> */}
 
               {activeTab === 'products' && (
                 <>
                   <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
+                  </label> 
                   <label>
                     <span>Stock</span>
                     <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 rounded w-full mt-1" />
@@ -669,10 +723,10 @@ const renderTableRows = () => {
 
 
 
-                  {/* <label className="col-span-2">
+                   {/* <label className="col-span-2">
                     <span>AI Tags (comma separated)</span>
                     <input value={formState.ai_tags} onChange={(e) => setFormState(f => ({ ...f, ai_tags: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
+                  </label> */}
                 </>
               )}
 
@@ -681,24 +735,302 @@ const renderTableRows = () => {
                 <button type="submit" className="px-12 py-2 bg-[#685BC7] text-white rounded-md">Save</button>
         
               </div>
-                     <button
-      type="button"
-     
-      className="px-4 py-2 bg-[#685BC7] text-white rounded-md  "
-    >
-      Bulk Upload
-    </button>
-                   <button
-      type="button"
-    
-      className="px-4 py-2 bg-gray-200  rounded-md  "
-    >
-      Template Download
-    </button>
+
             </form>
           </div>
         </div>
       )}
+ {/* Bulk Modal */}
+      {showBulkModal && (
+        <div className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50"
+        // style={{ top: modalPosition.top, left: modalPosition.left }}
+        >
+          <div className="w-[416px] bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+
+<div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
+
+            <h2 className="flex text-lg font-semibold mb-4">Bulk upload</h2>
+            <button
+           
+              onClick={() => setShowBulkModal(false)}
+            className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
+              >
+                
+                <X className="w-4 h-4" />
+              </button>
+
+</div>
+
+
+            <div className='flex p-4  '>
+              <div className="bg-[#F8FAFC] p-4 border border-[#F1F5F9] rounded-lg mb-4 ">
+              <p className="font-medium mb-2 text-[#020617]"
+              style={
+              {
+                fontFamily: "Inter",
+                fontWeight: "500",
+                fontSize: "14px",
+                lineHeight: "14px",
+                letterSpacing: "0%",
+
+              }}>Before you proceed</p>
+              
+          {activeTab === "services" && (
+            <>
+             <p className="text-[#0F172A]  mb-3"
+               style={
+              {
+                fontFamily: "Inter",
+                fontWeight: "400",
+                fontSize: "14px",
+                lineHeight: "20px",
+                letterSpacing: "0%",
+
+              }}>
+                Please download our template below to help you organize and upload your services in bulk.
+              </p> 
+            </>
+          )}
+ {activeTab === "products" && (
+            <>
+             <p className="text-[#0F172A]  mb-3"
+               style={
+              {
+                fontFamily: "Inter",
+                fontWeight: "400",
+                fontSize: "14px",
+                lineHeight: "20px",
+                letterSpacing: "0%",
+
+              }}>
+                Please download our template below to help you organize and upload your products in bulk.
+              </p> 
+            </>
+          )}
+
+
+
+              <a
+              href={templateUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 font-sans font-medium text-sm text-[#0F172A] bg-white mt-3 border border-[#E2E8F0] rounded shadow transition block text-center"
+            >
+              Download template
+            </a>
+            </div>
+            </div>
+
+            <p className="text-xs font-semibold font-sans text-[#94A3B8] mb-4">
+              DATE & TIME
+            </p>
+            <p className="text-sm text-[#0F172A] mb-6"
+             style={
+              {
+                fontFamily: "Inter",
+                fontWeight: "400",
+                fontSize: "14px",
+                lineHeight: "20px",
+                letterSpacing: "0%",
+
+              }}>
+              If you have done that already, then you can proceed to do your Bulk upload.
+            </p>
+
+            <div className="flex flex-row   gap-2">
+              <button
+                onClick={() => setShowBulkModal(false)}
+                className="w-full py-2 bg-[#F1F5F9] rounded-lg hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+             <label className="w-full">
+  <input
+    type="file"
+    accept=".xlsx,.xls,.csv"
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        console.log("Selected file:", file);
+        // TODO: handle file upload here
+      }
+    }}
+    className="hidden"
+    id="excel-upload"
+  />
+  <button
+    type="button"
+    onClick={() => document.getElementById('excel-upload')?.click()}
+    className="w-full py-2 bg-[#685BC7] text-white rounded hover:bg-purple-700"
+  >
+    Upload 
+  </button>
+</label>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+{/* 
+      UpdateModal */}
+ {showUpdateModal && (
+        <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
+            <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
+              <h3 className="flex text-lg font-semibold mb-4">Update {activeTab === 'products' ? 'Product' : 'Service'}</h3>
+           
+              <button
+                type="button"
+                onClick={() => setShowUpdateModal(false)}
+                className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
+              >
+                
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+
+            <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
+             <label className="col-span-2">
+  <span>Space Name</span>
+  <input
+    type="text"
+    value={formState.space_name || '_'}
+    disabled
+    className="border border-bg-gray-100 rounded px-3 py-3 w-full mt-1 bg-gray-100 text-gray-700"
+  />
+</label>
+
+
+              <label className="col-span-2 ">
+                <span>Service Name</span>
+                <input
+                  value={formState.service_name}
+                  onChange={(e) =>
+                    setFormState((f) => ({ ...f, service_name: e.target.value }))
+                  }
+                  type="text"
+                  required
+                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+                />
+              </label>
+
+             
+              
+             
+              <label>
+
+                <span>Price</span>
+                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
+              </label>
+             
+
+              {activeTab === 'products' && (
+                <>
+                  <label>
+                    <span>Unit</span>
+                    <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
+                  </label> 
+                  <label>
+                    <span>Stock</span>
+                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 rounded w-full mt-1" />
+                  </label>
+                  <label className="col-span-2">
+                    <span>Image</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setFormState(f => ({ ...f, image: file }));
+                        }
+                      }}
+                      className="border  border-bg-gray-100 px-2 py-3 rounded w-full mt-1"
+                      required
+                    />
+                  </label>
+                  
+                </>
+              )}
+
+
+              {activeTab === 'services' && (
+                <>
+
+   <label>
+                <span>Category</span>
+                  
+                <input
+                  value={formState.service_category}
+                  onChange={(e) =>
+                    setFormState((f) => ({ ...f, service_category: e.target.value }))
+                  }
+                  type="text"
+                  required
+                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+                /> 
+                </label>
+
+
+                  <label>
+                    <span>Duration (minutes)</span>
+                    <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="number" className="border border-bg-gray-100 px-2 py-3  rounded w-full mt-1" />
+                  </label>
+                
+                 
+  <label className="col-span-2">
+  <span>Available Days</span>
+  <Select 
+ className="border border-bg-gray-100"
+  isMulti
+  options={options}
+  value={options.filter(o => formState.available_days.includes(o.value))}
+  onChange={opts =>
+    setFormState(f => ({
+      ...f,
+      available_days: opts.map(o => o.value)
+    }))
+  }
+/>
+
+
+ </label>
+ 
+<label className="col-span-2">
+                    <span>Image</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setFormState(f => ({ ...f, image: file }));
+                        }
+                      }}
+                      className="border  border-bg-gray-100 px-2 py-3 rounded w-full mt-1"
+                      required
+                    />
+                  </label>
+
+
+                 
+                </>
+              )}
+
+              <div className="col-span-2 flex justify-end gap-2 mt-4">
+                <button type="button" onClick={() => setShowUpdateModal(false)} className="px-12 py-2 bg-gray-200 rounded-md">Cancel</button>
+                <button type="submit" className="px-12 py-2 bg-[#685BC7] text-white rounded-md">Save</button>
+        
+              </div>
+
+            </form>
+          </div>
+        </div>
+      )}
+
+
     </div>
   );
 };
