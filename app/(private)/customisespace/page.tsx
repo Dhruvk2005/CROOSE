@@ -9,6 +9,9 @@ const Customisespace = () => {
     const [loading, setLoading] = useState(false)
     const [number, setNumber] = useState("");
     const [image, setImage] = useState<File | null>(null);
+    const [chatBotName, setChatBotName] = useState("")
+    const [StartTime, setStartTime] = useState("")
+    const [EndTime, setEndTime] = useState("")
     const router = useRouter()
 
 
@@ -18,6 +21,10 @@ const Customisespace = () => {
 
         const formData = new FormData();
         formData.append("name", spaceName);
+        formData.append('chatbot_name', chatBotName)
+        formData.append('start_time', StartTime)
+        formData.append('end_time', EndTime)
+        formData.append("category", "default_category");
         // formData.append("number", number); // If needed by backend
         formData.append("is_active", "1"); // String '1' like in Postman
         if (image) {
@@ -74,6 +81,37 @@ const Customisespace = () => {
                             />
                         </div>
 
+                        <div className='flex flex-col gap-[10px]'>
+                            <label className='font-medium text-[14px]'>Assistant name</label>
+                            <input
+                                className='w-full p-[16px] border-2 border-[#D0D5DD] rounded-[16px]'
+                                type='text'
+                                placeholder='Enter Chatbot name'
+                                value={chatBotName}
+                                onChange={(e) => setChatBotName(e.target.value)}
+                            />
+                        </div>
+                        <div className='flex flex-col gap-[10px]'>
+                            <label className='font-medium text-[14px]'>Start time</label>
+                            <input
+                                className='w-full p-[16px] border-2 border-[#D0D5DD] rounded-[16px]'
+                                type='text'
+                                placeholder='Enter Start time'
+                                value={StartTime}
+                                onChange={(e) => setStartTime(e.target.value)}
+                            />
+                        </div>
+                        <div className='flex flex-col gap-[10px]'>
+                            <label className='font-medium text-[14px]'>End time</label>
+                            <input
+                                className='w-full p-[16px] border-2 border-[#D0D5DD] rounded-[16px]'
+                                type='text'
+                                placeholder='Enter End time'
+                                value={EndTime}
+                                onChange={(e) => setEndTime(e.target.value)}
+                            />
+                        </div>
+
                         {/* <div className='flex flex-col gap-[10px]'>
                                 <label className='font-medium text-[14px]'>Number</label>
                                 <input
@@ -98,8 +136,8 @@ const Customisespace = () => {
                         </div>
                     </div>
 
-                   
-                    
+
+
 
                 </div>
             </div>

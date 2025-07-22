@@ -58,6 +58,7 @@ const Signupform = () => {
       ) {
         errors.email = 'Invalid email address';
       }
+      
       if (!values.password || values.password.length < 8) {
         errors.password = 'Password must be at least 8 characters';
       }
@@ -78,7 +79,7 @@ const Signupform = () => {
           });
 
           console.log(res)
-          
+
 
           if (res.token) {
             localStorage.setItem('token', res.token);
@@ -87,21 +88,40 @@ const Signupform = () => {
           //   localStorage.setItem("user",JSON.stringify(res.data))
           // }
 
-          
+
           router.push('/dashboard/space');
         } else {
+          let errorMsg = res.message ;
+
+          if (res.errors?.email?.length > 0) {
+            errorMsg = res.errors.email[0];
+          }
           setSnackbar({
             open: true,
-            message: res.message || 'Registration error!',
+            message: errorMsg,
             severity: 'error',
           });
         }
-      } catch (err) {
-        setSnackbar({
-          open: true,
-          message: 'Registration failed. Please try again.',
-          severity: 'error',
-        });
+      } catch (err:any) {
+        if (err.response?.data?.errors?.email) {
+          setSnackbar({
+            open: true,
+            message: err.response.data.errors.email[0],
+            severity: 'error',
+          });
+        } else if (err.response?.data?.message) {
+          setSnackbar({
+            open: true,
+            message: err.response.data.message,
+            severity: 'error',
+          });
+        } else {
+          setSnackbar({
+            open: true,
+            message: 'Email already exists',
+            severity: 'error',
+          });
+        }
         console.error('Registration Error:', err);
       }
     },

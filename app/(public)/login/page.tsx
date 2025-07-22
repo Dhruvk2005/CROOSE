@@ -8,6 +8,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 // import { useRouter } from 'next/router';
 import { useRouter } from 'next/navigation';
+import Loader from '@/app/(private)/components/loading';
 
 const Login = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -105,7 +106,8 @@ const Login = () => {
     <>
       {
 
-        loading ? "Loading..." : <>
+        loading ?  <Loader/>
+: <>
 
           <Snackbar
             open={snackbarOpen}

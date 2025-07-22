@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { useState, useEffect } from 'react';
 
-
 interface Space {
   id: number;
   name: string;
