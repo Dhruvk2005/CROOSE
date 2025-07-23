@@ -58,7 +58,7 @@ const Signupform = () => {
       ) {
         errors.email = 'Invalid email address';
       }
-      
+
       if (!values.password || values.password.length < 8) {
         errors.password = 'Password must be at least 8 characters';
       }
@@ -87,11 +87,12 @@ const Signupform = () => {
           // if(res.data){
           //   localStorage.setItem("user",JSON.stringify(res.data))
           // }
+         localStorage.setItem('registeredEmail',values.email)
+         console.log("email:",values.email)
 
-
-          router.push('/dashboard/space');
+          router.push(`/emailverification?email=${encodeURIComponent(values.email)}`);
         } else {
-          let errorMsg = res.message ;
+          let errorMsg = res.message;
 
           if (res.errors?.email?.length > 0) {
             errorMsg = res.errors.email[0];
@@ -102,7 +103,7 @@ const Signupform = () => {
             severity: 'error',
           });
         }
-      } catch (err:any) {
+      } catch (err: any) {
         if (err.response?.data?.errors?.email) {
           setSnackbar({
             open: true,
@@ -184,9 +185,9 @@ const Signupform = () => {
                   <input type="password" name="password" id="password" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Password" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
                   {formik.touched.password && formik.errors.password && <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>}
                 </div>
-
-                <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
-
+                {/* <Link href={"/emailverification"} > */}
+                  <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
+                {/* </Link> */}
                 <div className="text-center text-sm text-[#101828] mt-2">
                   Already have an account?{' '}
                   <Link href="/login" className="text-[#685BC7] font-medium hover:underline">Log In</Link>

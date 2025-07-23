@@ -1,6 +1,16 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 const Emailverification = () => {
+
+    const [email,setEmail]= useState('');
+
+    useEffect(()=>{
+  const storedEmail = localStorage.getItem("registeredEmail")
+  setEmail(storedEmail || '')
+
+    },[])
+    
     return (
 
         <div className='flex flex-wrap flex-col min-h-screen' >
@@ -9,9 +19,11 @@ const Emailverification = () => {
                     <div>
                         <img className='w-[173.52877807617188px] mt-[11px] ml-[8px]' src="Vector.png" alt='crooselogo' />
                     </div>
+                    <Link href={'/signup'} >
                     <div className='flex items-center ' >
                         <p className='flex' >Sign Up</p>
                     </div>
+                    </Link>
                 </div>
             </div>
             <div className='w-full h-[80vh] flex flex-col items-center justify-center ' >
@@ -19,7 +31,7 @@ const Emailverification = () => {
                 <div className='w-[358px] h-auto flex gap-[24px] flex-col ' >
                     <div className='flex flex-col gap-[24px]'>
                         <h1 className='text-[#201E1F] font-Inter text-center font-bold text-[36px] ' >Email Verification</h1>
-                        <p className=' text-[#201E1F] text-[14px] font-Inter text-center font-medium' >We sent an email to <b>business@gmail.com </b>  click the link inside to continue</p>
+                        <p className=' text-[#201E1F] text-[14px] font-Inter text-center font-medium' >We sent an email to <b>{email}</b>  click the link inside to continue</p>
                     </div>
 
                     <div>

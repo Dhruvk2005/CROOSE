@@ -133,9 +133,9 @@ useEffect(() => {
 }, []);
 
   const filteredSlideData = slideData.filter(slide => {
-    // if (slide.name === "Create a space" && spacesExist) {
-    //   return false;
-    // }
+    if (slide.name === "Create a space" && spacesExist) {
+      return false;
+    }
     return true;
   });
 

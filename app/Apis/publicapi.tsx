@@ -76,6 +76,7 @@ export const spaceIqCheck = async (data: any) => {
       body: data
 
     })
+    console.log("spaceIqCheck API function response:", res)
     return res
 
 
