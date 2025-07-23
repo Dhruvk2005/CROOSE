@@ -1,9 +1,9 @@
 'use client'
 import React from 'react'
-import Customerspace from '../customerspace/page'
+import Customerspace from '../../customerspace/page'
 import { Icon } from "@iconify/react";
 import UserTable from '../../components/table';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Customerpopup from '../../components/customerpopup';
 import { getCustomer } from '@/app/Apis/publicapi';
 // const users = [
@@ -59,13 +59,13 @@ import { getCustomer } from '@/app/Apis/publicapi';
 //     }
 // ];
 interface SimplifiedCustomer {
-  id: number;
-  name: string;
-  whatsapp_number: string;
-  address: string;
-  pin_code: number;
-  createdAt: string;
-  updatedAt: string;
+    id: number;
+    name: string;
+    whatsapp_number: string;
+    address: string;
+    pin_code: number;
+    createdAt: string;
+    updatedAt: string;
 }
 
 
@@ -74,35 +74,35 @@ const Customers = () => {
     const [users, setUsers] = useState<SimplifiedCustomer[]>([]);
 
 
-  
-useEffect(() => {
-  const fetchCustomers = async () => {
-    try {
-     const data = await getCustomer();
 
-      console.log("API response:", data);
-      
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            try {
+                const data = await getCustomer();
 
-      const customerArray = data?.data || [];
+                console.log("API response:", data);
 
-  const simplified: SimplifiedCustomer[] = customerArray.map((item : any) => ({
-  id: item.id,
-  name: item.name,
-  whatsapp_number: item.whatsapp_number,
-  address: item.address,
-  pin_code: item.pin_code,
-  createdAt: item.created_at,
-  updatedAt: item.updated_at,
-}));
 
-      setUsers(simplified);
-    } catch (err) {
-      console.error("Failed to load customers", err);
-    }
-  };
+                const customerArray = data?.data || [];
 
-  fetchCustomers();
-}, []);
+                const simplified: SimplifiedCustomer[] = customerArray.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                    whatsapp_number: item.whatsapp_number,
+                    address: item.address,
+                    pin_code: item.pin_code,
+                    createdAt: item.created_at,
+                    updatedAt: item.updated_at,
+                }));
+
+                setUsers(simplified);
+            } catch (err) {
+                console.error("Failed to load customers", err);
+            }
+        };
+
+        fetchCustomers();
+    }, []);
 
 
 
@@ -210,13 +210,13 @@ useEffect(() => {
                                         <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
                                         <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
                                     </button>
-                                   
-                                        <button className=' w-[121px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[9px] ' >
-                                            <Icon icon="uil:calender" width="24" height="24" style={{ color: "#667085" }} />
-                                            <p className='font-semibold text-[16px]  text-[#344054] ' >Select</p>
-                                        </button>
 
-                                
+                                    <button className=' w-[121px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[9px] ' >
+                                        <Icon icon="uil:calender" width="24" height="24" style={{ color: "#667085" }} />
+                                        <p className='font-semibold text-[16px]  text-[#344054] ' >Select</p>
+                                    </button>
+
+
                                 </li>
                                 <li className='flex gap-[12px] ' >
                                     <div className="w-full max-w-[320px] flex items-center gap-2 border-[2px] border-[#EAECF0] bg-white px-3 py-2 rounded-[8px]">
@@ -251,30 +251,30 @@ useEffect(() => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          {users.map((user, index) => (
-    <tr key={user.id || index} className="border-b border-[#EAECF0]">
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-          />
-          <div>
-            <div className="text-[#101828] font-medium">{user.name}</div>
-            <div className="text-gray-500 text-sm"></div>
-          </div>
-        </div>
-      </td>
-      <td className="px-6 py-4">Active</td>
-      <td className="px-6 py-4 text-[#101828]">{user.whatsapp_number}</td>
-      <td className="px-6 py-4 text-[#475467]">{user.address}</td>
-      <td className="px-6 py-4 text-[#475467]">{user.pin_code}</td>
-      <td className="px-6 py-4 text-[#475467]">
-        <Icon icon="bi:three-dots-vertical" width="16" height="16" />
-      </td>
-    </tr>
-  ))}
-</tbody>
+                                            {users.map((user, index) => (
+                                                <tr key={user.id || index} className="border-b border-[#EAECF0]">
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="flex items-center gap-3">
+                                                            <input
+                                                                type="checkbox"
+                                                                className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
+                                                            />
+                                                            <div>
+                                                                <div className="text-[#101828] font-medium">{user.name}</div>
+                                                                <div className="text-gray-500 text-sm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4">Active</td>
+                                                    <td className="px-6 py-4 text-[#101828]">{user.whatsapp_number}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">{user.address}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">{user.pin_code}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">
+                                                        <Icon icon="bi:three-dots-vertical" width="16" height="16" />
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
                                     </table>
                                 </div>
 
