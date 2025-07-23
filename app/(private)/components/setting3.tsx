@@ -1,22 +1,56 @@
+'use client'
 import React from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useContext } from 'react';
+import { SettingContext } from '@/app/context/SettingContext';
+import { logoutapi } from "@/app/Apis/publicapi";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const Page = () => {
+const Setting3 = () => {
+  const { setOpenSetting3 } = useContext<any>(SettingContext)
+  const { setOpenSetting1 } = useContext<any>(SettingContext)
+  const { setOpenSetting2 } = useContext<any>(SettingContext)
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const router = useRouter()
+
+
+  const handlelogout = async () => {
+
+
+    try {
+      await logoutapi({});
+      localStorage.removeItem("token");
+      setOpenSetting3(false);
+      setSnackbarMessage('Logout successful');
+      setOpenSnackbar(true);
+
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    } catch (err: any) {
+      setSnackbarMessage(err.message || "Logout failed");
+      setOpenSnackbar(true);
+    }
+
+  };
   return (
     <div>
-      <div className="relative min-h-screen h-[900px]  bg-gray-100 flex justify-center items-center">
-        <div className="absolute  w-full max-w-[717px] h-[671px] bg-[#ffffff] z-10 rounded-[16px] border-[#E2E4E84D] border-1 ">
-          <section className="w-full h-[60px] flex items-center justify-between border-b border-[#E5E5E5] px-4 sm:px-[12px] py-2 opacity-100">
-            <span className="flex-1 font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#111015]">
+      <div className="fixed inset-0 flex  items-center justify-center bg-[#9999] p-4 sm:p-6">
+
+        <div className="absolute w-full max-w-[717px] h-[732px] bg-[#ffffff] z-10 rounded-[16px] border-[#E2E4E84D] border-1 ">
+
+          <section className="w-full h-auto flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
+            <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
               Settings
             </span>
-            <span className="w-9 h-9 rounded-full border flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA] ml-2">
-              <Icon
-                icon="iconamoon:close-bold"
-                width="24"
-                height="24"
-                style={{ color: "#000" }}
-              />
+            <span className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA]" onClick={() => {setOpenSetting1(false)
+              setOpenSetting2(false)
+              setOpenSetting3(false)
+            }} >
+              <Icon icon="iconamoon:close-bold" width="24" height="24" style={{ color: '#000' }} />
             </span>
           </section>
 
@@ -24,12 +58,20 @@ const Page = () => {
             <div className="w-full flex flex-col gap-6">
               <div className="w-full flex flex-wrap items-center gap-2 sm:gap-5">
                 <div className="flex flex-wrap gap-2 w-full">
-                  <button className="rounded-sm text-sm px-3 py-2">
+                  <button className="rounded-sm text-sm px-3 py-2" onClick={() => {
+                    setOpenSetting1(true)
+                    setOpenSetting2(false)
+                    setOpenSetting3(false)
+                  }}  >
                     <span className="font-semibold text-[14px] text-[#667085]">
                       Profile
                     </span>
                   </button>
-                  <button className="rounded-sm    text-sm px-3 py-2">
+                  <button className="rounded-sm    text-sm px-3 py-2" onClick={() => {
+                    setOpenSetting1(false)
+                    setOpenSetting2(true)
+                    setOpenSetting3(false)
+                  }}  >
                     <span className="font-semibold text-[14px] text-[#667085] ">
                       Security
                     </span>
@@ -38,6 +80,9 @@ const Page = () => {
                     <span className="font-semibold text-[14px] text-[#685BC7]">
                       Billing
                     </span>
+                  </button>
+                  <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout} >
+                    <span className="font-semibold text-[14px] text-[#667085]">Log Out</span>
                   </button>
                 </div>
               </div>
@@ -223,4 +268,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Setting3;

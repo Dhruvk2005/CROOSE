@@ -1,66 +1,112 @@
 'use client'
 import React from 'react'
-import Customerspace from '../customerspace/page'
+import Customerspace from '../../customerspace/page'
 import { Icon } from "@iconify/react";
 import UserTable from '../../components/table';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Customerpopup from '../../components/customerpopup';
+import { getCustomer } from '@/app/Apis/publicapi';
+// const users = [
+//     {
+//         name: "Neil Sims",
+//         email: "neil.sims@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "12",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     },
+//     {
+//         name: "Bonnie Green",
+//         email: "bonnie@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "3",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     },
+//     {
+//         name: "Jese Leos",
+//         email: "jese@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "6",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     },
+//     {
+//         name: "Thomas Lean",
+//         email: "thomes@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "19",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     },
+//     {
+//         name: "Leslie Livingston",
+//         email: "leslie@flowbite.com",
+//         img: "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+//         Status: "Active",
+//         PhoneNumber: "0241763214",
+//         TotalSpent: "$18",
+//         Noofvisits: "4",
+//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
+//     }
+// ];
+interface SimplifiedCustomer {
+    id: number;
+    name: string;
+    whatsapp_number: string;
+    address: string;
+    pin_code: number;
+    createdAt: string;
+    updatedAt: string;
+}
 
-const users = [
-    {
-        name: "Neil Sims",
-        email: "neil.sims@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "12",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    },
-    {
-        name: "Bonnie Green",
-        email: "bonnie@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "3",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    },
-    {
-        name: "Jese Leos",
-        email: "jese@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "6",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    },
-    {
-        name: "Thomas Lean",
-        email: "thomes@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "19",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    },
-    {
-        name: "Leslie Livingston",
-        email: "leslie@flowbite.com",
-        img: "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-        Status: "Active",
-        PhoneNumber: "0241763214",
-        TotalSpent: "$18",
-        Noofvisits: "4",
-        DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-    }
-];
 
 const Customers = () => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+    const [users, setUsers] = useState<SimplifiedCustomer[]>([]);
+
+
+
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            try {
+                const data = await getCustomer();
+
+                console.log("API response:", data);
+
+
+                const customerArray = data?.data || [];
+
+                const simplified: SimplifiedCustomer[] = customerArray.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                    whatsapp_number: item.whatsapp_number,
+                    address: item.address,
+                    pin_code: item.pin_code,
+                    createdAt: item.created_at,
+                    updatedAt: item.updated_at,
+                }));
+
+                setUsers(simplified);
+            } catch (err) {
+                console.error("Failed to load customers", err);
+            }
+        };
+
+        fetchCustomers();
+    }, []);
+
+
+
+
     return (
         <div>
             <div>
@@ -164,13 +210,13 @@ const Customers = () => {
                                         <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
                                         <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
                                     </button>
-                                   
-                                        <button className=' w-[121px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[9px] ' >
-                                            <Icon icon="uil:calender" width="24" height="24" style={{ color: "#667085" }} />
-                                            <p className='font-semibold text-[16px]  text-[#344054] ' >Select</p>
-                                        </button>
 
-                                
+                                    <button className=' w-[121px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[9px] ' >
+                                        <Icon icon="uil:calender" width="24" height="24" style={{ color: "#667085" }} />
+                                        <p className='font-semibold text-[16px]  text-[#344054] ' >Select</p>
+                                    </button>
+
+
                                 </li>
                                 <li className='flex gap-[12px] ' >
                                     <div className="w-full max-w-[320px] flex items-center gap-2 border-[2px] border-[#EAECF0] bg-white px-3 py-2 rounded-[8px]">
@@ -198,33 +244,31 @@ const Customers = () => {
                                                 <th className="px-6 py-3">Customer</th>
                                                 <th className="px-6 py-3">Status</th>
                                                 <th className="px-6 py-3">Phone Number</th>
-                                                <th className="px-6 py-3">Total Spent</th>
-                                                <th className="px-6 py-3">No of visits</th>
-                                                <th className="px-6 py-3">Date of Last Transaction</th>
+                                                <th className="px-6 py-3">Address</th>
+                                                <th className="px-6 py-3">Pin Code</th>
+                                                {/* <th className="px-6 py-3">Date of Last Transaction</th> */}
 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {users.map((user, index) => (
-                                                <tr key={index} className="border-b border-[#EAECF0]">
+                                                <tr key={user.id || index} className="border-b border-[#EAECF0]">
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                         <div className="flex items-center gap-3">
                                                             <input
                                                                 type="checkbox"
                                                                 className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
                                                             />
-                                                            <img className="w-10 h-10 rounded-full" src={user.img} alt={user.name} />
                                                             <div>
                                                                 <div className="text-[#101828] font-medium">{user.name}</div>
-                                                                <div className="text-gray-500 text-sm">{user.email}</div>
+                                                                <div className="text-gray-500 text-sm"></div>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className="px-6 py-4">{user.Status}</td>
-                                                    <td className="px-6 py-4 text-[#101828]">{user.PhoneNumber}</td>
-                                                    <td className="px-6 py-4 text-[#475467]">{user.TotalSpent}</td>
-                                                    <td className="px-6 py-4 text-[#475467]">{user.Noofvisits}</td>
-                                                    <td className="px-6 py-4 text-[#475467]">{user.Status}</td>
+                                                    <td className="px-6 py-4">Active</td>
+                                                    <td className="px-6 py-4 text-[#101828]">{user.whatsapp_number}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">{user.address}</td>
+                                                    <td className="px-6 py-4 text-[#475467]">{user.pin_code}</td>
                                                     <td className="px-6 py-4 text-[#475467]">
                                                         <Icon icon="bi:three-dots-vertical" width="16" height="16" />
                                                     </td>

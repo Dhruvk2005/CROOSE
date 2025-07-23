@@ -1,4 +1,5 @@
 // utils/axiosRequest.ts
+
 import axios, { AxiosRequestConfig } from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -38,6 +39,86 @@ export const axiosRequest = async ({
   }
 };
 
+
+
+export const createSpace = async (formData: FormData) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.post(
+      `${BASE_URL}/api/create_space`,
+      
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // Do NOT set Content-Type for FormData, Axios handles it.
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const getCustomer = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    console.log("Token:", token);
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/getCustomer`,
+     
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Space List Response:", res);
+    return res;
+
+  } catch (err: any) {
+    if (err.response) {
+      console.error("Error Response Data:", err.response.data);
+      console.error("Error Response Status:", err.response.status);
+    } else {
+      console.error("Error:", err.message);
+    }
+  }
+};
+
+
+
+export const getSpaceList = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    console.log("Token:", token);
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/get_space_list`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Space List Response:", res);
+    return res;
+
+  } catch (err: any) {
+    if (err.response) {
+      console.error("Error Response Data:", err.response.data);
+      console.error("Error Response Status:", err.response.status);
+    } else {
+      console.error("Error:", err.message);
+    }
+  }
+};
+
+
+
 export const appointmentList = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -54,6 +135,19 @@ export const appointmentList = async () => {
   }
 };
 
+export const BussinessCategories = async () => {
+  try {
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/business_categories`,
+
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
 export const updateAppointmentStatus = async (id: number, status: string) => {
   try {
     const token = localStorage.getItem("token");
@@ -74,6 +168,31 @@ export const updateAppointmentStatus = async (id: number, status: string) => {
     throw err;
   }
 };
+//https://joincroose.com/croose/api/space
+export const GetSpaceId = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Token not found in localStorage");
+    }
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/space`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Fetched spaces from API →", res); // Log just the data
+    return res; // ✅ Only return the data part
+  } catch (err) {
+    console.error("Error fetching space data:", err);
+    throw err;
+  }
+};
+
 
 export const addProduct = async (formData: FormData) => {
   const token = localStorage.getItem("token");
@@ -110,7 +229,7 @@ export const getAllProducts = async () => {
     const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: "get",
-      url: `${BASE_URL}/api/products/products_list`,
+      url: `${BASE_URL}/api/products`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -125,7 +244,7 @@ export const getAllProducts = async () => {
 export const getAllServices = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.get(`${BASE_URL}/api/services/get_services`, {
+    const res = await axios.get(`${BASE_URL}/api/services`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
