@@ -46,7 +46,7 @@ export const createSpace = async (formData: FormData) => {
     const token = localStorage.getItem("token");
     const res = await axios.post(
       `${BASE_URL}/api/create_space`,
-      
+
       formData,
       {
         headers: {
@@ -57,10 +57,32 @@ export const createSpace = async (formData: FormData) => {
     );
     return res.data;
   } catch (err) {
+
+
     console.log(err);
     throw err;
   }
 };
+
+ export const spaceIqCheck = async (data: any) => {
+      try {
+        const token = localStorage.getItem("token")
+        const res = await axiosRequest({
+          method: "post",
+          url: `${BASE_URL}/api/checkspaceIQincresed`,
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          body: data
+
+        })
+        return res
+
+
+      } catch (err) {
+        console.log(err)
+      }
+    }
 
 export const getCustomer = async () => {
   try {
@@ -70,7 +92,7 @@ export const getCustomer = async () => {
     const res = await axiosRequest({
       method: "get",
       url: `${BASE_URL}/api/getCustomer`,
-     
+
       headers: {
         Authorization: `Bearer ${token}`,
       },
