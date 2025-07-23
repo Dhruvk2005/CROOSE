@@ -41,7 +41,7 @@ let Accordings = ({index,value,toggleaccordion,openindex}:any)=>{
                                     {openindex == index && (
                                         <div className="  text-[#344054] font-normal">
                                             <p>
-                                              <span className=' rounded-[8px]  text-[#101828] font-semibold font-Inter text-[16px]'> {value.start}</span> <br/>
+                                             
                                                {value.description}
                                             </p>
                                         </div>

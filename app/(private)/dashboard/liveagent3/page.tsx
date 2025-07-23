@@ -49,7 +49,10 @@ const users = [
     count: '5',
     img: '/Profile.png',
   },
-  { number: '+233456789012' },
+  { number: '+233456789012',
+        img: '/Profiledummy.png'
+   },
+
 ];
 const table = [
   { img: '/chat.png', heading: ' Total Chats', num: '896' },
@@ -255,7 +258,8 @@ const Page = () => {
                   </div>
                 </div>
               </div>
-              <section className="super-thin-scrollbar w-full sm:w-[752px] h-auto sm:h-[603px] flex justify-center flex-col opacity-100 rounded-[16px] rotate-0 border border-[#E4E4E7] overflow-y-auto ">
+              <section className="super-thin-scrollbar w-full sm:w-[752px] h-auto sm:h-[603px] flex justify-center flex-col opacity-100
+               rounded-b-[16px] rotate-0 border border-[#E4E4E7] overflow-y-auto ">
                 <section className=" max-w-[752px] h-[547px] super-thin-scrollbar  overflow-y-auto scrollbar-hidden opacity-100 gap-6 pt-6 pr-3 pb-3 pl-3]">
                   <section className="max-w-[728px]   h-[367.81px] flex-col flex gap-2 pl-3 opacity-100]">
                     {message.map((mss, index) => (
