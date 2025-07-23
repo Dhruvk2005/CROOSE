@@ -232,12 +232,43 @@ export const addServices = async (data: any) => {
     throw new Error(err?.message || "Failed to add service.");
   }
 };
+export const uploadBulkFile = async (file: File, activeTab: 'products' | 'services') => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const url =
+      activeTab === 'products'
+        ? `http://68.183.108.227/croose/public/index.php/api/products/bulkupload`
+        : `http://68.183.108.227/croose/public/index.php/api/services/bulkupload`;
+
+    const res = await axiosRequest({
+      method: 'get',
+      url,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // don’t set Content-Type!
+      },
+      body: formData,
+    });
+
+    return res;
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err?.message || "Failed to upload file.");
+  }
+};
+
+
+
 export const updateServices = async (data: any) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axiosRequest({
-      method: 'post',
-      url: `${BASE_URL}/api/services/163`,
+      method: 'put',
+      url: `${BASE_URL}/api/services`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

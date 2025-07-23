@@ -1,9 +1,10 @@
 'use client';
 import { Search, Bell, X } from 'lucide-react';
+import { toast } from 'react-toastify';
 import Select from "react-select";
-import React, { useState, useEffect , useRef } from 'react';
-import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId } from '@/app/Apis/publicapi';
-import {  FiSliders,FiExternalLink  } from "react-icons/fi";
+import React, { useState, useEffect, useRef } from 'react';
+import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
+import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
 //import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
   products: [],
@@ -19,18 +20,19 @@ const options = [
   { value: "sunday", label: "Sunday" }
 ];
 
-const ProductServiceTabs = ({type = 'product'}) => {
+const ProductServiceTabs = ({ type = 'product' }) => {
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  
+
 
   const [spaces, setSpaces] = useState<{ id: number; name: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showBulkModal, setShowBulkModal] = useState(false);
-   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const [message, setMessage] = useState("");
   const [formState, setFormState] = useState({
     space_id: '',
     space_name: '',
@@ -43,17 +45,17 @@ const ProductServiceTabs = ({type = 'product'}) => {
     product_stock: '',
     product_status: '',
 
-           
+
     status: '',
     unit: '',
     type: '',
     image: null as File | null,
     buffer_minutes: '',
-   available_days: [] as string[], 
+    available_days: [] as string[],
     ai_tags: '',
   });
 
-   useEffect(() => {
+  useEffect(() => {
     if (showBulkModal && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setModalPosition({
@@ -87,34 +89,85 @@ const ProductServiceTabs = ({type = 'product'}) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const GetSpaceID = async () => {
-      try {
-        const res = await GetSpaceId(); // this returns { data: [ spaces ] }
-        const spaceArray = res?.spaces;
-        //res?.data?.spaces || res?.data;
-        // Log it to confirm at runtime
-        console.log("Fetched space list:", spaceArray);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-        if (!Array.isArray(spaceArray)) {
-          console.warn("Expected array response but got:", spaceArray);
-          return;
-        }
+    uploadBulkFile(file, activeTab)
+      .then((res) => {
+        console.log("✅ Uploaded:", res);
+        alert("File uploaded successfully!");
+      })
+      .catch((err) => {
+        console.error("❌ Upload failed:", err);
+        alert("Upload failed!");
+      });
+  };
+const handleUpdateItem = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-        const simplified = spaceArray.map((item: any) => ({
-          id: item.id,        // Ensure it's a string for use inside dropdown `value`
-          name: item.name
-        }));
+  try {
+    let updated;
 
-        setSpaces(simplified);
-      } catch (err) {
-        console.error("Failed to load space IDs", err);
+    if (activeTab === 'products') {
+      const formData = new FormData();
+      formData.append('space_id', formState.space_id);
+      
+      formData.append('product_name', formState.product_name);
+      formData.append('product_price', formState.product_price);
+      formData.append('product_stock', formState.product_stock);
+      if (formState.image instanceof File) {
+        formData.append('image', formState.image);
       }
-    };
 
-    GetSpaceID();
-  }, []);
+      updated = await updateProduct(formData); 
 
+    } else {
+      const serviceData = {
+        // make sure you send the `id`
+        space_id: formState.space_id,
+        name: formState.service_name,
+        duration_minutes: parseInt(formState.service_duration),
+        price: parseFloat(formState.service_price),
+        category: formState.service_category,
+
+        available_days: formState.available_days.map((d: string) => d.trim().toLowerCase()),
+      
+      };
+
+      updated = await updateServices(serviceData); 
+    }
+
+    // Update the item in table state
+    if (activeTab === 'products') {
+      setData((prev: any) => ({
+        ...prev,
+        products: prev.products.map((p: any )=>
+          p.space_id === formState.space_id &&
+          p.product_name === formState.product_name
+            ? { ...p, ...updated }
+            : p
+        )
+      }));
+    } else {
+      setData((prev: any) => ({
+        ...prev,
+       services: prev.services.map((s: any )=>
+          s.space_id === formState.space_id &&
+          s.service_name === formState.service_name
+            ? { ...s, ...updated }
+            : s
+        )
+      }));
+    }
+
+    setShowUpdateModal(false);
+     toast.success('✅ Updated successfully!');
+
+  } catch (err: any) {
+    toast.error(err?.response?.data?.message || err.message || 'Failed to update item.');
+  }
+};
 
 
 
@@ -146,13 +199,13 @@ const ProductServiceTabs = ({type = 'product'}) => {
           ...added,
           space_id: formState.space_id,
           name: formState.space_name,
-          product_name : formState.product_name,
+          product_name: formState.product_name,
           // category: formState.category,
-           product_stock: formState.product_stock,
-            product_price: formState.product_price,
+          product_stock: formState.product_stock,
+          product_price: formState.product_price,
           // type: formState.type || 'physical',
           // unit: formState.unit,
-         
+
           // createdAt: added.created_at || new Date().toISOString(),
           image: added.image_url || null,
         };
@@ -168,7 +221,7 @@ const ProductServiceTabs = ({type = 'product'}) => {
           // type: formState.type,
           // unit: formState.unit,
           buffer_minutes: parseInt(formState.buffer_minutes),
-         available_days: formState.available_days.map((day: string) => day.trim().toLowerCase()),
+          available_days: formState.available_days.map((day: string) => day.trim().toLowerCase()),
 
           ai_tags: formState.ai_tags
             .split(',')
@@ -176,12 +229,12 @@ const ProductServiceTabs = ({type = 'product'}) => {
         };
 
         console.log(serviceData);
-       const added = await addServices(serviceData);
-normalized = {
-  id: added.id || Date.now(),
-  ...serviceData,
-  ...added,
-};
+        const added = await addServices(serviceData);
+        normalized = {
+          id: added.id || Date.now(),
+          ...serviceData,
+          ...added,
+        };
 
       }
 
@@ -200,22 +253,22 @@ normalized = {
 
       setFormState({
         space_id: '',
-        space_name: '', 
+        space_name: '',
         service_name: '',
-    service_price: '',
-    service_duration: '',
-    service_category: '',
+        service_price: '',
+        service_duration: '',
+        service_category: '',
         product_name: '',
-          product_price: '',
-    product_stock: '',
-    product_status: '',
+        product_price: '',
+        product_stock: '',
+        product_status: '',
         status: '',
-      
+
         unit: '',
         type: '',
         image: null,
         buffer_minutes: '',
-       available_days: [] as string[], 
+        available_days: [] as string[],
         ai_tags: '',
       });
 
@@ -227,31 +280,32 @@ normalized = {
 
 
   const handleEdit = (item: any) => {
-  const selectedSpace = spaces.find(s => String(s.id) === String(item.space_id));
+    const selectedSpace = spaces.find(s => String(s.id) === String(item.space_id));
 
-  setFormState({
-    ...item,
-    space_id: item.space_id,
-    space_name: selectedSpace?.name || '',
-    service_name: item.service_name,
-    service_category: item.service_category,
-    service_duration: item.service_duration,
-    service_price: item.service_price,
-    available_days: item.available_days || [],
-    unit: item.unit,
-    product_stock: item.product_stock,
-        product_name: item.product_name,
-    product_price: item.product_price,
- 
+    setFormState({
+      ...item,
+      space_id: item.space_id,
+      space_name: selectedSpace?.name || '',
+      service_name: item.service_name,
+      service_category: item.service_category,
+      
+      service_duration: item.service_duration,
+      service_price: item.service_price,
+      available_days: item.available_days || [],
+      unit: item.unit,
+      product_stock: item.product_stock,
+      product_name: item.product_name,
+      product_price: item.product_price,
 
-              
-    status: item.status,
- 
-    image: null,
-  });
 
-  setShowUpdateModal(true);
-};
+
+      status: item.status,
+
+      image: null,
+    });
+
+    setShowUpdateModal(true);
+  };
 
 
   const productCategories = [
@@ -270,11 +324,13 @@ normalized = {
   //   "Wave Caps", "Dye Kits", "Detanglers"
   // ];
 
-const renderTableRows = () => {
-  const items = activeTab === 'products' ? data.products : data.services;
+  console.log(formState,'the formdata')
 
-  return items.map((item: any, idx: number) => (
-    <tr key={item.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
+  const renderTableRows = () => {
+    const items = activeTab === 'products' ? data.products : data.services;
+
+    return items.map((item: any, idx: number) => (
+      <tr key={item.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="flex items-center gap-3">
             <input
@@ -291,77 +347,81 @@ const renderTableRows = () => {
             </div>
           </div>
         </td>
-      
-      <td className="px-4 py-3">{item.space_name}</td>
 
-      {activeTab === "products" && (
-            <>
-          <td className="px-4 py-3">{item.product_name}</td>
-         {/* <td className="px-4 py-3">{item.product_stock}</td>  */}
-          <td className="px-4 py-3">{item.product_stock || '-'}</td>
-         <td className="px-4 py-3">{item.product_price}</td> 
-         <td className="px-4 py-3">
-          <button onClick={() => {
+        <td className="px-4 py-3">{item.space_name}</td>
 
-  
-  setShowUpdateModal(true); }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
-   
-          </td> 
-        
-            </>
-          )}
+        {activeTab === "products" && (
+          <>
+            <td className="px-4 py-3">{item.product_name}</td>
+            {/* <td className="px-4 py-3">{item.product_stock}</td>  */}
+            <td className="px-4 py-3">{item.product_stock || '-'}</td>
+            <td className="px-4 py-3">{item.product_price}</td>
+            <td className="px-4 py-3">
+              <button onClick={() => {
 
-         
-          {activeTab === "services" && (
-            <>
-               <td className="px-4 py-3">{item.service_name}</td>
-               <td className="px-4 py-3">{item.service_category}</td>
-                <td className="px-4 py-3">{item.service_duration ? `${item.service_duration} mins` : '-'}</td>
-             
-         
-         <td className="px-4 py-3">{item.service_price}</td>
-              
-              <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
-                <td className="px-4 py-3">
-          <button        onClick={() => {
 
-  
-  setShowUpdateModal(true); }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
-   
-          </td> 
-            </>
-          )}
-        </tr>
-  ));
-};
+                setShowUpdateModal(true);
+                setFormState(item)
+              }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
+
+            </td>
+
+          </>
+        )}
+
+
+        {activeTab === "services" && (
+          <>
+            <td className="px-4 py-3">{item.service_name}</td>
+            <td className="px-4 py-3">{item.service_category}</td>
+            <td className="px-4 py-3">{item.service_duration ? `${item.service_duration} mins` : '-'}</td>
+
+
+            <td className="px-4 py-3">{item.service_price}</td>
+
+            <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
+            <td className="px-4 py-3">
+              <button onClick={() => {
+
+
+                setFormState(item)
+                setShowUpdateModal(true);
+              }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
+
+            </td>
+          </>
+        )}
+      </tr>
+    ));
+  };
 
 
   // const renderTableRows = () => {
   //   const items = activeTab === 'products' ? data.products : data.services;
   //   return items.map((item: any, idx: number) => (
   //     <tr key={item.id || item.space_name + idx} className="hover:bg-gray-50 border-b border-[#EAECF0]">
-      
 
-        {/* <td className="px-4 py-3">
+
+  {/* <td className="px-4 py-3">
           {
             spaces.find(s => String(s.id) === String(item.space_id))?.name || "-"
           }
         </td> */}
-        // 
-      
-        {/* <td className="px-4 py-3">{item.type}</td> */}
-        {/* <td className="px-4 py-3">{item.unit || '-'}</td> */}
-       
-        // {activeTab === 'services' && (
-           {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */}
-        {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */}
-        
-        //   <>
-          
-        //      </>
-        // )}
+  // 
 
-        {/* <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td> */}
+  {/* <td className="px-4 py-3">{item.type}</td> */ }
+  {/* <td className="px-4 py-3">{item.unit || '-'}</td> */ }
+
+  // {activeTab === 'services' && (
+  {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */ }
+  {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */ }
+
+  //   <>
+
+  //      </>
+  // )}
+
+  {/* <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td> */ }
   //     </tr>
   //   ));
   // };
@@ -408,13 +468,13 @@ const renderTableRows = () => {
 
       <div className="flex justify-between items-center p-4 ">
         <div>
-        
-    <div className='flex gap-2 pb-2'>
-      <button className={`px-4 py-2 rounded ${activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('products')}>Products</button>
-          <button className={`px-4 py-2 rounded ${activeTab === 'services' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('services')}>Services</button>
-        
-    </div>
-            <p className=" text-[#475467]"
+
+          <div className='flex gap-2 pb-2'>
+            <button className={`px-4 py-2 rounded ${activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('products')}>Products</button>
+            <button className={`px-4 py-2 rounded ${activeTab === 'services' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('services')}>Services</button>
+
+          </div>
+          <p className=" text-[#475467]"
             style={
               {
                 fontFamily: "Inter",
@@ -425,14 +485,14 @@ const renderTableRows = () => {
 
               }}>All the details about your customers</p>
         </div>
-       
-        <button 
-        
-       onClick={() => {
 
-  
-  setShowModal(true);
-}}   style={
+        <button
+
+          onClick={() => {
+
+
+            setShowModal(true);
+          }} style={
             {
               fontFamily: "Inter",
               fontWeight: "600",
@@ -441,7 +501,7 @@ const renderTableRows = () => {
               letterSpacing: "0%",
 
             }}>Add {activeTab === 'products' ? 'Product' : 'Service'}</button>
-        
+
       </div>
 
       {/* Filters / Search / Export */}
@@ -461,25 +521,25 @@ const renderTableRows = () => {
           Filters
         </button>
 
-        
-        
+
+
+
+
+        {/* Export Button */}
+        < div className="flex flex-row gap-2 items-center">
           {/* Search Input */}
-          {/* <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white max-w-xs w-full">
+          <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white max-w-xs w-full">
             <FiSearch className="w-5 h-" />
             <input
               type="text"
               placeholder="Search"
               className="flex-1 outline-none bg-transparent text-sm text-gray-700"
             />
-          </div> */}
-
-          {/* Export Button */}
-         < div className="flex flex-row gap-4 items-center">
+          </div>
           <button
             ref={buttonRef}
-        onClick={() => setShowBulkModal(true)}
-        className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
-        style={
+            onClick={() => setShowBulkModal(true)}
+            className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium leading-5 whitespace-nowrap" style={
               {
                 fontFamily: "Inter",
                 fontWeight: "500",
@@ -488,9 +548,9 @@ const renderTableRows = () => {
                 letterSpacing: "0%",
 
               }}>
-       <img src="/icons/bulk_uplod.svg" alt="" />
-        Bulk upload
-      </button>
+            <img src="/icons/bulk_uplod.svg" alt="" sizes='w-3 h-3' />
+            Bulk upload
+          </button>
           <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
             style={
               {
@@ -511,45 +571,36 @@ const renderTableRows = () => {
       <table className="min-w-full text-sm text-left border  text-gray-900 bg-white rounded-md overflow-hidden p-4">
         <thead className="bg-[#F9FAFB] text-[#475467] text-xs font-medium">
           <tr>
-             <th className="px-4 py-2">Photos</th>
-               <th className="px-4 py-2">Space Name</th>
-{activeTab === 'products' && (
-    <>
-      
-      
-          
-            <th className="px-4 py-2">Product Name</th>
-               <th className="px-4 py-2">Stock</th>
-            <th className="px-4 py-2">Price</th>
-            <th className="px-4 py-2">Actions</th>
-           
-    </>
-  )}
-            {/* <th className="px-4 py-2">Photos</th>
+            <th className="px-4 py-2">Photos</th>
             <th className="px-4 py-2">Space Name</th>
-            <th className="px-4 py-2"> Name</th> */}
-            
-            {/* <th className="px-4 py-2">Stock</th>
-            <th className="px-4 py-2">Price</th> */}
-            {/* <th className="px-4 py-2">Type</th> */}
-            {/* <th className="px-4 py-2">Unit</th> */}
-            {/* <th className="px-4 py-2">Stock</th> */}
+            {activeTab === 'products' && (
+              <>
+
+
+
+                <th className="px-4 py-2">Product Name</th>
+                <th className="px-4 py-2">Stock</th>
+                <th className="px-4 py-2">Price</th>
+                <th className="px-4 py-2">Actions</th>
+
+              </>
+            )}
+
             {activeTab === 'services' && (
               <>
 
-          
-            <th className="px-4 py-2">Service Name</th>
-            <th className="px-4 py-2">Category</th>
-              <th className="px-4 py-2">Duration</th>
-            <th className="px-4 py-2">Price</th>
-              
-                {/* <th className="px-4 py-2">Buffer</th> */}
+
+                <th className="px-4 py-2">Service Name</th>
+                <th className="px-4 py-2">Category</th>
+                <th className="px-4 py-2">Duration</th>
+                <th className="px-4 py-2">Price</th>
+
+
                 <th className="px-4 py-2">Available Days</th>
-               <th className="px-4 py-2">Actions</th>
+                <th className="px-4 py-2">Actions</th>
               </>
             )}
-            {/* <th className="px-4 py-2">Image</th> */}
-            {/* <th className="px-4 py-2">Created</th> */}
+
           </tr>
         </thead>
         <tbody>{renderTableRows()}</tbody>
@@ -560,13 +611,13 @@ const renderTableRows = () => {
           <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
             <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
               <h3 className="flex text-lg font-semibold mb-4">New {activeTab === 'products' ? 'Product' : 'Service'}</h3>
-           
+
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
                 className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
               >
-                
+
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -583,7 +634,7 @@ const renderTableRows = () => {
                   setFormState((f) => ({
                     ...f,
                     space_id,
-  space_name: selectedSpace?.name || '',
+                    space_name: selectedSpace?.name || '',
                   }));
                 }}
               >
@@ -609,14 +660,14 @@ const renderTableRows = () => {
                 />
               </label>
 
-             
-                {/* <select value={formState.service_category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" required>
+
+              {/* <select value={formState.service_category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" required>
                   <option value="">Select category</option>
                   {activeTab === 'products'
                     ? productCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)
                     : ['in_store', 'at_home', 'virtual'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select> */}
-             
+
               <label>
 
                 <span>Price</span>
@@ -637,7 +688,7 @@ const renderTableRows = () => {
                   <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> 
+                  </label>
                   <label>
                     <span>Stock</span>
                     <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 rounded w-full mt-1" />
@@ -675,19 +726,19 @@ const renderTableRows = () => {
                     <span>Duration (minutes)</span>
                     <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="number" className="border border-bg-gray-100 px-2 py-3  rounded w-full mt-1" />
                   </label>
-                   <label>
-                <span>Category</span>
-                  
-                <input
-                  value={formState.service_category}
-                  onChange={(e) =>
-                    setFormState((f) => ({ ...f, service_category: e.target.value }))
-                  }
-                  type="text"
-                  required
-                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
-                /> 
-                </label>
+                  <label>
+                    <span>Category</span>
+
+                    <input
+                      value={formState.service_category}
+                      onChange={(e) =>
+                        setFormState((f) => ({ ...f, service_category: e.target.value }))
+                      }
+                      type="text"
+                      required
+                      className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+                    />
+                  </label>
                   {/* <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
@@ -696,34 +747,34 @@ const renderTableRows = () => {
                     <span>Buffer Minutes</span>
                     <input value={formState.buffer_minutes} onChange={(e) => setFormState(f => ({ ...f, buffer_minutes: e.target.value }))} type="number" className="border p-2 rounded w-full mt-1" />
                   </label> */}
-  <label className="col-span-2">
-  <span>Available Days</span>
-  <Select 
- className="border border-bg-gray-100"
-  isMulti
-  options={options}
-  value={options.filter(o => formState.available_days.includes(o.value))}
-  onChange={opts =>
-    setFormState(f => ({
-      ...f,
-      available_days: opts.map(o => o.value)
-    }))
-  }
-/>
+                  <label className="col-span-2">
+                    <span>Available Days</span>
+                    <Select
+                      className="border border-bg-gray-100"
+                      isMulti
+                      options={options}
+                      value={options.filter(o => formState?.available_days?.includes(o.value))}
+                      onChange={opts =>
+                        setFormState(f => ({
+                          ...f,
+                          available_days: opts.map(o => o.value)
+                        }))
+                      }
+                    />
 
-  {/* OPTIONAL: Show tags for selected days */}
-  {/* <div className="flex flex-wrap gap-2 mt-2">
+                    {/* OPTIONAL: Show tags for selected days */}
+                    {/* <div className="flex flex-wrap gap-2 mt-2">
     {formState.available_days.map(day => (
       <span key={day} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
         {day.charAt(0).toUpperCase() + day.slice(1)}
       </span>
     ))}
   </div> */}
- </label>
+                  </label>
 
 
 
-                   {/* <label className="col-span-2">
+                  {/* <label className="col-span-2">
                     <span>AI Tags (comma separated)</span>
                     <input value={formState.ai_tags} onChange={(e) => setFormState(f => ({ ...f, ai_tags: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label> */}
@@ -733,107 +784,107 @@ const renderTableRows = () => {
               <div className="col-span-2 flex justify-end gap-2 mt-4">
                 <button type="button" onClick={() => setShowModal(false)} className="px-12 py-2 bg-gray-200 rounded-md">Cancel</button>
                 <button type="submit" className="px-12 py-2 bg-[#685BC7] text-white rounded-md">Save</button>
-        
+
               </div>
 
             </form>
           </div>
         </div>
       )}
- {/* Bulk Modal */}
+      {/* Bulk Modal */}
       {showBulkModal && (
         <div className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50"
         // style={{ top: modalPosition.top, left: modalPosition.left }}
         >
           <div className="w-[416px] bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
 
-<div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
+            <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
 
-            <h2 className="flex text-lg font-semibold mb-4">Bulk upload</h2>
-            <button
-           
-              onClick={() => setShowBulkModal(false)}
-            className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
+              <h2 className="flex text-lg font-semibold mb-4">Bulk upload</h2>
+              <button
+
+                onClick={() => setShowBulkModal(false)}
+                className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
               >
-                
+
                 <X className="w-4 h-4" />
               </button>
 
-</div>
+            </div>
 
 
             <div className='flex p-4  '>
               <div className="bg-[#F8FAFC] p-4 border border-[#F1F5F9] rounded-lg mb-4 ">
-              <p className="font-medium mb-2 text-[#020617]"
-              style={
-              {
-                fontFamily: "Inter",
-                fontWeight: "500",
-                fontSize: "14px",
-                lineHeight: "14px",
-                letterSpacing: "0%",
+                <p className="font-medium mb-2 text-[#020617]"
+                  style={
+                    {
+                      fontFamily: "Inter",
+                      fontWeight: "500",
+                      fontSize: "14px",
+                      lineHeight: "14px",
+                      letterSpacing: "0%",
 
-              }}>Before you proceed</p>
-              
-          {activeTab === "services" && (
-            <>
-             <p className="text-[#0F172A]  mb-3"
-               style={
-              {
-                fontFamily: "Inter",
-                fontWeight: "400",
-                fontSize: "14px",
-                lineHeight: "20px",
-                letterSpacing: "0%",
+                    }}>Before you proceed</p>
 
-              }}>
-                Please download our template below to help you organize and upload your services in bulk.
-              </p> 
-            </>
-          )}
- {activeTab === "products" && (
-            <>
-             <p className="text-[#0F172A]  mb-3"
-               style={
-              {
-                fontFamily: "Inter",
-                fontWeight: "400",
-                fontSize: "14px",
-                lineHeight: "20px",
-                letterSpacing: "0%",
+                {activeTab === "services" && (
+                  <>
+                    <p className="text-[#0F172A]  mb-3"
+                      style={
+                        {
+                          fontFamily: "Inter",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          lineHeight: "20px",
+                          letterSpacing: "0%",
 
-              }}>
-                Please download our template below to help you organize and upload your products in bulk.
-              </p> 
-            </>
-          )}
+                        }}>
+                      Please download our template below to help you organize and upload your services in bulk.
+                    </p>
+                  </>
+                )}
+                {activeTab === "products" && (
+                  <>
+                    <p className="text-[#0F172A]  mb-3"
+                      style={
+                        {
+                          fontFamily: "Inter",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          lineHeight: "20px",
+                          letterSpacing: "0%",
+
+                        }}>
+                      Please download our template below to help you organize and upload your products in bulk.
+                    </p>
+                  </>
+                )}
 
 
 
-              <a
-              href={templateUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 font-sans font-medium text-sm text-[#0F172A] bg-white mt-3 border border-[#E2E8F0] rounded shadow transition block text-center"
-            >
-              Download template
-            </a>
-            </div>
+                <a
+                  href={templateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 font-sans font-medium text-sm text-[#0F172A] bg-white mt-3 border border-[#E2E8F0] rounded shadow transition block text-center"
+                >
+                  Download template
+                </a>
+              </div>
             </div>
 
             <p className="text-xs font-semibold font-sans text-[#94A3B8] mb-4">
               DATE & TIME
             </p>
             <p className="text-sm text-[#0F172A] mb-6"
-             style={
-              {
-                fontFamily: "Inter",
-                fontWeight: "400",
-                fontSize: "14px",
-                lineHeight: "20px",
-                letterSpacing: "0%",
+              style={
+                {
+                  fontFamily: "Inter",
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  letterSpacing: "0%",
 
-              }}>
+                }}>
               If you have done that already, then you can proceed to do your Bulk upload.
             </p>
 
@@ -844,67 +895,67 @@ const renderTableRows = () => {
               >
                 Cancel
               </button>
-             <label className="w-full">
-  <input
-    type="file"
-    accept=".xlsx,.xls,.csv"
-    onChange={(e) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        console.log("Selected file:", file);
-        // TODO: handle file upload here
-      }
-    }}
-    className="hidden"
-    id="excel-upload"
-  />
-  <button
-    type="button"
-    onClick={() => document.getElementById('excel-upload')?.click()}
-    className="w-full py-2 bg-[#685BC7] text-white rounded hover:bg-purple-700"
-  >
-    Upload 
-  </button>
-</label>
+              <label className="w-full">
+                <input
+                  type="file"
+                  accept=".xlsx,.xls,.csv"
+                  onChange={handleFileChange}
+                  hidden
+                  id="file-upload"
+                />
+                <button
+                  type="button"
+                  onClick={() => document.getElementById('file-upload')?.click()}
+                  className="w-full py-2 bg-[#685BC7] text-white rounded hover:bg-purple-700"
+                >
+                  Upload
+                </button>
+              </label>
 
             </div>
 
           </div>
         </div>
       )}
-{/* 
+
+      {message && (
+        <div className="text-sm text-green-600">
+          {message}
+        </div>
+      )}
+      {/* 
       UpdateModal */}
- {showUpdateModal && (
+      {showUpdateModal && (
         <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
             <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
               <h3 className="flex text-lg font-semibold mb-4">Update {activeTab === 'products' ? 'Product' : 'Service'}</h3>
-           
+
               <button
                 type="button"
                 onClick={() => setShowUpdateModal(false)}
                 className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
               >
-                
+
                 <X className="w-4 h-4" />
               </button>
             </div>
 
 
-            <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
-             <label className="col-span-2">
-  <span>Space Name</span>
-  <input
-    type="text"
-    value={formState.space_name || '_'}
-    disabled
-    className="border border-bg-gray-100 rounded px-3 py-3 w-full mt-1 bg-gray-100 text-gray-700"
-  />
-</label>
+            <form onSubmit={handleUpdateItem} className="grid grid-cols-2 gap-4">
+              <label className="col-span-2">
+                <span>Space Name</span>
+                <input
+                  type="text"
+                  value={formState.space_name || '_'}
+                  disabled
+                  className="border border-bg-gray-100 rounded px-3 py-3 w-full mt-1 bg-gray-100 text-gray-700"
+                />
+              </label>
 
 
               <label className="col-span-2 ">
-                <span>Service Name</span>
+                <span> Name</span>
                 <input
                   value={formState.service_name}
                   onChange={(e) =>
@@ -916,22 +967,22 @@ const renderTableRows = () => {
                 />
               </label>
 
-             
-              
-             
+
+
+
               <label>
 
                 <span>Price</span>
                 <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
               </label>
-             
+
 
               {activeTab === 'products' && (
                 <>
                   <label>
                     <span>Unit</span>
                     <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> 
+                  </label>
                   <label>
                     <span>Stock</span>
                     <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 rounded w-full mt-1" />
@@ -951,7 +1002,7 @@ const renderTableRows = () => {
                       required
                     />
                   </label>
-                  
+
                 </>
               )}
 
@@ -959,46 +1010,46 @@ const renderTableRows = () => {
               {activeTab === 'services' && (
                 <>
 
-   <label>
-                <span>Category</span>
-                  
-                <input
-                  value={formState.service_category}
-                  onChange={(e) =>
-                    setFormState((f) => ({ ...f, service_category: e.target.value }))
-                  }
-                  type="text"
-                  required
-                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
-                /> 
-                </label>
+                  <label>
+                    <span>Category</span>
+
+                    <input
+                      value={formState.service_category}
+                      onChange={(e) =>
+                        setFormState((f) => ({ ...f, service_category: e.target.value }))
+                      }
+                      type="text"
+                      required
+                      className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+                    />
+                  </label>
 
 
                   <label>
                     <span>Duration (minutes)</span>
                     <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="number" className="border border-bg-gray-100 px-2 py-3  rounded w-full mt-1" />
                   </label>
-                
-                 
-  <label className="col-span-2">
-  <span>Available Days</span>
-  <Select 
- className="border border-bg-gray-100"
-  isMulti
-  options={options}
-  value={options.filter(o => formState.available_days.includes(o.value))}
-  onChange={opts =>
-    setFormState(f => ({
-      ...f,
-      available_days: opts.map(o => o.value)
-    }))
-  }
-/>
 
 
- </label>
- 
-<label className="col-span-2">
+                  <label className="col-span-2">
+                    <span>Available Days</span>
+                    <Select
+                      className="border border-bg-gray-100"
+                      isMulti
+                      options={options}
+                      value={options.filter(o => formState?.available_days?.includes(o.value))}
+                      onChange={opts =>
+                        setFormState(f => ({
+                          ...f,
+                          available_days: opts.map(o => o.value)
+                        }))
+                      }
+                    />
+
+
+                  </label>
+
+                  <label className="col-span-2">
                     <span>Image</span>
                     <input
                       type="file"
@@ -1015,14 +1066,14 @@ const renderTableRows = () => {
                   </label>
 
 
-                 
+
                 </>
               )}
 
               <div className="col-span-2 flex justify-end gap-2 mt-4">
                 <button type="button" onClick={() => setShowUpdateModal(false)} className="px-12 py-2 bg-gray-200 rounded-md">Cancel</button>
                 <button type="submit" className="px-12 py-2 bg-[#685BC7] text-white rounded-md">Save</button>
-        
+
               </div>
 
             </form>
