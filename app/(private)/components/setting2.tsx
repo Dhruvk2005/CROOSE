@@ -1,10 +1,5 @@
 'use client'
 
-
-
-
-
-
 import React, { useState, useEffect } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import DeletePopup from './settingDelete';
@@ -64,14 +59,14 @@ const SettingTwo = (props: any) => {
 
         <div className="relative z-10 flex justify-center items-center w-full">
           <div className="w-full max-w-[717px] h-[732px] opacity-100 border-[#E2E4E84D] bg-[#ffffff] rounded-[16px] border border-solid">
-            <section className="w-full  h-[60px]  flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
-              <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
-                Settings
-              </span>
-              <span className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA]" onClick={() => setOpenSetting2(false)} >
-                <Icon icon="iconamoon:close-bold" width="24" height="24" style={{ color: '#000' }} />
-              </span>
-            </section>
+            <section className="w-full h-auto flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
+                         <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
+                           Settings
+                         </span>
+                         <span className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA]" onClick={() => setOpenSetting1(false)} >
+                           <Icon icon="iconamoon:close-bold" width="24" height="24" style={{ color: '#000' }} />
+                         </span>
+                       </section>
 
             <section className="w-full  px-4 py-6 sm:px-[64px] bg-[#ffffff] h-[611px] sm:py-[32px] flex flex-col gap-8">
               <div className="w-full flex flex-col gap-6">
