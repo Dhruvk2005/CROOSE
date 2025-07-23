@@ -64,25 +64,25 @@ export const createSpace = async (formData: FormData) => {
   }
 };
 
- export const spaceIqCheck = async (data: any) => {
-      try {
-        const token = localStorage.getItem("token")
-        const res = await axiosRequest({
-          method: "post",
-          url: `${BASE_URL}/api/checkspaceIQincresed`,
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          body: data
+export const spaceIqCheck = async (data: any) => {
+  try {
+    const token = localStorage.getItem("token")
+    const res = await axiosRequest({
+      method: "post",
+      url: `${BASE_URL}/api/checkspaceIQincresed`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: data
 
-        })
-        return res
+    })
+    return res
 
 
-      } catch (err) {
-        console.log(err)
-      }
-    }
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 export const getCustomer = async () => {
   try {
