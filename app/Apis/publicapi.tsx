@@ -204,15 +204,15 @@ export const addProduct = async (formData: FormData) => {
   });
 };
 //update product
-export const updateProduct = async (formData: FormData) => {
+export const updateProduct = async (id : string ,data: any) => {
   const token = localStorage.getItem("token");
   return await axiosRequest({
-    method: "post",
-    url: `${BASE_URL}/api/products/{products_id}`,
+    method: 'put',
+    url: `${BASE_URL}/api/products/${id}`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    formData,
+ body: data,
   });
 };
 export const addServices = async (data: any) => {
@@ -263,12 +263,12 @@ export const uploadBulkFile = async (file: File, activeTab: 'products' | 'servic
 
 
 
-export const updateServices = async (data: any) => {
+export const updateServices = async (id : string ,data: any) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: 'put',
-      url: `${BASE_URL}/api/services`,
+      url: `${BASE_URL}/api/services/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

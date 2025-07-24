@@ -1,10 +1,12 @@
 'use client';
 import { Search, Bell, X } from 'lucide-react';
+import axios from "axios";
 import { toast } from 'react-toastify';
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from 'react';
 import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
+import Pagination from '../../components/pagination';
 //import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
   products: [],
@@ -24,7 +26,19 @@ const ProductServiceTabs = ({ type = 'product' }) => {
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+// products state
+const [products, setProducts] = useState<any[]>([]);
+const [productsPage, setProductsPage] = useState(1);
+const [productsTotalPages, setProductsTotalPages] = useState(1);
+const [updatedata, setUpdateData] = useState({
+  products: [],
+  services: [],
+});
 
+// services state
+const [services, setServices] = useState<any[]>([]);
+const [servicesPage, setServicesPage] = useState(1);
+const [servicesTotalPages, setServicesTotalPages] = useState(1);
 
   const [spaces, setSpaces] = useState<{ id: number; name: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -41,6 +55,8 @@ const ProductServiceTabs = ({ type = 'product' }) => {
     service_duration: '',
     service_category: '',
     product_name: '',
+    product_id: '',
+    service_id: '',
     product_price: '',
     product_stock: '',
     product_status: '',
@@ -89,6 +105,28 @@ const ProductServiceTabs = ({ type = 'product' }) => {
     fetchData();
   }, []);
 
+const handleProductsPageChange = (page: number) => {
+  setProductsPage(page);
+};
+
+const handleServicesPageChange = (page: number) => {
+  setServicesPage(page);
+};
+
+
+ const fetchProducts = async (page: number) => {
+  const res = await axios.get(`/api/products?page=${page}`);
+  setProducts(res.data.data);
+  setProductsTotalPages(res.data.meta.last_page);
+};
+
+const fetchServices = async (page: number) => {
+  const res = await axios.get(`/api/services?page=${page}`);
+  setServices(res.data.data);
+  setServicesTotalPages(res.data.meta.last_page);
+};
+
+    const totalPages = 5;
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -110,20 +148,43 @@ const handleUpdateItem = async (e: React.FormEvent) => {
     let updated;
 
     if (activeTab === 'products') {
-      const formData = new FormData();
-      formData.append('space_id', formState.space_id);
-      
-      formData.append('product_name', formState.product_name);
-      formData.append('product_price', formState.product_price);
-      formData.append('product_stock', formState.product_stock);
-      if (formState.image instanceof File) {
-        formData.append('image', formState.image);
-      }
+      const product_id = formState.product_id;
+  const productData = {
+        // make sure you send the `id`
+        space_id: formState.space_id,
+        name: formState.product_name,
+  price: parseFloat(formState.product_price),
+  stock:formState.product_stock,
 
-      updated = await updateProduct(formData); 
+
+
+
+}
+    // if (formState.image instanceof File) {
+      //   formData.append('image', formState.image);
+  // }
+
+      // const formData = new FormData();
+
+// const product_id = formState.product_id;
+
+
+      
+      // formData.append('space_id', formState.space_id);
+      
+      // formData.append('name', formState.product_name);
+      // formData.append('price', formState.product_price);
+      // formData.append('stock', formState.product_stock);
+     
+      // }
+console.log("Update product response", updated);
+
+      updated = await updateProduct(product_id ,productData); 
 
     } else {
+       const service_id = formState.service_id;
       const serviceData = {
+       
         // make sure you send the `id`
         space_id: formState.space_id,
         name: formState.service_name,
@@ -134,8 +195,9 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         available_days: formState.available_days.map((d: string) => d.trim().toLowerCase()),
       
       };
+console.log("Update response", updated);
 
-      updated = await updateServices(serviceData); 
+      updated = await updateServices(service_id ,serviceData); 
     }
 
     // Update the item in table state
@@ -143,9 +205,8 @@ const handleUpdateItem = async (e: React.FormEvent) => {
       setData((prev: any) => ({
         ...prev,
         products: prev.products.map((p: any )=>
-          p.space_id === formState.space_id &&
-          p.product_name === formState.product_name
-            ? { ...p, ...updated }
+          p.product_id === formState.product_id
+            ? { ...p, ...updated.data }
             : p
         )
       }));
@@ -153,8 +214,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
       setData((prev: any) => ({
         ...prev,
        services: prev.services.map((s: any )=>
-          s.space_id === formState.space_id &&
-          s.service_name === formState.service_name
+          s.service_id === formState.service_id 
             ? { ...s, ...updated }
             : s
         )
@@ -162,7 +222,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
     }
 
     setShowUpdateModal(false);
-     toast.success('✅ Updated successfully!');
+     toast.success('Updated successfully!');
 
   } catch (err: any) {
     toast.error(err?.response?.data?.message || err.message || 'Failed to update item.');
@@ -263,7 +323,8 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         product_stock: '',
         product_status: '',
         status: '',
-
+product_id: '',
+    service_id: '',
         unit: '',
         type: '',
         image: null,
@@ -359,9 +420,9 @@ const handleUpdateItem = async (e: React.FormEvent) => {
             <td className="px-4 py-3">
               <button onClick={() => {
 
-
+ setFormState(item)
                 setShowUpdateModal(true);
-                setFormState(item)
+               
               }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
 
             </td>
@@ -454,13 +515,13 @@ const handleUpdateItem = async (e: React.FormEvent) => {
           }>Products</h1>
 
         <div className="flex items-center gap-5 text-black">
-          <button>
+          {/* <button>
             <Search className="w-5 h-5 " />
           </button>
 
           <button>
             <Bell className="w-5 h-5" />
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -487,6 +548,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         </div>
 
         <button
+className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md"
 
           onClick={() => {
 
@@ -504,10 +566,12 @@ const handleUpdateItem = async (e: React.FormEvent) => {
 
       </div>
 
+
+
       {/* Filters / Search / Export */}
       <div className="flex justify-between items-center flex-wrap gap-4 p-4">
         {/* Filters Button */}
-        <button className="flex items-center gap-3 px-4 py-2 border border-gray-300 rounded-md text-[#344054] bg-white hover:bg-gray-50"
+        {/* <button className="flex items-center gap-3 px-4 py-2 border border-gray-300 rounded-md text-[#344054] bg-white hover:bg-gray-50"
           style={
             {
               fontFamily: "Inter",
@@ -519,13 +583,12 @@ const handleUpdateItem = async (e: React.FormEvent) => {
             }}>
           <FiSliders className="w-4 h-4" />
           Filters
-        </button>
+        </button> */}
 
 
 
 
 
-        {/* Export Button */}
         < div className="flex flex-row gap-2 items-center">
           {/* Search Input */}
           <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white max-w-xs w-full">
@@ -551,7 +614,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
             <img src="/icons/bulk_uplod.svg" alt="" sizes='w-3 h-3' />
             Bulk upload
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
+          {/* <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
             style={
               {
                 fontFamily: "Inter",
@@ -563,7 +626,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
               }}>
             <FiExternalLink className="w-4 h-4" />
             Export
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -954,39 +1017,47 @@ const handleUpdateItem = async (e: React.FormEvent) => {
               </label>
 
 
-              <label className="col-span-2 ">
-                <span> Name</span>
-                <input
-                  value={formState.service_name}
-                  onChange={(e) =>
-                    setFormState((f) => ({ ...f, service_name: e.target.value }))
-                  }
-                  type="text"
-                  required
-                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
-                />
-              </label>
+              <label className="col-span-2">
+  <span>Name</span>
+  <input
+    value={
+      activeTab === 'products'
+        ? formState.product_name
+        : formState.service_name
+    }
+    onChange={(e) =>
+      setFormState((f) => ({
+        ...f,
+        ...(activeTab === 'products'
+          ? { product_name: e.target.value }
+          : { service_name: e.target.value }),
+      }))
+    }
+    type="text"
+    required
+    className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+  />
+</label>
 
 
 
 
-              <label>
 
-                <span>Price</span>
-                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
-              </label>
+             
 
 
               {activeTab === 'products' && (
                 <>
-                  <label>
-                    <span>Unit</span>
-                    <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
+                
                   <label>
                     <span>Stock</span>
                     <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 rounded w-full mt-1" />
                   </label>
+                   <label>
+
+                <span>Price</span>
+                <input value={formState.product_price} onChange={(e) => setFormState(f => ({ ...f, product_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
+              </label>
                   <label className="col-span-2">
                     <span>Image</span>
                     <input
@@ -1030,7 +1101,11 @@ const handleUpdateItem = async (e: React.FormEvent) => {
                     <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="number" className="border border-bg-gray-100 px-2 py-3  rounded w-full mt-1" />
                   </label>
 
+  <label>
 
+                <span>Price</span>
+                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
+              </label>
                   <label className="col-span-2">
                     <span>Available Days</span>
                     <Select
@@ -1081,7 +1156,27 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         </div>
       )}
 
+  {activeTab === 'products' && (
+  <>
+   
+    <Pagination
+      currentPage={productsPage}
+      totalPages={productsTotalPages}
+      onPageChange={handleProductsPageChange}
+    />
+  </>
+)}
 
+{activeTab === 'services' && (
+  <>
+ 
+    <Pagination
+      currentPage={servicesPage}
+      totalPages={servicesTotalPages}
+      onPageChange={handleServicesPageChange}
+    />
+  </>
+)}
     </div>
   );
 };
