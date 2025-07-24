@@ -366,8 +366,8 @@ const AppointmentTable = () => {
                   letterSpacing: "0%"
                 }} >{appt.customer_number}</td>
                 <td className="px-4 py-3" style={defaultTypography}>{appt.service_name || '-'}</td>
-                {/* <td className="px-4 py-3" style={defaultTypography}>{formatDbDate(appt.date)}</td>
-                 */}
+                {/* <td className="px-4 py-3" style={defaultTypography}>{formatDbDate(appt.date)}</td> */}
+                
                
               </tr>
             ))}

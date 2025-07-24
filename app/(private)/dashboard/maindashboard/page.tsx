@@ -19,29 +19,29 @@ const slideData = [
     name: "Improve your space IQ",
     description: "Upload price lists, service menus, or FAQs so that your AI can answer questions correctly. The more information you add here, the smarter your assistant becomes!",
     bg: "#FCE1D9",
-    link:""
+    link:"/dashboard/space"
   },
-  {
-    image: "/payment.png",
-    name: "Enable payments",
-    description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
-    bg: "#E7ECEE",
-    link:""
-  },
-  {
-    image: "/email.png",
-    name: "Verify your email",
-    description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
-    bg: "#E2EBF3",
-    link:""
-  },
-  {
-    image: "/bank.png",
-    name: "Add bank details",
-    description: "Add your company bank details to the platform. This way your business can get paid refunds or other payments due to you by the platform or your customers.",
-    bg: "#F0EBE5",
-    link:""
-  },
+  // {
+  //   image: "/payment.png",
+  //   name: "Enable payments",
+  //   description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
+  //   bg: "#E7ECEE",
+  //   link:""
+  // },
+  // {
+  //   image: "/email.png",
+  //   name: "Verify your email",
+  //   description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
+  //   bg: "#E2EBF3",
+  //   link:""
+  // },
+  // {
+  //   image: "/bank.png",
+  //   name: "Add bank details",
+  //   description: "Add your company bank details to the platform. This way your business can get paid refunds or other payments due to you by the platform or your customers.",
+  //   bg: "#F0EBE5",
+  //   link:""
+  // },
 ];
 
 const MainDashboard = () => {
@@ -133,9 +133,9 @@ useEffect(() => {
 }, []);
 
   const filteredSlideData = slideData.filter(slide => {
-    if (slide.name === "Create a space" && spacesExist) {
-      return false;
-    }
+    // if (slide.name === "Create a space" && spacesExist) {
+    //   return false;
+    // }
     return true;
   });
 
@@ -165,14 +165,62 @@ useEffect(() => {
         {/* Stat cards */}
         <div className='w-full h-auto'>
           <ul className='w-full h-auto flex flex-wrap gap-[16px]'>
-            {[1, 2, 3, 4].map((item, idx) => (
-              <li key={idx} className='w-full sm:w-[48%] lg:w-[24%] h-[160px] border-2 border-[#EAECF0] rounded-[16px]'>
-                <div className='w-full font-sans flex gap-[8px] p-[12px] items-center h-[44px] border-b-2 border-[#EAECF0] text-[12px] font-semibold text-[#475467]'>
-                  <Icon icon="humbleicons:chat" width="24" height="24" style={{ color: "#475467" }} />Total Chats
-                </div>
-                <div className='flex h-[116px] text-[36px] justify-center items-center text-black font-bold'>0</div>
-              </li>
-            ))}
+            <div className=" flex flex-row flex-wrap gap-[20px] justify-center w-[100%]   rounded-lg">
+      
+          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+              <img src="/chat.png" />
+              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                Total Chats
+              </div>
+            </div>
+            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+              0
+            </div>
+          </div>
+
+      
+          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+              <img src="/message.png" />
+              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                {" "}
+                Live Chats
+              </div>
+            </div>
+            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+              0
+            </div>
+          </div>
+
+          
+          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+              <img src="/timer.png" />
+              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                {" "}
+                Avg. Response Time
+              </div>
+            </div>
+             <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+              0
+            </div>
+          </div>
+
+          
+          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+              <img src="/party-popper.png" />
+              <div className="w-[100%] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                {" "}
+                Sales
+              </div>
+            </div>
+            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+              0
+            </div>
+          </div>
+        </div>
           </ul>
         </div>
       </div>

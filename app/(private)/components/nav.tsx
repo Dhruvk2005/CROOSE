@@ -8,6 +8,8 @@ import { logoutapi } from '@/app/Apis/publicapi';
 import { useRouter } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
+import { useContext } from 'react';
+import Settingprovider, { SettingContext } from '@/app/context/SettingContext';
 const navItems = [
   { label: 'Overview', href: '/dashboard/maindashboard', icon: <Squares2X2Icon className="w-5.6 h-5.5 text-gray-100" /> },
   // { label: 'Modules', href: '/dashboard/createnewspace', icon: <MagnifyingGlassIcon className="w-5.6 h-5.5 text-gray-100" /> },
@@ -24,17 +26,20 @@ export const Nav = ({ show, setShow }: any) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [userdata, setUser] = useState<any>()
+  const { setOpenSetting1 } = useContext<any>(SettingContext);
+
+
 
   const router = useRouter()
 
-     useEffect(() => {
-      const storedUser = localStorage.getItem('userdata')
-      if (storedUser) {
-        setUser(JSON.parse(storedUser))
-      }
+  useEffect(() => {
+    const storedUser = localStorage.getItem('userdata')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
 
 
-    }, [])
+  }, [])
 
   const handlelogout = async () => {
     try {
@@ -78,11 +83,15 @@ export const Nav = ({ show, setShow }: any) => {
           <section style={{ position: "fixed", bottom: "0" }}>
             <div className="flex justify-center items-center flex-col w-full gap-[4px] -ml-[12px]">
               <ul className="flex flex-col gap-[4px] w-[80%] h-auto">
-                <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
+                <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:cursor-pointer hover:border-l-4 hover:border-[#7367CB]  transition-all" onClick={() => {
+                  console.log('clicked setting');
+                  setOpenSetting1(true);
+                }} >
                   <div>
                     <Icon icon="mingcute:settings-4-line" width="24" height="24" color="white" />
                   </div>
                   <div>
+
                     <span className="text-[14px] font-sans text-[#F2F4F7] font-normal">Settings</span>
                   </div>
                 </li>
@@ -122,8 +131,8 @@ export const Nav = ({ show, setShow }: any) => {
                   </svg>
                 </div>
                 <div className="flex flex-col w-[136px] h-auto">
-                  <p className="font-medium text-[14px] text-[#F2F4F7] ">{userdata?.data?.name || "naem" }</p>
-                  <p className="font-normal text-[12px] text-[#F2F4F7] ">{userdata?.data?.email || "email" }</p>
+                  <p className="font-medium text-[14px] text-[#F2F4F7] ">{userdata?.data?.name || "naem"}</p>
+                  <p className="font-normal text-[12px] text-[#F2F4F7] ">{userdata?.data?.email || "email"}</p>
                 </div>
                 {/* <div className="flex items-center">
                   <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">

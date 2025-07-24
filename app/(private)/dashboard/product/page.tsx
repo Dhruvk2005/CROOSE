@@ -385,8 +385,6 @@ product_id: '',
   //   "Wave Caps", "Dye Kits", "Detanglers"
   // ];
 
-  console.log(formState,'the formdata')
-
   const renderTableRows = () => {
     const items = activeTab === 'products' ? data.products : data.services;
 
@@ -754,7 +752,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                   </label>
                   <label>
                     <span>Stock</span>
-                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 rounded w-full mt-1" />
+                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
                   </label>
                   <label className="col-span-2">
                     <span>Image</span>

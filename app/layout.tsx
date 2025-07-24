@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Settingprovider from '@/app/context/SettingContext';
+import Content from "./content/Content";
+import { Nav } from "./(private)/components/nav";
 import { ToastContainer } from 'react-toastify';
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,19 +22,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-            <ToastContainer />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Settingprovider>
+
+          <Content>
+
+            {children}</Content>
+
+        </Settingprovider>
+           <ToastContainer />
       </body>
     </html>
   );
