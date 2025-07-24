@@ -24,7 +24,14 @@ const Customisespace = () => {
         formData.append('chatbot_name', chatBotName)
         formData.append('start_time', StartTime)
         formData.append('end_time', EndTime)
-        formData.append("category", "default_category");
+        const categoryId = localStorage.getItem("categoryId");
+        const categoryName = localStorage.getItem("categoryName");
+
+        console.log("Category ID:", categoryId);
+        console.log("Category Name:", categoryName);
+
+        formData.append("category", categoryName || "default_name");
+        // console.log("stored category:", storedcategory);
         // formData.append("number", number); // If needed by backend
         formData.append("is_active", "1"); // String '1' like in Postman
         if (image) {

@@ -1,10 +1,14 @@
 'use client'
 import Link from 'next/link';
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { BussinessCategories, GetSpaceId } from '@/app/Apis/publicapi';
+import { Description } from '@headlessui/react';
 const Spacebusiness = () => {
 
     const [selectedBusiness, setSelectedBusiness] = useState('');
+    const [boxes, setBoxes] = useState<
+        { id: number; businessname: string; description: string }[]
+    >([]);// top of the component
 
     const boxes = [
         {
@@ -44,6 +48,46 @@ const Spacebusiness = () => {
             description: "Integrate brand new services for your customers directly onto your mobile app"
         },
     ];
+
+
+    useEffect(() => {
+        const getCategories = async () => {
+            try {
+                const res = await BussinessCategories();  // your axios helper
+                const data = res?.data;                   // Axios puts JSON here
+
+                // API might return an array directly or wrap it; handle both:
+                const arr = Array.isArray(data) ? data : data?.data ?? [];
+
+                // take ONLY name & template (rename for UI)
+                const simplified = arr.map((item: any) => ({
+                    id: item.id,
+                    businessname: item.name,
+                    description: item.template,
+                }));
+
+                setBoxes(simplified);
+            } catch (err) {
+                console.error('Failed to load categories', err);
+            }
+        };
+        getCategories();
+    }, []);
+
+    const handleSelectSpace = (space: any) => {
+        console.log("Selected space:", space);
+        localStorage.setItem('spaceDesc', JSON.stringify({
+            description: space.description
+        }));
+        // localStorage.setItem('category', space.businessname);
+        localStorage.setItem('categoryID', String(space.id));
+          localStorage.setItem('categoryName', space.businessname);
+
+        console.log("saved category:", space.businessname)
+        console.log("spaceid:",space.id)
+        setSelectedBusiness(space.businessname);
+    };
+
 
     return (
         <div className='w-full min-h-screen px-[20px] py-[14px]'>
@@ -104,7 +148,8 @@ const Spacebusiness = () => {
                     Previous
                 </button>
                 <Link
-                    href={"/customisespace"}>
+                    href={"/customisespace"} >
+
                     <button
                         className={`
     py-[11.5px] px-[14px] w-[200px] rounded-[8px] font-inter text-[14px]

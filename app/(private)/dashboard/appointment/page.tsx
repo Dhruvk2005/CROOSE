@@ -39,6 +39,9 @@ const AppointmentTable = () => {
     appointmentTime: "",
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
   const defaultTypography: React.CSSProperties = {
     fontFamily: "Inter, sans-serif",
     fontWeight: 400,

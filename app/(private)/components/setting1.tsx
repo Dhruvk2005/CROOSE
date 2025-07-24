@@ -9,10 +9,14 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { useContext } from 'react'
-import { logoutapi } from '@/app/Apis/publicapi'
+import { logoutapi, registerApi } from '@/app/Apis/publicapi'
+
+
+ 
 
 
 
+  
 const Setting1 = () => {
 
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -56,8 +60,28 @@ const Setting1 = () => {
     }
 
   };
+  
+
+  
+  
+   const [registerData, setUser] = useState<any>()
+ 
+ 
+   useEffect(() => {
+     const storedUser = localStorage.getItem('userdata')
+     if (storedUser) {
+       setUser(JSON.parse(storedUser))
+
+       console.log(storedUser)
+     }
+     
+ 
+ 
+   }, [])
 
 
+ 
+ 
 
   return (
     <div>
@@ -112,45 +136,41 @@ const Setting1 = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col mt-[50px] gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-[#344054] mb-1">Full Name</label>
-                    <input
-                      name="fullName"
-                      placeholder="Enter Name"
-                      value={formik.values.fullName}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full h-[44px] text-[#98A2B3] text-sm rounded-[12px] border border-[#D0D5DD] p-4"
-                    />
+                    <label className="block  text-sm font-medium text-[#344054] mb-1">Full Name  </label>
+                
+                    
+                       <div className="w-full h-[44px] text-[#98A2B3] flex items-center text-sm rounded-[12px] border border-[#D0D5DD] p-4">
+                     
+                     {registerData?.data?.name}
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[#344054] mb-1">Business Name</label>
-                    <input
-                      name="businessName"
-                      placeholder="Enter business name"
-                      value={formik.values.businessName}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full h-[44px] text-[#98A2B3] text-sm rounded-[12px] border border-[#D0D5DD] p-4"
-                    />
+                    <label className="block text-sm font-medium text-[#344054] mb-1">Business Name </label>
+                       <div className="w-full h-[44px] text-[#98A2B3] flex items-center text-sm rounded-[12px] border border-[#D0D5DD] p-4">
+                     
+                      {registerData?.data?.business_name}
+                    </div>
+                    
                   </div>
                   <div>
 
                     <div>
-                      <Selectbox formik={formik} />
+                      <label className="block  text-sm font-medium text-[#344054] mb-1" >Business location  </label>
+                      {/* <Selectbox formik={formik} /> */}
+                       <div className="w-full h-[44px] text-[#98A2B3] flex items-center text-sm rounded-[12px] border border-[#D0D5DD] p-4">
+                     
+                      {registerData?.data?.business_location}
+                    </div>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[#344054] mb-1">Email</label>
-                    <input
-                      name="email"
-                      placeholder="Enter email"
-                      value={formik.values.email}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className="w-full h-[44px] text-[#98A2B3] text-sm rounded-[12px] border border-[#D0D5DD] p-4"
-                    />
+                    <label className="block  text-sm font-medium text-[#344054] mb-1">Email </label>
+                    <div className="w-full h-[44px] text-[#98A2B3] text-sm rounded-[12px] flex items-center border border-[#D0D5DD] p-4">
+                     
+                       {registerData?.data?.email}
+                    </div>
                   </div>
                 </div>
               </div>
