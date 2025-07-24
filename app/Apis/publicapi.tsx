@@ -12,6 +12,7 @@ interface AxiosOptions {
   formData?: FormData;
 }
 
+
 export const axiosRequest = async ({
   method,
   url,
@@ -240,6 +241,86 @@ export const getAllProducts = async () => {
   }
   return { data: [] };
 };
+
+// export const getTotalAppointment= async ()=>{
+//   try{
+//     const token=localStorage.getItem('token');
+//     const res = await axiosRequest({
+//       method: "get",
+//       url:`${BASE_URL}/api/total_appointments`,
+//       headers:{
+//         Authorization:`Bearer ${token}`,
+//       }
+
+//     })
+//     return res.data;
+//   }
+//   catch(err){
+//     console.log(err);
+
+//   }
+   
+// } 
+
+export const getTotalAppointment = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/total_appointments`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // ✅ Log and return the actual response
+    console.log("API total_appointments response", res);
+
+     return res// <-- Expecting: { total: number }
+  } catch (err) {
+    console.error("Error fetching total appointments", err);
+    return null; // Return null or empty fallback only on error
+  }
+};
+
+
+export const getNewAppointment= async ()=>{
+  try{
+    const token=localStorage.getItem('token');
+    const res = await axiosRequest({
+      method: "get",
+      url:`${BASE_URL}/api/new_appointments`,
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+
+    })
+    return res;
+  }
+  catch(err){
+    console.log(err);
+
+  }
+} 
+
+export const getCancelledAppointment= async ()=>{
+  try{
+    const token=localStorage.getItem('token');
+    const res = await axiosRequest({
+      method: "get",
+      url:`${BASE_URL}/api/cancelled_appointments`,
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+
+    })
+    return res;
+  }
+  catch(err){
+    console.log(err);
+
+  }
+} 
 
 export const getAllServices = async () => {
   try {
