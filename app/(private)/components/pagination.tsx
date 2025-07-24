@@ -10,53 +10,103 @@ const Pagination = ({
   totalPages: number;
   onPageChange: (page: number) => void;
 }) => {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  // Show limited page numbers for better UX
+  const getVisiblePages = () => {
+    const visiblePages = [];
+    const maxVisible = 5;
+    
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = Math.min(totalPages, start + maxVisible - 1);
+    
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+    
+    for (let i = start; i <= end; i++) {
+      visiblePages.push(i);
+    }
+    
+    return visiblePages;
+  };
 
   return (
     <div className="flex justify-center items-center gap-2 py-6">
-     <button
-  disabled={currentPage === 1} 
-  onClick={() => onPageChange(currentPage - 1)}
-  className={`flex items-center gap-1 px-3 py-1.5 border border-white rounded-md text-sm text-white 
-    ${currentPage === 1 
-      ? 'bg-[#2A274F] opacity-50 cursor-not-allowed' 
-      : 'bg-[#13102E] hover:bg-[#2A274F]'
-    }`}
->
-  <ChevronLeft size={16} />
-  Back
-</button>
+      <button
+        disabled={currentPage === 1}
+        onClick={() => onPageChange(currentPage - 1)}
+        className={`flex items-center gap-1 px-3 py-1.5 border rounded-md text-sm ${
+          currentPage === 1
+            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            : 'bg-white text-gray-700 hover:bg-gray-100'
+        }`}
+      >
+        <ChevronLeft size={16} />
+        Previous
+      </button>
 
+      {/* Show first page and ellipsis if needed */}
+      {getVisiblePages()[0] > 1 && (
+        <>
+          <button
+            onClick={() => onPageChange(1)}
+            className={`px-3 py-1.5 border rounded-md text-sm ${
+              1 === currentPage
+                ? 'bg-blue-600 text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            1
+          </button>
+          {getVisiblePages()[0] > 2 && <span className="px-2">...</span>}
+        </>
+      )}
 
-      {/* Page Numbers */}
-      {pages.map((page) => (
+      {/* Visible page numbers */}
+      {getVisiblePages().map((page) => (
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`px-3 py-1.5 border border-white bg-[#13102E]  rounded-md text-sm font-medium  ${
+          className={`px-3 py-1.5 border rounded-md text-sm ${
             page === currentPage
-              ? "bg-[#13102E] text-white"
-              : "text-white hover:	bg-[#2A274F]"
-          }`}
+              ? 'bg-blue-600 text-white'
+              : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
         >
           {page}
         </button>
       ))}
 
-      {/* Next Button */}
-      <button
-  disabled={currentPage === totalPages}
-  onClick={() => onPageChange(currentPage + 1)}
-  className={`flex items-center gap-1 px-3 py-1.5 border border-white rounded-md text-sm text-white 
-    ${currentPage === totalPages 
-      ? 'bg-[#2A274F] opacity-50 cursor-not-allowed' 
-      : 'bg-[#13102E] hover:bg-[#2A274F]'
-    }`}
->
-  Next
-  <ChevronRight size={16} />
-</button>
+      {/* Show last page and ellipsis if needed */}
+      {getVisiblePages()[getVisiblePages().length - 1] < totalPages && (
+        <>
+          {getVisiblePages()[getVisiblePages().length - 1] < totalPages - 1 && (
+            <span className="px-2">...</span>
+          )}
+          <button
+            onClick={() => onPageChange(totalPages)}
+            className={`px-3 py-1.5 border rounded-md text-sm ${
+              totalPages === currentPage
+                ? 'bg-blue-600 text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            {totalPages}
+          </button>
+        </>
+      )}
 
+      <button
+        disabled={currentPage === totalPages}
+        onClick={() => onPageChange(currentPage + 1)}
+        className={`flex items-center gap-1 px-3 py-1.5 border rounded-md text-sm ${
+          currentPage === totalPages
+            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            : 'bg-white text-gray-700 hover:bg-gray-100'
+        }`}
+      >
+        Next
+        <ChevronRight size={16} />
+      </button>
     </div>
   );
 };

@@ -1,11 +1,13 @@
 'use client';
 import { Search, Bell, X } from 'lucide-react';
 import axios from "axios";
+import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from 'react';
-import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
+import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
+
 import Pagination from '../../components/pagination';
 //import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
@@ -23,22 +25,23 @@ const options = [
 ];
 
 const ProductServiceTabs = ({ type = 'product' }) => {
+   const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-// products state
-const [products, setProducts] = useState<any[]>([]);
-const [productsPage, setProductsPage] = useState(1);
-const [productsTotalPages, setProductsTotalPages] = useState(1);
+
 const [updatedata, setUpdateData] = useState({
   products: [],
   services: [],
 });
+const [searchTerm, setSearchTerm] = useState('');
+const [searchdata, setSearchData] = useState([]);
 
-// services state
-const [services, setServices] = useState<any[]>([]);
-const [servicesPage, setServicesPage] = useState(1);
-const [servicesTotalPages, setServicesTotalPages] = useState(1);
+
 
   const [spaces, setSpaces] = useState<{ id: number; name: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -70,6 +73,50 @@ const [servicesTotalPages, setServicesTotalPages] = useState(1);
     available_days: [] as string[],
     ai_tags: '',
   });
+
+ const fetchItems = async (page: number = 1) => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}?page=${page}`;
+      
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      const data = await response.json();
+      
+      if (data.status) {
+       
+        setItems(data.data);
+  
+      
+      
+        
+         setData((p ) =>{ return {
+     
+           [activeTab]: data?.data || [],
+    //...data
+        }});
+        setTotalPages(data.meta.last_page);
+        setTotalItems(data.meta.total);
+      }
+    } catch (error) {
+      console.error(`Error fetching ${type}:`, error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems(currentPage);
+  }, [currentPage, activeTab]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     if (showBulkModal && buttonRef.current) {
@@ -105,42 +152,83 @@ const [servicesTotalPages, setServicesTotalPages] = useState(1);
     fetchData();
   }, []);
 
-const handleProductsPageChange = (page: number) => {
-  setProductsPage(page);
+  useEffect(() => {
+    const GetSpaceID = async () => {
+      try {
+        const res = await GetSpaceId(); // this returns { data: [ spaces ] }
+        const spaceArray = res?.spaces;
+        //res?.data?.spaces || res?.data;
+        // Log it to confirm at runtime
+        
+
+        if (!Array.isArray(spaceArray)) {
+          console.warn("Expected array response but got:", spaceArray);
+          return;
+        }
+
+        const simplified = spaceArray.map((item: any) => ({
+          id: item.id,        // Ensure it's a string for use inside dropdown `value`
+          name: item.name
+        }));
+
+        setSpaces(simplified);
+      } catch (err) {
+        console.error("Failed to load space IDs", err);
+      }
+    };
+       GetSpaceID();
+  }, []);
+
+useEffect(() => {
+  const delay = setTimeout(async () => {
+    if (searchTerm.trim() === "") return;
+
+    try {
+      const result =
+        activeTab === "products"
+          ? await searchProducts(searchTerm)
+          : await searchServices(searchTerm);
+
+      if (result?.status) {
+        setData(
+          activeTab === "products" ? result.products : result.services
+        );
+      }
+    } catch (err) {
+      console.error("Search error:", err);
+    }
+  }, 400); // debounce
+
+  return () => clearTimeout(delay);
+}, [searchTerm, activeTab]);
+
+
+
+ 
+const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  if (!formState.space_id) {
+    alert("Please select a Space Name before uploading.");
+    return;
+  }
+
+  
+  try {
+    const response = await uploadBulkFile(file, activeTab, formState.space_id);
+   
+    alert("File uploaded successfully!");
+    setShowBulkModal(false);
+    e.target.value = "";
+  } catch (err: any) {
+    console.error("Upload failed:", err);
+    alert(err.message || "Failed to upload file. Please check console for details.");
+  }
 };
 
-const handleServicesPageChange = (page: number) => {
-  setServicesPage(page);
-};
 
 
- const fetchProducts = async (page: number) => {
-  const res = await axios.get(`/api/products?page=${page}`);
-  setProducts(res.data.data);
-  setProductsTotalPages(res.data.meta.last_page);
-};
-
-const fetchServices = async (page: number) => {
-  const res = await axios.get(`/api/services?page=${page}`);
-  setServices(res.data.data);
-  setServicesTotalPages(res.data.meta.last_page);
-};
-
-    const totalPages = 5;
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    uploadBulkFile(file, activeTab)
-      .then((res) => {
-        console.log("✅ Uploaded:", res);
-        alert("File uploaded successfully!");
-      })
-      .catch((err) => {
-        console.error("❌ Upload failed:", err);
-        alert("Upload failed!");
-      });
-  };
 const handleUpdateItem = async (e: React.FormEvent) => {
   e.preventDefault();
 
@@ -177,7 +265,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
       // formData.append('stock', formState.product_stock);
      
       // }
-console.log("Update product response", updated);
+
 
       updated = await updateProduct(product_id ,productData); 
 
@@ -195,7 +283,7 @@ console.log("Update product response", updated);
         available_days: formState.available_days.map((d: string) => d.trim().toLowerCase()),
       
       };
-console.log("Update response", updated);
+
 
       updated = await updateServices(service_id ,serviceData); 
     }
@@ -252,7 +340,7 @@ console.log("Update response", updated);
           formData.append('image', formState.image);
         }
         // ↳ right above addProduct/addServices
-        console.log('payload space_id →', formState.space_id);
+       
 
         const added = await addProduct(formData);
         normalized = {
@@ -288,7 +376,7 @@ console.log("Update response", updated);
             .map(tag => tag.trim()),
         };
 
-        console.log(serviceData);
+     
         const added = await addServices(serviceData);
         normalized = {
           id: added.id || Date.now(),
@@ -386,10 +474,12 @@ product_id: '',
   // ];
 
   const renderTableRows = () => {
-    const items = activeTab === 'products' ? data.products : data.services;
+  const items = activeTab === 'products' ? data.products : data.services;
+const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
-    return items.map((item: any, idx: number) => (
-      <tr key={item.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
+  return items?.map((item: any) => {
+    return (
+      <tr key={item[id]} className="hover:bg-gray-50 border-b border-[#EAECF0]">
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="flex items-center gap-3">
             <input
@@ -402,57 +492,55 @@ product_id: '',
               ) : (
                 <span className="w-10 h-10 bg-gray-200" />
               )}
-
             </div>
           </div>
         </td>
 
         <td className="px-4 py-3">{item.space_name}</td>
 
-        {activeTab === "products" && (
+        {activeTab === "products" ? (
           <>
             <td className="px-4 py-3">{item.product_name}</td>
-            {/* <td className="px-4 py-3">{item.product_stock}</td>  */}
             <td className="px-4 py-3">{item.product_stock || '-'}</td>
             <td className="px-4 py-3">{item.product_price}</td>
             <td className="px-4 py-3">
-              <button onClick={() => {
-
- setFormState(item)
-                setShowUpdateModal(true);
-               
-              }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
-
+              <button
+                onClick={() => {
+                  setFormState(item);
+                  setShowUpdateModal(true);
+                }}
+                className="bg-[#685BC7] text-white px-4 py-2 rounded"
+              >
+                Update
+              </button>
             </td>
-
           </>
-        )}
-
-
-        {activeTab === "services" && (
+        ) : (
           <>
             <td className="px-4 py-3">{item.service_name}</td>
             <td className="px-4 py-3">{item.service_category}</td>
-            <td className="px-4 py-3">{item.service_duration ? `${item.service_duration} mins` : '-'}</td>
-
-
+            <td className="px-4 py-3">
+              {item.service_duration ? `${item.service_duration} mins` : '-'}
+            </td>
             <td className="px-4 py-3">{item.service_price}</td>
-
             <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
             <td className="px-4 py-3">
-              <button onClick={() => {
-
-
-                setFormState(item)
-                setShowUpdateModal(true);
-              }} className='   bg-[#685BC7] text-white px-4 py-2 rounded'>Update</button>
-
+              <button
+                onClick={() => {
+                  setFormState(item);
+                  setShowUpdateModal(true);
+                }}
+                className="bg-[#685BC7] text-white px-4 py-2 rounded"
+              >
+                Update
+              </button>
             </td>
           </>
         )}
       </tr>
-    ));
-  };
+    );
+  });
+};
 
 
   // const renderTableRows = () => {
@@ -566,9 +654,9 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
 
 
 
-      {/* Filters / Search / Export */}
+      
       <div className="flex justify-between items-center flex-wrap gap-4 p-4">
-        {/* Filters Button */}
+      
         {/* <button className="flex items-center gap-3 px-4 py-2 border border-gray-300 rounded-md text-[#344054] bg-white hover:bg-gray-50"
           style={
             {
@@ -587,15 +675,19 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
 
 
 
-        < div className="flex flex-row gap-2 items-center">
+        < div className="flex flex-row gap-2 items-center ml-auto ">
           {/* Search Input */}
           <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white max-w-xs w-full">
-            <FiSearch className="w-5 h-" />
+                                             
             <input
               type="text"
               placeholder="Search"
               className="flex-1 outline-none bg-transparent text-sm text-gray-700"
+               value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
             />
+             <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
+            
           </div>
           <button
             ref={buttonRef}
@@ -708,18 +800,27 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 ))}
               </select>
 
-              <label className="col-span-2 ">
-                <span>Service Name</span>
-                <input
-                  value={formState.service_name}
-                  onChange={(e) =>
-                    setFormState((f) => ({ ...f, service_name: e.target.value }))
-                  }
-                  type="text"
-                  required
-                  className="border border-bg-gray-100 p-2 rounded w-full mt-1"
-                />
-              </label>
+                        <label className="col-span-2">
+  <span>Name</span>
+  <input
+    value={
+      activeTab === 'products'
+        ? formState.product_name
+        : formState.service_name
+    }
+    onChange={(e) =>
+      setFormState((f) => ({
+        ...f,
+        ...(activeTab === 'products'
+          ? { product_name: e.target.value }
+          : { service_name: e.target.value }),
+      }))
+    }
+    type="text"
+    required
+    className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
+  />
+</label>
 
 
               {/* <select value={formState.service_category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" required>
@@ -746,13 +847,10 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
 
               {activeTab === 'products' && (
                 <>
-                  <label>
-                    <span>Unit</span>
-                    <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
+                 
                   <label>
                     <span>Stock</span>
-                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, stock: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
+                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
                   </label>
                   <label className="col-span-2">
                     <span>Image</span>
@@ -787,7 +885,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                     <span>Duration (minutes)</span>
                     <input value={formState.service_duration} onChange={(e) => setFormState(f => ({ ...f, service_duration: e.target.value }))} type="number" className="border border-bg-gray-100 px-2 py-3  rounded w-full mt-1" />
                   </label>
-                  <label>
+                  <label >
                     <span>Category</span>
 
                     <input
@@ -797,7 +895,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                       }
                       type="text"
                       required
-                      className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+                      className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
                     />
                   </label>
                   {/* <label>
@@ -811,7 +909,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                   <label className="col-span-2">
                     <span>Available Days</span>
                     <Select
-                      className="border border-bg-gray-100"
+                      className="border border-bg-gray-100 "
                       isMulti
                       options={options}
                       value={options.filter(o => formState?.available_days?.includes(o.value))}
@@ -933,9 +1031,10 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
               </div>
             </div>
 
-            <p className="text-xs font-semibold font-sans text-[#94A3B8] mb-4">
+            {/* <p className="text-xs font-semibold font-sans text-[#94A3B8] mb-4">
               DATE & TIME
-            </p>
+            </p> */}
+
             <p className="text-sm text-[#0F172A] mb-6"
               style={
                 {
@@ -948,6 +1047,29 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 }}>
               If you have done that already, then you can proceed to do your Bulk upload.
             </p>
+  <select
+
+                className="w-full border border-bg-gray-100 rounded px-3 py-3 mb-6"
+                value={formState.space_id}
+                onChange={(e) => {
+                  const space_id = e.target.value;
+                  const selectedSpace = spaces.find((s) => String(s.id) === space_id);
+                  setFormState((f) => ({
+                    ...f,
+                    space_id,
+                    space_name: selectedSpace?.name || '',
+                  }));
+                }}
+              >
+
+                <option value="">Select Space Name</option>
+                {spaces.map((space) => (
+                  <option key={space.id} value={String(space.id)}>
+                    {space.name}
+                  </option>
+                ))}
+              </select>
+
 
             <div className="flex flex-row   gap-2">
               <button
@@ -1033,7 +1155,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
     }
     type="text"
     required
-    className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+    className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
   />
 </label>
 
@@ -1049,7 +1171,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 
                   <label>
                     <span>Stock</span>
-                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 rounded w-full mt-1" />
+                    <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border  border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
                   </label>
                    <label>
 
@@ -1089,7 +1211,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                       }
                       type="text"
                       required
-                      className="border border-bg-gray-100 p-2 rounded w-full mt-1"
+                      className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
                     />
                   </label>
 
@@ -1154,27 +1276,12 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
         </div>
       )}
 
-  {activeTab === 'products' && (
-  <>
-   
-    <Pagination
-      currentPage={productsPage}
-      totalPages={productsTotalPages}
-      onPageChange={handleProductsPageChange}
-    />
-  </>
-)}
+  <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
 
-{activeTab === 'services' && (
-  <>
- 
-    <Pagination
-      currentPage={servicesPage}
-      totalPages={servicesTotalPages}
-      onPageChange={handleServicesPageChange}
-    />
-  </>
-)}
     </div>
   );
 };
