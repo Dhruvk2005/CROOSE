@@ -22,17 +22,6 @@ type SignupFormValues = {
 
 };
 
-const securityQue = [
-  {
-    value: 'que1', label: 'What service did you book first using Croose?'
-  },
-  { value: 'que2', label: 'What was the location of your first appointment with Croose?' },
-  {
-    value: 'que3', label: 'What was your most recent service on Croose?'
-  },
-  { value: 'que4', label: 'Which salon or service provider do you visit most often via Croose?' },
-  { value: 'que5', label: 'Who referred you to Croose or introduced you to our platform?' },
-]
 
 const Signupform = () => {
   const router = useRouter();
@@ -63,8 +52,8 @@ const Signupform = () => {
       phone_number: '',
       email: '',
       password: '',
-      security_question: null,
-      security_answer: null,
+      security_question: "",
+      security_answer: "",
 
 
     },
@@ -109,7 +98,8 @@ const Signupform = () => {
           localStorage.setItem('registeredEmail', values.email)
           console.log("email:", values.email)
 
-          router.push(`/emailverification?email=${encodeURIComponent(values.email)}`);
+          // router.push(`/emailverification?email=${encodeURIComponent(values.email)}`);
+          router.push("/login")
         } else {
           let errorMsg = res.message;
 
@@ -211,24 +201,38 @@ const Signupform = () => {
 
 
 
-
-                  <select className='text-[#344054] rounded-[10px] border-[#344054] border-1 text-[11px] font-medium w-full p-[13px] ' >
-                    <option className='text-[15px] ' value='' >Security Question</option>
-                    <option className='text-[11px]' value='' >What service did you book first using Croose?</option>
-                    <option className='text-[11px]' value='' >What was the location of your first appointment with Croose?</option>
-                    <option className='text-[11px]' value='' >What was your most recent service on Croose?</option>
-                    <option className='text-[11px]' value='' >Which salon or service provider do you visit most often via Croose?</option>
-                    <option className='text-[11px]' value='' >Who referred you to Croose or introduced you to our platform?</option>
-
-
-
+<label  className="block mb-2 text-sm font-medium text-[#344054]" >Select question</label>
+                  <select
+                    name="security_question"
+                    value={formik.values.security_question || ''}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className='text-[#344054] rounded-[10px] border-[#344054] border-1 text-[11px] font-medium w-full p-[13px]'
+                  >
+                    
+                    <option value='What service did you book first using Croose?'>What service did you book first using Croose?</option>
+                    <option value='What was the location of your first appointment with Croose?'>What was the location of your first appointment with Croose?</option>
+                    <option value='What was your most recent service on Croose?'>What was your most recent service on Croose?</option>
+                    <option value='Which salon or service provider do you visit most often via Croose?'>Which salon or service provider do you visit most often via Croose?</option>
+                    <option value='Who referred you to Croose or introduced you to our platform?'>Who referred you to Croose or introduced you to our platform?</option>
                   </select>
+
 
 
                 </div>
                 <div>
                   <label htmlFor="password" className="block mb-2 text-sm font-medium text-[#344054]">Security answer</label>
-                  <input type="password" name="password" id="password" value={formik.values.security_answer} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Answer" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
+                  <input
+                    type="text"
+                    name="security_answer"
+                    id="security_answer"
+                    value={formik.values.security_answer || ''}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter Answer"
+                    className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none"
+                  />
+
 
                 </div>
                 {/* <Link href={"/emailverification"} > */}

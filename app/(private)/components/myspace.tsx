@@ -8,6 +8,8 @@ import Scanqrpage from './scanqr'
 import Spacenav from './spacenav'
 import { spaceIqCheck } from "@/app/Apis/publicapi";
 import { useSearchParams } from 'next/navigation';
+import { useIq } from '../Iqcontext'
+
 
 
 const Myspace = () => {
@@ -17,15 +19,40 @@ const Myspace = () => {
   const [spaceipcoloropen, setSpaceiqcoloropen] = useState(false)
   const [proopen, setProopen] = useState(false)
   const [scanopen, setScanopen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const { iqIncreased,setIqIncreased } = useIq();
 
 
-  const handleCheck = async () => {
-    const dataToSend = { key: "value" };
 
-    const res = await spaceIqCheck(dataToSend);
 
-    console.log("Response in component:", res);
-  };
+const handleCheck = async () => {
+  setLoading(true)
+  try {
+    const res = await spaceIqCheck({})
+    console.log("spaceIqData:", res)
+
+    // ✅ Updated conditional logic here
+    if (res?.data?.iq_increased === 1) {
+      if (iqIncreased !== 1) {
+        setIqIncreased(1);
+        console.log("✅ iqIncreased set to 1");
+      }
+    } else {
+      if (iqIncreased !== 0) {
+        setIqIncreased(0);
+        console.log("✅ iqIncreased set to 0");
+      }
+    }
+
+  } catch (err) {
+    console.log(err)
+  } finally {
+    setLoading(false)
+  }
+};
+
+
+
   const searchParams = useSearchParams();
   const spaceName = searchParams.get('name');
 
@@ -54,11 +81,15 @@ const Myspace = () => {
           </div>
           <div className="w-[180px] sm:w-[211px] right-[0px] flex flex-row  gap-[8px] h-[36px]">
             <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px]  flex flex-row border-[white] pt-2 pr-4 pb-2 bg-[#EAECF0] pl-4 gap-[10px] rounded-[8px] ">
-              <div onClick={() => setSpaceiqopen(true)} className="font-sans font-semibold text-[10px]  sm:text-[12px] w-[100%] leading-5 tracking-normal text-center  text-[#685BC7] h-[20px]">
+              <div onClick={() => {
+                setSpaceiqopen(true)
+                handleCheck()
+              }
+              } className="font-sans font-semibold text-[10px]  sm:text-[12px] w-[100%] leading-5 tracking-normal text-center  text-[#685BC7] h-[20px]">
                 Spaces IQ
               </div>
             </button>
-            <button onClick={handleCheck} className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px] flex flex-row pt-2 pr-4 pb-2 pl-4 gap-[10px] bg-[#685BC7] rounded-[8px]">
+            <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px] flex flex-row pt-2 pr-4 pb-2 pl-4 gap-[10px] bg-[#685BC7] rounded-[8px]">
               <div className="w-[100%] font-sans  text-[10px] sm:text-[12px] font-semibold text-sm leading-5 tracking-normal text-center text-[#FFFFFF] h-[50px] sm:h-[20px]">
                 Run Agent
               </div>

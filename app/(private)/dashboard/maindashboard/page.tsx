@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getSpaceList, spaceIqCheck } from '@/app/Apis/publicapi';
 import { Nav } from '../../components/nav';
 import { useState, useEffect } from 'react'
+import { useIq } from '../../Iqcontext';
 
 const slideData = [
   {
@@ -20,6 +21,7 @@ const slideData = [
     description: "Upload price lists, service menus, or FAQs so that your AI can answer questions correctly. The more information you add here, the smarter your assistant becomes!",
     bg: "#FCE1D9",
     link: "/dashboard/space"
+
   },
   // {
   //   image: "/payment.png",
@@ -51,26 +53,42 @@ const MainDashboard = () => {
   const [greeting, setGreeting] = useState<string>("");
 
 
+  const { iqIncreased, setIqIncreased } = useIq();
+
+  console.log("MainDashboard iqIncreased value:", iqIncreased);
   useEffect(() => {
-    const fetchSpaces = async () => {
+    const fetchData = async () => {
       try {
-        const res = await getSpaceList();
-        console.log("Fetched spaces in dashboard:", res);
+        const resSpaces = await getSpaceList();
+        const spaces = resSpaces?.data || resSpaces?.spaces || [];
+        setSpacesExist(spaces.length > 0);
 
-        const spaces = res?.data || res?.spaces || [];
+        const resIq = await spaceIqCheck({});
+        console.log('IQ check data:', resIq);
+        setSpaceIqCheckData(resIq);
 
-        if (spaces.length > 0) {
-          setSpacesExist(true);
+
+        if (resIq?.iq_increased === 1) {
+          setIqIncreased(1);
+          console.log("iqIncreased set to 1 in MainDashboard");
         } else {
-          setSpacesExist(false);
+          setIqIncreased(0);
+          console.log("iqIncreased set to 0 in MainDashboard");
         }
+
+
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchSpaces();
-  }, []);
 
+    fetchData();
+  }, [setIqIncreased]);
+
+
+  console.log("useIq hook content:", useIq());
 
 
   useEffect(() => {
@@ -79,6 +97,11 @@ const MainDashboard = () => {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
+  useEffect(() => {
+    console.log("✅ iqIncreased updated:", iqIncreased);
+  }, [iqIncreased]);
+
 
 
   useEffect(() => {
@@ -115,15 +138,7 @@ const MainDashboard = () => {
 
   const [spaceIqCheckData, setSpaceIqCheckData] = useState<any>()
 
-  useEffect(() => {
-    const fetchSpaceIqCheck = async () => {
-      const res = await spaceIqCheck({});
-      console.log('datatatattattat:', res)
-      setSpaceIqCheckData(res)
 
-    }
-    fetchSpaceIqCheck();
-  }, [])
 
 
   const [loading, setLoading] = useState(true);
@@ -144,8 +159,31 @@ const MainDashboard = () => {
     fetchSpaces();
   }, []);
 
+  const fetchSpaceIq = async () => {
+    try {
+      const resIq = await spaceIqCheck({});
+      console.log('IQ check data:', resIq);
+      setSpaceIqCheckData(resIq);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
+  useEffect(() => {
+    const iqSetupCompleted = localStorage.getItem('iqSetupCompleted');
+    if (iqSetupCompleted === 'true') {
+      fetchSpaceIq();
+      localStorage.removeItem('iqSetupCompleted');
+    }
+  }, []);
+
+
   const filteredSlideData = slideData.filter(slide => {
     if (slide.name === "Create a space" && spacesExist) {
+      return false;
+    }
+    if (slide.name === "Improve your space IQ" && iqIncreased === 1) {
       return false;
     }
     return true;
@@ -258,7 +296,7 @@ const MainDashboard = () => {
           </div>
         </div>
 
-        {!loading && (
+        {!loading && filteredSlideData.length > 0 && (
           <div className='w-full px-[24px] py-[30px]'>
             <ul className='w-full flex flex-wrap gap-[16px]'>
               {filteredSlideData.map((values: any, index) => (
@@ -294,6 +332,7 @@ const MainDashboard = () => {
             </ul>
           </div>
         )}
+
 
       </div>
     </div>
