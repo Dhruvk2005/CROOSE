@@ -17,7 +17,22 @@ type SignupFormValues = {
   phone_number: string;
   email: string;
   password: string;
+  security_question: any;
+  security_answer: any;
+
 };
+
+const securityQue = [
+  {
+    value: 'que1', label: 'What service did you book first using Croose?'
+  },
+  { value: 'que2', label: 'What was the location of your first appointment with Croose?' },
+  {
+    value: 'que3', label: 'What was your most recent service on Croose?'
+  },
+  { value: 'que4', label: 'Which salon or service provider do you visit most often via Croose?' },
+  { value: 'que5', label: 'Who referred you to Croose or introduced you to our platform?' },
+]
 
 const Signupform = () => {
   const router = useRouter();
@@ -48,6 +63,10 @@ const Signupform = () => {
       phone_number: '',
       email: '',
       password: '',
+      security_question: null,
+      security_answer: null,
+
+
     },
     validate: (values) => {
       const errors: Partial<SignupFormValues> = {};
@@ -87,8 +106,8 @@ const Signupform = () => {
           // if(res.data){
           //   localStorage.setItem("user",JSON.stringify(res.data))
           // }
-         localStorage.setItem('registeredEmail',values.email)
-         console.log("email:",values.email)
+          localStorage.setItem('registeredEmail', values.email)
+          console.log("email:", values.email)
 
           router.push(`/emailverification?email=${encodeURIComponent(values.email)}`);
         } else {
@@ -185,8 +204,35 @@ const Signupform = () => {
                   <input type="password" name="password" id="password" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Password" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
                   {formik.touched.password && formik.errors.password && <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>}
                 </div>
+
+                <div className=''  >
+
+
+
+
+
+
+                  <select className='text-[#344054] rounded-[10px] border-[#344054] border-1 text-[11px] font-medium w-full p-[13px] ' >
+                    <option className='text-[15px] ' value='' >Security Question</option>
+                    <option className='text-[11px]' value='' >What service did you book first using Croose?</option>
+                    <option className='text-[11px]' value='' >What was the location of your first appointment with Croose?</option>
+                    <option className='text-[11px]' value='' >What was your most recent service on Croose?</option>
+                    <option className='text-[11px]' value='' >Which salon or service provider do you visit most often via Croose?</option>
+                    <option className='text-[11px]' value='' >Who referred you to Croose or introduced you to our platform?</option>
+
+
+
+                  </select>
+
+
+                </div>
+                <div>
+                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-[#344054]">Security answer</label>
+                  <input type="password" name="password" id="password" value={formik.values.security_answer} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Answer" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
+
+                </div>
                 {/* <Link href={"/emailverification"} > */}
-                  <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
+                <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
                 {/* </Link> */}
                 <div className="text-center text-sm text-[#101828] mt-2">
                   Already have an account?{' '}

@@ -79,6 +79,8 @@ export const spaceIqCheck = async (data: any) => {
     console.log("spaceIqCheck API function response:", res)
     return res
 
+   
+
 
   } catch (err) {
     console.log(err)

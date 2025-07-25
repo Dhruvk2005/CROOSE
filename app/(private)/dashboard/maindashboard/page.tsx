@@ -2,9 +2,9 @@
 import React from 'react'
 import { Icon } from '@iconify/react'
 import Link from 'next/link';
-import { getSpaceList } from '@/app/Apis/publicapi';
+import { getSpaceList, spaceIqCheck } from '@/app/Apis/publicapi';
 import { Nav } from '../../components/nav';
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 
 const slideData = [
   {
@@ -12,14 +12,14 @@ const slideData = [
     name: "Create a space",
     description: "Create a space that fits your business perfectly. Hair Salon or Groomer? We’ve got you, E-Commerce startup? Yes! Let’s go!",
     bg: "#FAEEDC",
-    link:"/dashboard/home"
+    link: "/dashboard/home"
   },
   {
     image: "/brain.png",
     name: "Improve your space IQ",
     description: "Upload price lists, service menus, or FAQs so that your AI can answer questions correctly. The more information you add here, the smarter your assistant becomes!",
     bg: "#FCE1D9",
-    link:"/dashboard/space"
+    link: "/dashboard/space"
   },
   // {
   //   image: "/payment.png",
@@ -113,24 +113,36 @@ const MainDashboard = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const [spaceIqCheckData, setSpaceIqCheckData] = useState<any>()
+
+  useEffect(() => {
+    const fetchSpaceIqCheck = async () => {
+      const res = await spaceIqCheck({});
+      console.log('datatatattattat:', res)
+      setSpaceIqCheckData(res)
+
+    }
+    fetchSpaceIqCheck();
+  }, [])
+
 
   const [loading, setLoading] = useState(true);
 
 
-useEffect(() => {
-  const fetchSpaces = async () => {
-    try {
-      const res = await getSpaceList();
-      const spaces = res?.data || res?.spaces || [];
-      setSpacesExist(spaces.length > 0);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchSpaces();
-}, []);
+  useEffect(() => {
+    const fetchSpaces = async () => {
+      try {
+        const res = await getSpaceList();
+        const spaces = res?.data || res?.spaces || [];
+        setSpacesExist(spaces.length > 0);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSpaces();
+  }, []);
 
   const filteredSlideData = slideData.filter(slide => {
     if (slide.name === "Create a space" && spacesExist) {
@@ -166,61 +178,61 @@ useEffect(() => {
         <div className='w-full h-auto'>
           <ul className='w-full h-auto flex flex-wrap gap-[16px]'>
             <div className=" flex flex-row flex-wrap gap-[20px] justify-center w-[100%]   rounded-lg">
-      
-          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/chat.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                Total Chats
-              </div>
-            </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
 
-      
-          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/message.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {" "}
-                Live Chats
+              <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+                <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+                  <img src="/chat.png" />
+                  <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                    Total Chats
+                  </div>
+                </div>
+                <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+                  0
+                </div>
               </div>
-            </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
 
-          
-          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/timer.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {" "}
-                Avg. Response Time
-              </div>
-            </div>
-             <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
 
-          
-          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/party-popper.png" />
-              <div className="w-[100%] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {" "}
-                Sales
+              <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+                <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+                  <img src="/message.png" />
+                  <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                    {" "}
+                    Live Chats
+                  </div>
+                </div>
+                <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+                  0
+                </div>
+              </div>
+
+
+              <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+                <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+                  <img src="/timer.png" />
+                  <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                    {" "}
+                    Avg. Response Time
+                  </div>
+                </div>
+                <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+                  0
+                </div>
+              </div>
+
+
+              <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+                <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+                  <img src="/party-popper.png" />
+                  <div className="w-[100%] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                    {" "}
+                    Sales
+                  </div>
+                </div>
+                <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+                  0
+                </div>
               </div>
             </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
-        </div>
           </ul>
         </div>
       </div>
@@ -246,42 +258,42 @@ useEffect(() => {
           </div>
         </div>
 
-       {!loading && (
-  <div className='w-full px-[24px] py-[30px]'>
-    <ul className='w-full flex flex-wrap gap-[16px]'>
-      {filteredSlideData.map((values: any, index) => (
-        <li key={index} className='w-full sm:w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'>
-          {/* your card content here */}
-          <div>
-            <div
-              className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center'
-              style={{ backgroundColor: values.bg }}
-            >
-              {values.image ? (
-                <img
-                  className='w-[100px] h-[100px] object-contain'
-                  src={values.image}
-                  alt={values.name}
-                />
-              ) : (
-                <div className='w-[40px] h-[40px] bg-gray-300 rounded'></div>
-              )}
-            </div>
-            <div className='p-[20px] flex flex-col gap-[5px]'>
-              <p className='text-[#1D2939] font-semibold font-Archivo'>{values.name}</p>
-              <p className='text-[#667085] text-[14px]'>{values.description}</p>
-            </div>
+        {!loading && (
+          <div className='w-full px-[24px] py-[30px]'>
+            <ul className='w-full flex flex-wrap gap-[16px]'>
+              {filteredSlideData.map((values: any, index) => (
+                <li key={index} className='w-full sm:w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'>
+                  {/* your card content here */}
+                  <div>
+                    <div
+                      className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center'
+                      style={{ backgroundColor: values.bg }}
+                    >
+                      {values.image ? (
+                        <img
+                          className='w-[100px] h-[100px] object-contain'
+                          src={values.image}
+                          alt={values.name}
+                        />
+                      ) : (
+                        <div className='w-[40px] h-[40px] bg-gray-300 rounded'></div>
+                      )}
+                    </div>
+                    <div className='p-[20px] flex flex-col gap-[5px]'>
+                      <p className='text-[#1D2939] font-semibold font-Archivo'>{values.name}</p>
+                      <p className='text-[#667085] text-[14px]'>{values.description}</p>
+                    </div>
+                  </div>
+                  <div className='p-[20px]'>
+                    <Link href={values.link}>
+                      <button className='py-[8px] px-[16px] bg-[#F2F4F7] rounded-[8px]'>Proceed</button>
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className='p-[20px]'>
-            <Link href={values.link}>
-              <button className='py-[8px] px-[16px] bg-[#F2F4F7] rounded-[8px]'>Proceed</button>
-            </Link>
-          </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+        )}
 
       </div>
     </div>
