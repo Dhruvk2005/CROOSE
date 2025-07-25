@@ -63,15 +63,17 @@ const [searchdata, setSearchData] = useState([]);
     product_price: '',
     product_stock: '',
     product_status: '',
-
-
+name: '',
+type:'',
+stock: '',
+price: '',
     status: '',
     unit: '',
-    type: '',
+
     image: null as File | null,
-    buffer_minutes: '',
+ 
     available_days: [] as string[],
-    ai_tags: '',
+ 
   });
 
  const fetchItems = async (page: number = 1) => {
@@ -122,7 +124,7 @@ const [searchdata, setSearchData] = useState([]);
     if (showBulkModal && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setModalPosition({
-        top: rect.bottom + window.scrollY + 8, // 8px gap
+        top: rect.bottom + window.scrollY + 8,
         left: rect.left + window.scrollX,
       });
     }
@@ -155,11 +157,9 @@ const [searchdata, setSearchData] = useState([]);
   useEffect(() => {
     const GetSpaceID = async () => {
       try {
-        const res = await GetSpaceId(); // this returns { data: [ spaces ] }
+        const res = await GetSpaceId();
         const spaceArray = res?.spaces;
-        //res?.data?.spaces || res?.data;
-        // Log it to confirm at runtime
-        
+      
 
         if (!Array.isArray(spaceArray)) {
           console.warn("Expected array response but got:", spaceArray);
@@ -167,7 +167,7 @@ const [searchdata, setSearchData] = useState([]);
         }
 
         const simplified = spaceArray.map((item: any) => ({
-          id: item.id,        // Ensure it's a string for use inside dropdown `value`
+          id: item.id,        
           name: item.name
         }));
 
@@ -190,14 +190,13 @@ useEffect(() => {
           : await searchServices(searchTerm);
 
       if (result?.status) {
-        setData(
-          activeTab === "products" ? result.products : result.services
-        );
+        // console.log(result ,"result191" );
+        setItems(result.data);
       }
     } catch (err) {
       console.error("Search error:", err);
     }
-  }, 400); // debounce
+  }, 400); 
 
   return () => clearTimeout(delay);
 }, [searchTerm, activeTab]);
@@ -210,20 +209,21 @@ const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
   if (!file) return;
 
   if (!formState.space_id) {
-    alert("Please select a Space Name before uploading.");
+    
+ toast.warn("Please select a Space Name before uploading.");
     return;
   }
 
   
   try {
     const response = await uploadBulkFile(file, activeTab, formState.space_id);
-   
-    alert("File uploaded successfully!");
+   toast.success("File uploaded successfully!")
     setShowBulkModal(false);
     e.target.value = "";
   } catch (err: any) {
     console.error("Upload failed:", err);
-    alert(err.message || "Failed to upload file. Please check console for details.");
+    	toast.error(err.message || "Failed to upload file. Please check console for details.")
+    
   }
 };
 
@@ -238,33 +238,18 @@ const handleUpdateItem = async (e: React.FormEvent) => {
     if (activeTab === 'products') {
       const product_id = formState.product_id;
   const productData = {
-        // make sure you send the `id`
+      
         space_id: formState.space_id,
         name: formState.product_name,
   price: parseFloat(formState.product_price),
   stock:formState.product_stock,
-
-
-
 
 }
     // if (formState.image instanceof File) {
       //   formData.append('image', formState.image);
   // }
 
-      // const formData = new FormData();
-
-// const product_id = formState.product_id;
-
-
-      
-      // formData.append('space_id', formState.space_id);
-      
-      // formData.append('name', formState.product_name);
-      // formData.append('price', formState.product_price);
-      // formData.append('stock', formState.product_stock);
-     
-      // }
+   
 
 
       updated = await updateProduct(product_id ,productData); 
@@ -273,7 +258,6 @@ const handleUpdateItem = async (e: React.FormEvent) => {
        const service_id = formState.service_id;
       const serviceData = {
        
-        // make sure you send the `id`
         space_id: formState.space_id,
         name: formState.service_name,
         duration_minutes: parseInt(formState.service_duration),
@@ -288,7 +272,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
       updated = await updateServices(service_id ,serviceData); 
     }
 
-    // Update the item in table state
+    
     if (activeTab === 'products') {
       setData((prev: any) => ({
         ...prev,
@@ -328,52 +312,45 @@ const handleUpdateItem = async (e: React.FormEvent) => {
       if (activeTab === 'products') {
         const formData = new FormData();
         formData.append('space_id', formState.space_id);
-        formData.append('space_name', formState.space_name);
-        formData.append('product_name', formState.product_name);
-        // formData.append('description', formState.description);
-        formData.append('product_price', formState.product_price);
-        // formData.append('category', formState.category);
-        // formData.append('type', formState.type || 'physical');
-        // formData.append('unit', formState.unit);
-        formData.append('product_stock', formState.product_stock);
+        // formData.append('space_name', formState.space_name);
+        formData.append('name', formState.name);
+        formData.append('type', formState.type);
+      
+        formData.append('price', formState.product_price);
+   
+        formData.append('stock', formState.product_stock);
         if (formState.image instanceof File) {
           formData.append('image', formState.image);
         }
-        // ↳ right above addProduct/addServices
+
        
 
         const added = await addProduct(formData);
         normalized = {
           ...added,
-          space_id: formState.space_id,
-          name: formState.space_name,
-          product_name: formState.product_name,
-          // category: formState.category,
-          product_stock: formState.product_stock,
-          product_price: formState.product_price,
-          // type: formState.type || 'physical',
-          // unit: formState.unit,
-
-          // createdAt: added.created_at || new Date().toISOString(),
+       
+          name: formState.name,
+ 
+          stock: formState.product_stock,
+          price: formState.product_price,
+          type: formState.type,
+        
           image: added.image_url || null,
         };
       } else {
+
         const serviceData = {
-          space_id: formState.space_id,
-          name: formState.space_name,
-          service_name: formState.service_name,
-          // description: formState.description,
+       space_id:formState.space_id,
+          name: formState.name,
+      
           duration_minutes: parseInt(formState.service_duration),
           price: parseFloat(formState.service_price),
           category: formState.service_category,
-          // type: formState.type,
-          // unit: formState.unit,
-          buffer_minutes: parseInt(formState.buffer_minutes),
+       
+    
           available_days: formState.available_days.map((day: string) => day.trim().toLowerCase()),
 
-          ai_tags: formState.ai_tags
-            .split(',')
-            .map(tag => tag.trim()),
+        
         };
 
      
@@ -386,7 +363,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
 
       }
 
-      // Push into products or services based on active tab
+   
       if (activeTab === 'products') {
         setData((prev: any) => ({
           ...prev,
@@ -411,14 +388,16 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         product_stock: '',
         product_status: '',
         status: '',
+        stock: '',
+price: '',
 product_id: '',
     service_id: '',
         unit: '',
-        type: '',
+   type: '',
         image: null,
-        buffer_minutes: '',
+       name: '',
         available_days: [] as string[],
-        ai_tags: '',
+      
       });
 
       setShowModal(false);
@@ -463,18 +442,18 @@ product_id: '',
     "Merch & Apparel"
   ];
 
-  // const productTypes = [
-  //   "Wigs", "Extensions", "Oils", "Brushes", "Custom Wigs", "Braids", "Haircuts", "Facials",
-  //   "Makeup", "Skincare", "Beard Care", "Ponytails", "Closures", "Tape-ins", "Shaving",
-  //   "Hair Coloring", "Retouching", "Dreadlocks", "Cornrows", "Nails", "Pedicure", "Manicure",
-  //   "Loc Maintenance", "Styling Tools", "Bonnets", "Edge Control", "Mousse", "Shampoo",
-  //   "Conditioner", "Body Butter", "Lip Gloss", "Foundation", "Lashes", "Appointments",
-  //   "Consultations", "Gift Cards",  "Bundles", "Accessories", "Clippers", "Durags",
-  //   "Wave Caps", "Dye Kits", "Detanglers"
-  // ];
+  const productTypes = [
+    "Wigs", "Extensions", "Oils", "Brushes", "Custom Wigs", "Braids", "Haircuts", "Facials",
+    "Makeup", "Skincare", "Beard Care", "Ponytails", "Closures", "Tape-ins", "Shaving",
+    "Hair Coloring", "Retouching", "Dreadlocks", "Cornrows", "Nails", "Pedicure", "Manicure",
+    "Loc Maintenance", "Styling Tools", "Bonnets", "Edge Control", "Mousse", "Shampoo",
+    "Conditioner", "Body Butter", "Lip Gloss", "Foundation", "Lashes", "Appointments",
+    "Consultations", "Gift Cards",  "Bundles", "Accessories", "Clippers", "Durags",
+    "Wave Caps", "Dye Kits", "Detanglers"
+  ];
 
-  const renderTableRows = () => {
-  const items = activeTab === 'products' ? data.products : data.services;
+  const RenderTableRows = ({items}:any) => {
+  // const items = activeTab === 'products' ? data.products : data.services;
 const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
   return items?.map((item: any) => {
@@ -502,6 +481,8 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           <>
             <td className="px-4 py-3">{item.product_name}</td>
             <td className="px-4 py-3">{item.product_stock || '-'}</td>
+            <td className="px-4 py-3">{item.type || '-'}</td>
+         
             <td className="px-4 py-3">{item.product_price}</td>
             <td className="px-4 py-3">
               <button
@@ -543,35 +524,6 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 };
 
 
-  // const renderTableRows = () => {
-  //   const items = activeTab === 'products' ? data.products : data.services;
-  //   return items.map((item: any, idx: number) => (
-  //     <tr key={item.id || item.space_name + idx} className="hover:bg-gray-50 border-b border-[#EAECF0]">
-
-
-  {/* <td className="px-4 py-3">
-          {
-            spaces.find(s => String(s.id) === String(item.space_id))?.name || "-"
-          }
-        </td> */}
-  // 
-
-  {/* <td className="px-4 py-3">{item.type}</td> */ }
-  {/* <td className="px-4 py-3">{item.unit || '-'}</td> */ }
-
-  // {activeTab === 'services' && (
-  {/* <td className="px-4 py-3">{(item.ai_tags || []).join(', ')}</td> */ }
-  {/* <td className="px-4 py-3">{item.buffer_minutes || '-'}</td> */ }
-
-  //   <>
-
-  //      </>
-  // )}
-
-  {/* <td className="px-4 py-3">{item.createdAt || item.created_at || '-'}</td> */ }
-  //     </tr>
-  //   ));
-  // };
 
   return (
     <div className="p-2 space-y-6">
@@ -733,6 +685,8 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
 
                 <th className="px-4 py-2">Product Name</th>
                 <th className="px-4 py-2">Stock</th>
+                <th className="px-4 py-2">Type</th>
+
                 <th className="px-4 py-2">Price</th>
                 <th className="px-4 py-2">Actions</th>
 
@@ -753,16 +707,16 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 <th className="px-4 py-2">Actions</th>
               </>
             )}
+  `
+            </tr>
+          </thead>
+          <tbody><RenderTableRows items={items} /></tbody>
+        </table>
 
-          </tr>
-        </thead>
-        <tbody>{renderTableRows()}</tbody>
-      </table>
-
-      {showModal && (
-        <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
-            <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
+        {showModal && (
+          <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
+              <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">`
               <h3 className="flex text-lg font-semibold mb-4">New {activeTab === 'products' ? 'Product' : 'Service'}</h3>
 
               <button
@@ -800,21 +754,12 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 ))}
               </select>
 
-                        <label className="col-span-2">
+      <label className="col-span-2">
   <span>Name</span>
   <input
-    value={
-      activeTab === 'products'
-        ? formState.product_name
-        : formState.service_name
-    }
+    value={formState.name}
     onChange={(e) =>
-      setFormState((f) => ({
-        ...f,
-        ...(activeTab === 'products'
-          ? { product_name: e.target.value }
-          : { service_name: e.target.value }),
-      }))
+      setFormState((f) => ({ ...f, name: e.target.value }))
     }
     type="text"
     required
@@ -823,35 +768,39 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
 </label>
 
 
-              {/* <select value={formState.service_category} onChange={(e) => setFormState(f => ({ ...f, category: e.target.value }))} className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" required>
-                  <option value="">Select category</option>
-                  {activeTab === 'products'
-                    ? productCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)
-                    : ['in_store', 'at_home', 'virtual'].map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                </select> */}
 
-              <label>
-
-                <span>Price</span>
-                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
-              </label>
-              {/* <label>
-                <span>Type</span>
-                <select value={formState.type} onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} className="border p-2 rounded w-full mt-1" required>
-                  <option value="">Select Type</option>
-                  {activeTab === 'services'
-                    ? ['in_store', 'at_home', 'virtual'].map(type => <option key={type} value={type}>{type}</option>)
-                    : productTypes.map(type => <option key={type} value={type}>{type}</option>)}
-                </select>
-              </label> */}
+             
+           
 
               {activeTab === 'products' && (
                 <>
-                 
+                       <label>
+  <span>Type</span>
+  <select
+
+    value={formState.type} // optional if you're controlling it
+  onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} 
+  name="type" className="border border-bg-gray-100 p-2 py-4 rounded w-full mt-1"
+  >
+    <option value="">Select Type</option>
+  {productTypes.map((type) => (
+    <option key={type} value={type}>
+      {type}
+    </option>
+    ))}
+  </select>
+</label>
                   <label>
                     <span>Stock</span>
                     <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
                   </label>
+                   <label>
+ 
+            
+
+                <span>Price</span>
+                <input value={formState.product_price} onChange={(e) => setFormState(f => ({ ...f, product_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
+              </label>
                   <label className="col-span-2">
                     <span>Image</span>
                     <input
@@ -870,11 +819,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 </>
               )}
 
-              {/* <label className="col-span-2">
-                <span>Description</span>
-                <input value={formState.description} onChange={(e) => setFormState(f => ({ ...f, description: e.target.value }))} type="text" className="border border-[#F1F2F3] px-2 py-3  rounded w-full mt-1" />
-              </label> */}
-
+      
               {activeTab === 'services' && (
                 <>
 
@@ -898,14 +843,12 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                       className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
                     />
                   </label>
-                  {/* <label>
-                    <span>Unit</span>
-                    <input value={formState.unit} onChange={(e) => setFormState(f => ({ ...f, unit: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label>
-                  <label>
-                    <span>Buffer Minutes</span>
-                    <input value={formState.buffer_minutes} onChange={(e) => setFormState(f => ({ ...f, buffer_minutes: e.target.value }))} type="number" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
+                   <label>
+
+                <span>Price</span>
+                <input value={formState.service_price} onChange={(e) => setFormState(f => ({ ...f, service_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
+              </label>
+               
                   <label className="col-span-2">
                     <span>Available Days</span>
                     <Select
@@ -921,22 +864,11 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                       }
                     />
 
-                    {/* OPTIONAL: Show tags for selected days */}
-                    {/* <div className="flex flex-wrap gap-2 mt-2">
-    {formState.available_days.map(day => (
-      <span key={day} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
-        {day.charAt(0).toUpperCase() + day.slice(1)}
-      </span>
-    ))}
-  </div> */}
+          
                   </label>
 
 
 
-                  {/* <label className="col-span-2">
-                    <span>AI Tags (comma separated)</span>
-                    <input value={formState.ai_tags} onChange={(e) => setFormState(f => ({ ...f, ai_tags: e.target.value }))} type="text" className="border p-2 rounded w-full mt-1" />
-                  </label> */}
                 </>
               )}
 
