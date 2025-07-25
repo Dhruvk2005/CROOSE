@@ -139,7 +139,60 @@ export const getSpaceList = async () => {
   }
 };
 
+export const getNewAppointments = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `${BASE_URL}/api/new_appointments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      }
+    );
 
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch new appointments:", error);
+    throw error;
+  }
+};
+export const getTotalAppointments = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `${BASE_URL}/api/total_appointments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch new appointments:", error);
+    throw error;
+  }
+};
+export const getCancelledAppointments = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `${BASE_URL}/api/cancelled_appointments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch new appointments:", error);
+    throw error;
+  }
+};
 
 export const appointmentList = async () => {
   try {
@@ -190,7 +243,7 @@ export const updateAppointmentStatus = async (id: number, status: string) => {
     throw err;
   }
 };
-//https://joincroose.com/croose/api/space
+
 export const GetSpaceId = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -220,20 +273,87 @@ export const addProduct = async (formData: FormData) => {
   const token = localStorage.getItem("token");
   return await axiosRequest({
     method: "post",
-    url: `${BASE_URL}/api/products`,
+    url: `${BASE_URL}/api/services/163`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
     formData,
   });
 };
-
+//update product
+export const updateProduct = async (id : string ,data: any) => {
+  const token = localStorage.getItem("token");
+  return await axiosRequest({
+    method: 'put',
+    url: `${BASE_URL}/api/products/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+ body: data,
+  });
+};
 export const addServices = async (data: any) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: 'post',
       url: `${BASE_URL}/api/services`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: data,
+    });
+    return res;
+  } catch (err: any) {
+    console.log(err);
+    throw new Error(err?.message || "Failed to add service.");
+  }
+};
+export const uploadBulkFile = async (
+  file: File,
+  activeTab: 'products' | 'services',
+  space_id: string
+) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+      formData.append("file", file, file.name);        
+    formData.append("space_id", space_id);  
+    
+       console.log('FormData entries:');
+
+
+    const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}/bulkupload`;
+
+   
+    const res = await axios.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return res.data;
+  } catch (err: any) {
+    console.error('Full error:', err);
+    if (err.response) {
+      console.error('Response data:', err.response.data);
+      console.error('Response status:', err.response.status);
+      console.error('Response headers:', err.response.headers);
+    }
+    throw new Error(err?.response?.data?.message || "Failed to upload file.");
+  }
+};
+
+
+
+export const updateServices = async (id : string ,data: any) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: 'put',
+      url: `${BASE_URL}/api/services/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -341,6 +461,29 @@ export const registerApi = async (data: any) => {
     console.log(err);
   }
 };
+
+export const searchProducts = async (query: string) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${BASE_URL}/api/products?search=${query}` , {
+    headers: {
+      Authorization: `Bearer ${token}`, // 👈 Ensure token is valid
+    },
+  });
+  return response.data;
+};
+
+
+export const searchServices = async (query: string) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${BASE_URL}/api/services?search=${query}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // 👈 Ensure token is valid
+    },
+  });
+  return response.data;
+};
+
+
 
 export const countryApi = async () => {
   try {

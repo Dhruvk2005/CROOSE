@@ -1,0 +1,32 @@
+commit 6da408b81666f4dd675ebe569fe96abdb3525cf8
+Merge: 943fcee d5cd8f1
+Author: Avadhi Verma <avadhiverma2002@gmail.com>
+Date:   Wed Jul 23 14:31:27 2025 +0530
+
+    merge
+
+ app/(private)/components/loading.tsx               |  49 ++++
+ app/(private)/components/myspace.tsx               |   4 +-
+ app/(private)/components/nav.tsx                   |  27 ++-
+ app/(private)/components/setting1.tsx              | 196 +++++++++++++++
+ app/(private)/components/setting2.tsx              | 161 +++++++++++++
+ .../page.tsx => components/setting3.tsx}           |  75 ++++--
+ .../page.tsx => components/settingDelete.tsx}      |  12 +-
+ app/(private)/components/upgradetopro.tsx          |   4 +-
+ .../{dashboard => }/customerspace/page.tsx         |   4 +-
+ app/(private)/customisespace/page.tsx              |  42 +++-
+ app/(private)/dashboard/createnewspace/page.tsx    |   1 -
+ app/(private)/dashboard/customers/page.tsx         | 126 +++++-----
+ app/(private)/dashboard/maindashboard/page.tsx     |  44 ++--
+ app/(private)/dashboard/messaging/page.tsx         | 266 ++++++++++----------
+ app/(private)/dashboard/product/page.tsx           | 100 +++++++-
+ app/(private)/dashboard/settingoverview/page.tsx   | 268 ---------------------
+ app/(private)/dashboard/settingoverview2/page.tsx  | 115 ---------
+ app/(private)/dashboard/support/page.tsx           |  12 +-
+ app/(public)/login/page.tsx                        |   6 +-
+ app/(public)/signup/page.tsx                       |  38 ++-
+ app/Apis/publicapi.tsx                             |   8 +-
+ app/content/Content.tsx                            |  28 +++
+ app/context/SettingContext.tsx                     |  42 ++++
+ app/layout.tsx                                     |  23 +-
+ 24 files changed, 980 insertions(+), 671 deletions(-)

@@ -4,7 +4,7 @@ import "./globals.css";
 import Settingprovider from '@/app/context/SettingContext';
 import Content from "./content/Content";
 import { Nav } from "./(private)/components/nav";
-
+import { ToastContainer } from 'react-toastify';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -36,7 +36,9 @@ export default function RootLayout({
           <Content>
 
             {children}</Content>
+
         </Settingprovider>
+           <ToastContainer />
       </body>
     </html>
   );

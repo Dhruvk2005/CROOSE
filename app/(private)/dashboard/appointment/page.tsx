@@ -1,7 +1,7 @@
 'use client';
-// import { formatDbDate } from '@/app/(private)/utils/date';
+//import { formatDbDate } from '@/app/(private)/utils/date';
 import React, { useEffect, useState, useRef } from 'react';
-import { appointmentList, updateAppointmentStatus } from '@/app/Apis/publicapi';
+import { appointmentList, getCancelledAppointments, getNewAppointments, getTotalAppointments, updateAppointmentStatus } from '@/app/Apis/publicapi';
 import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download } from "lucide-react";
 import { DateSelectButton } from '../../components/DateSelectButton';
 import { Icon } from "@iconify/react";
@@ -17,6 +17,9 @@ const AppointmentTable = () => {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [newappointments, setNewAppointments] = useState<number | null>(null);
+  const [totalappointments, setTotalAppointments] = useState<number | null>(null);
+  const [cancelappointments, setCancelAppointments] = useState<number | null>(null);
   const [formDate, setDate] = useState<{ appointmentTime: string }>({
     appointmentTime: "",
   });
@@ -79,6 +82,43 @@ const AppointmentTable = () => {
       console.error('Failed to update appointment status', err);
     }
   };
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getNewAppointments();
+        setNewAppointments(data?.new_appointments ?? 0);
+      } catch (err) {
+        console.error("Error loading appointments");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getTotalAppointments();
+        setTotalAppointments(data?.total_appointments?? 0);
+      } catch (err) {
+        console.error("Error loading appointments");
+      }
+    };
+
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getCancelledAppointments();
+        setCancelAppointments(data?.cancelled_appointments ?? 0);
+      } catch (err) {
+        console.error("Error loading appointments");
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     fetchAppointments();
@@ -150,12 +190,12 @@ const AppointmentTable = () => {
           <p className="text-sm text-gray-500">Dive deep into who your customers are</p>
         </div>
         <div className='border-none' >
-        <DateSelectButton
+        {/* <DateSelectButton
 
 
           appointmentTime={formData.appointmentTime}
           setDate={setDate}
-        />
+        /> */}
         </div>
 
 
@@ -169,7 +209,9 @@ const AppointmentTable = () => {
             <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
               <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Appointments</p>
               <div className='flex items-center gap-[16px] justify-between  '>
-                <p className='font-semibold text-[#101828] text-[30px] ' >12</p>
+                <p className='font-semibold text-[#101828] text-[30px] ' >
+                  {newappointments !== null ? newappointments : "—"}
+                  </p>
                 <img className='w-[71px] ' src={"/100.png"} alt='badge' />
               </div>
             </li>
@@ -179,7 +221,10 @@ const AppointmentTable = () => {
             <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
               <p className='text-[#475467] text-[14px] font-medium font-Inter' >Total Appointments</p>
               <div className='flex items-center gap-[16px] justify-between  '>
-                <p className='font-semibold text-[#101828] text-[30px] ' >50</p>
+                <p className='font-semibold text-[#101828] text-[30px] ' >
+
+                  {totalappointments !== null ? totalappointments : "—"}
+                </p>
                 <img className='w-[71px] ' src={"/100.png"} alt='badge' />
               </div>
             </li>
@@ -187,7 +232,9 @@ const AppointmentTable = () => {
             <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
               <p className='text-[#475467] text-[14px] font-medium font-Inter' >Canceled Appointments</p>
               <div className='flex items-center gap-[16px] justify-between  '>
-                <p className='font-semibold text-[#101828] text-[30px] ' >$28</p>
+                <p className='font-semibold text-[#101828] text-[30px] ' >
+                  {cancelappointments !== null ?  cancelappointments : "—"}
+                </p>
 
                 <img className='w-[71px] ' src={"/35.png"} alt='badge' />
               </div>
@@ -250,10 +297,10 @@ const AppointmentTable = () => {
           <h3 className="text-lg font-semibold mb-4 px-8">Appointments</h3>
             <ul className='w-full flex  items-center justify-between px-8' >
                                 <li className=' w-full gap-[12px] flex items-center ' >
-                                    <button className='px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
+                                    {/* <button className='px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
                                         <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
                                         <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
-                                    </button>
+                                    </button> */}
                                     <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="text-[#344054] font-Inter font-semibold text-[14px]  px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]">
           <option value="">All Status</option>
           {statusOptions.map(opt => (
@@ -279,10 +326,10 @@ const AppointmentTable = () => {
                                         <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
                                     </div>
                                     <div className=' w-full  flex items-center ' >
-                                        <button className=' items-center px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
+                                        {/* <button className=' items-center px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
                                             <Icon icon="bitcoin-icons:export-outline" width="24" height="24" style={{ color: '#344054' }} />
                                             <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Export</p>
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </li>
 
@@ -332,19 +379,18 @@ const AppointmentTable = () => {
           <tbody>
             {filteredAppointments.map((appt: any) => (
              <tr key={appt.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
-        <td className="px-6  py-4 whitespace-nowrap">
-          <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-            />
-       <td className="px-4 py-3" style={defaultTypography}>
-        {appt.space_name || "_"}
-        {/* {spaces.find(s => String(s.id) === String(appt.space_id))?.name || "-"} */}
-      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+  <div className="flex items-center gap-3">
+    <input
+      type="checkbox"
+      className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
+    />
+    <span style={defaultTypography}>
+      {appt.space_name || "_"}
+    </span>
+  </div>
+</td>
 
-          </div>
-        </td>
          
                 <td className="px-4 py-3" style={defaultTypography}>{appt.customer_name}</td>
                  <td className="px-4 py-3">
@@ -367,7 +413,7 @@ const AppointmentTable = () => {
                   letterSpacing: "0%"
                 }} >{appt.customer_number}</td>
                 <td className="px-4 py-3" style={defaultTypography}>{appt.service_name || '-'}</td>
-                {/* <td className="px-4 py-3" style={defaultTypography}>{formatDbDate(appt.date)}</td> */}
+                <td className="px-4 py-3" style={defaultTypography}>{appt.date}</td>
                 
                
               </tr>
