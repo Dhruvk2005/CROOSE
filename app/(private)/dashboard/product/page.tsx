@@ -64,6 +64,7 @@ const [searchdata, setSearchData] = useState([]);
     product_stock: '',
     product_status: '',
 name: '',
+type:'',
 stock: '',
 price: '',
     status: '',
@@ -313,6 +314,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         formData.append('space_id', formState.space_id);
         // formData.append('space_name', formState.space_name);
         formData.append('name', formState.name);
+        formData.append('type', formState.type);
       
         formData.append('price', formState.product_price);
    
@@ -331,6 +333,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
  
           stock: formState.product_stock,
           price: formState.product_price,
+          type: formState.type,
         
           image: added.image_url || null,
         };
@@ -390,7 +393,7 @@ price: '',
 product_id: '',
     service_id: '',
         unit: '',
-   
+   type: '',
         image: null,
        name: '',
         available_days: [] as string[],
@@ -439,15 +442,15 @@ product_id: '',
     "Merch & Apparel"
   ];
 
-  // const productTypes = [
-  //   "Wigs", "Extensions", "Oils", "Brushes", "Custom Wigs", "Braids", "Haircuts", "Facials",
-  //   "Makeup", "Skincare", "Beard Care", "Ponytails", "Closures", "Tape-ins", "Shaving",
-  //   "Hair Coloring", "Retouching", "Dreadlocks", "Cornrows", "Nails", "Pedicure", "Manicure",
-  //   "Loc Maintenance", "Styling Tools", "Bonnets", "Edge Control", "Mousse", "Shampoo",
-  //   "Conditioner", "Body Butter", "Lip Gloss", "Foundation", "Lashes", "Appointments",
-  //   "Consultations", "Gift Cards",  "Bundles", "Accessories", "Clippers", "Durags",
-  //   "Wave Caps", "Dye Kits", "Detanglers"
-  // ];
+  const productTypes = [
+    "Wigs", "Extensions", "Oils", "Brushes", "Custom Wigs", "Braids", "Haircuts", "Facials",
+    "Makeup", "Skincare", "Beard Care", "Ponytails", "Closures", "Tape-ins", "Shaving",
+    "Hair Coloring", "Retouching", "Dreadlocks", "Cornrows", "Nails", "Pedicure", "Manicure",
+    "Loc Maintenance", "Styling Tools", "Bonnets", "Edge Control", "Mousse", "Shampoo",
+    "Conditioner", "Body Butter", "Lip Gloss", "Foundation", "Lashes", "Appointments",
+    "Consultations", "Gift Cards",  "Bundles", "Accessories", "Clippers", "Durags",
+    "Wave Caps", "Dye Kits", "Detanglers"
+  ];
 
   const RenderTableRows = ({items}:any) => {
   // const items = activeTab === 'products' ? data.products : data.services;
@@ -478,6 +481,8 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           <>
             <td className="px-4 py-3">{item.product_name}</td>
             <td className="px-4 py-3">{item.product_stock || '-'}</td>
+            <td className="px-4 py-3">{item.type || '-'}</td>
+         
             <td className="px-4 py-3">{item.product_price}</td>
             <td className="px-4 py-3">
               <button
@@ -680,6 +685,8 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
 
                 <th className="px-4 py-2">Product Name</th>
                 <th className="px-4 py-2">Stock</th>
+                <th className="px-4 py-2">Type</th>
+
                 <th className="px-4 py-2">Price</th>
                 <th className="px-4 py-2">Actions</th>
 
@@ -767,12 +774,29 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
 
               {activeTab === 'products' && (
                 <>
-                 
+                       <label>
+  <span>Type</span>
+  <select
+
+    value={formState.type} // optional if you're controlling it
+  onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} 
+  name="type" className="border border-bg-gray-100 p-2 py-4 rounded w-full mt-1"
+  >
+    <option value="">Select Type</option>
+  {productTypes.map((type) => (
+    <option key={type} value={type}>
+      {type}
+    </option>
+    ))}
+  </select>
+</label>
                   <label>
                     <span>Stock</span>
                     <input value={formState.product_stock} onChange={(e) => setFormState(f => ({ ...f, product_stock: e.target.value }))} type="text" className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
                   </label>
                    <label>
+ 
+            
 
                 <span>Price</span>
                 <input value={formState.product_price} onChange={(e) => setFormState(f => ({ ...f, product_price: e.target.value }))} type="text" required className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1" />
