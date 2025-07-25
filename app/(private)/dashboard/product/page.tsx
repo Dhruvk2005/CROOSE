@@ -24,7 +24,7 @@ const options = [
   { value: "sunday", label: "Sunday" }
 ];
 
-const ProductServiceTabs = ({ type = 'product' }) => {
+const ProductServiceTabs = () => {
    const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,7 +95,7 @@ const [searchdata, setSearchData] = useState([]);
       
       
         
-         setData((p ) =>{ return {
+         setData((p :any ) =>{ return {
      
            [activeTab]: data?.data || [],
     //...data
@@ -104,7 +104,7 @@ const [searchdata, setSearchData] = useState([]);
         setTotalItems(data.meta.total);
       }
     } catch (error) {
-      console.error(`Error fetching ${type}:`, error);
+      console.error(`Error fetching ${activeTab}:`, error);
     } finally {
       setLoading(false);
     }
