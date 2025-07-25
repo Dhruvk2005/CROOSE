@@ -275,67 +275,75 @@ const MainDashboard = () => {
         </div>
       </div>
 
-      {/* Complete Setup Slider */}
-      <div>
-        <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between px-[24px]'>
-          <div>
-            <p className='font-sans text-[#1D2939] text-[18px] font-semibold'>Complete Setup</p>
-            <p className='text-[#667085] text-[14px] font-normal'>
-              Complete these simple steps to get your business live. You only have to do this once.
-            </p>
-          </div>
-          <div>
-            <ul className='gap-[10px] flex items-center mt-[10px] md:mt-0'>
-              <li className='flex items-center w-[40px] border-[1px] border-[#EAECF0] rounded-[8px] p-[10px]'>
-                <Icon icon="iconamoon:arrow-left-2-duotone" width="24" height="24" />
-              </li>
-              <li className='flex items-center w-[40px] border-[1px] border-[#EAECF0] rounded-[8px] p-[10px]'>
-                <Icon icon="iconamoon:arrow-right-2-duotone" width="24" height="24" />
-              </li>
-            </ul>
+
+      {iqIncreased === 0 && (
+        <div>
+          <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between px-[24px]'>
+            <div>
+              <p className='font-sans text-[#1D2939] text-[18px] font-semibold'>Complete Setup</p>
+              <p className='text-[#667085] text-[14px] font-normal'>
+                Complete these simple steps to get your business live. You only have to do this once.
+              </p>
+            </div>
+            <div>
+              <ul className='gap-[10px] flex items-center mt-[10px] md:mt-0'>
+                <li className='flex items-center w-[40px] border-[1px] border-[#EAECF0] rounded-[8px] p-[10px]'>
+                  <Icon icon="iconamoon:arrow-left-2-duotone" width="24" height="24" />
+                </li>
+                <li className='flex items-center w-[40px] border-[1px] border-[#EAECF0] rounded-[8px] p-[10px]'>
+                  <Icon icon="iconamoon:arrow-right-2-duotone" width="24" height="24" />
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
+      )}
 
-        {!loading && filteredSlideData.length > 0 && (
-          <div className='w-full px-[24px] py-[30px]'>
-            <ul className='w-full flex flex-wrap gap-[16px]'>
-              {filteredSlideData.map((values: any, index) => (
-                <li key={index} className='w-full sm:w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'>
-                  {/* your card content here */}
-                  <div>
-                    <div
-                      className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center'
-                      style={{ backgroundColor: values.bg }}
-                    >
-                      {values.image ? (
-                        <img
-                          className='w-[100px] h-[100px] object-contain'
-                          src={values.image}
-                          alt={values.name}
-                        />
-                      ) : (
-                        <div className='w-[40px] h-[40px] bg-gray-300 rounded'></div>
-                      )}
-                    </div>
-                    <div className='p-[20px] flex flex-col gap-[5px]'>
-                      <p className='text-[#1D2939] font-semibold font-Archivo'>{values.name}</p>
-                      <p className='text-[#667085] text-[14px]'>{values.description}</p>
-                    </div>
+
+      {iqIncreased === 1 && (
+        <div className='text-[30px] ml-[25px] font-semibold text-[purple] ' >Welcome to Croose</div>
+      )}
+
+      {!loading && filteredSlideData.length > 0 && (
+        <div className='w-full px-[24px] py-[30px]'>
+          <ul className='w-full flex flex-wrap gap-[16px]'>
+            {filteredSlideData.map((values: any, index) => (
+              <li key={index} className='w-full sm:w-[280px] rounded-[16px] h-[380px] border-[1px] border-[#EAECF0] bg-white flex flex-col justify-between'>
+                {/* your card content here */}
+                <div>
+                  <div
+                    className='w-full h-[120px] rounded-t-[12px] p-[20px] flex items-center'
+                    style={{ backgroundColor: values.bg }}
+                  >
+                    {values.image ? (
+                      <img
+                        className='w-[100px] h-[100px] object-contain'
+                        src={values.image}
+                        alt={values.name}
+                      />
+                    ) : (
+                      <div className='w-[40px] h-[40px] bg-gray-300 rounded'></div>
+                    )}
                   </div>
-                  <div className='p-[20px]'>
-                    <Link href={values.link}>
-                      <button className='py-[8px] px-[16px] bg-[#F2F4F7] rounded-[8px]'>Proceed</button>
-                    </Link>
+                  <div className='p-[20px] flex flex-col gap-[5px]'>
+                    <p className='text-[#1D2939] font-semibold font-Archivo'>{values.name}</p>
+                    <p className='text-[#667085] text-[14px]'>{values.description}</p>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+                </div>
+                <div className='p-[20px]'>
+                  <Link href={values.link}>
+                    <button className='py-[8px] px-[16px] bg-[#F2F4F7] rounded-[8px]'>Proceed</button>
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
 
-      </div>
     </div>
+    
   );
 };
 
