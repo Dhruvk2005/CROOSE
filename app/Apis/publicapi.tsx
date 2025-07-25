@@ -273,7 +273,7 @@ export const addProduct = async (formData: FormData) => {
   const token = localStorage.getItem("token");
   return await axiosRequest({
     method: "post",
-    url: `${BASE_URL}/api/services/163`,
+    url: `${BASE_URL}/api/products`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -466,7 +466,7 @@ export const searchProducts = async (query: string) => {
   const token = localStorage.getItem("token");
   const response = await axios.get(`${BASE_URL}/api/products?search=${query}` , {
     headers: {
-      Authorization: `Bearer ${token}`, // 👈 Ensure token is valid
+      Authorization: `Bearer ${token}`, 
     },
   });
   return response.data;
@@ -477,7 +477,7 @@ export const searchServices = async (query: string) => {
   const token = localStorage.getItem("token");
   const response = await axios.get(`${BASE_URL}/api/services?search=${query}`, {
     headers: {
-      Authorization: `Bearer ${token}`, // 👈 Ensure token is valid
+      Authorization: `Bearer ${token}`, 
     },
   });
   return response.data;
