@@ -4,6 +4,8 @@ import "./globals.css";
 import Settingprovider from '@/app/context/SettingContext';
 import Content from "./content/Content";
 import { IqProvider } from "./(private)/Iqcontext";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // make sure to import css for react-toastify
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,13 +25,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <IqProvider>
           <Settingprovider>
             <Content>{children}</Content>
           </Settingprovider>
         </IqProvider>
-
+        <ToastContainer />
       </body>
     </html>
   );

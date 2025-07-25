@@ -179,7 +179,7 @@ const Customers = () => {
                 </div>
 
                 {/* Pagination */}
-                <div className="flex justify-between items-center mt-4">
+                <div className="flex justify-center gap-[20px] items-center mt-4">
                     <button
                         onClick={handlePrevPage}
                         disabled={currentPage === 1}
