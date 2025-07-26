@@ -41,7 +41,7 @@ let Accordings = ({index,value,toggleaccordion,openindex}:any)=>{
                                     {openindex == index && (
                                         <div className="  text-[#344054] font-normal">
                                             <p>
-                                              <span className=' rounded-[8px]  text-[#101828] font-semibold font-Inter text-[16px]'> {value.start}</span> <br/>
+                                             
                                                {value.description}
                                             </p>
                                         </div>
@@ -69,7 +69,7 @@ const Support = () => {
         {
             title: "How do I set up the automated response?",
            
-            description: 'Once you complete your onboarding on Croose, your WhatsApp assistant is ready to go. Youcan customize automated responses by adding details about your business in your "Space IQ" and uploading any documents or information you want your assistant to use when talking toyour customers.'
+            description: 'Once you complete your onboarding on Croose, your WhatsApp assistant is ready to go. You can customize automated responses by adding details about your business in your "Space IQ" and uploading any documents or information you want your assistant to use when talking toyour customers.'
         },
         {
             title: "How do I cancel subscription?",

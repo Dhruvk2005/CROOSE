@@ -13,7 +13,7 @@ const slideData = [
     name: "Create a space",
     description: "Create a space that fits your business perfectly. Hair Salon or Groomer? We’ve got you, E-Commerce startup? Yes! Let’s go!",
     bg: "#FAEEDC",
-    link: "/dashboard/home"
+    link:"/dashboard/home"
   },
   {
     image: "/brain.png",
@@ -209,9 +209,9 @@ const MainDashboard = () => {
       }, [customerStatistic])
 
   return (
-
+    
     <div className='w-full  '>
-
+      
       <div className='w-full py-[18px] px-[24px] h-[64px] flex justify-between items-center border-b-2 border-[#EAECF0]'>
         <div className='text-[#121217] text-[18px] font-semibold font-sans'>Overview</div>
         <div className='border-2 border-[#EAECF0] rounded-[8px] p-[10px]'>
@@ -222,9 +222,11 @@ const MainDashboard = () => {
       {/* Greetings and Stats */}
       <div className='w-full h-auto px-[24px] py-[40px] gap-[20px] flex flex-col'>
         <div className='w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-[10px]'>
-          <ul>             <li className='font-sans text-[18px] text-[#1D2939] font-semibold'>{greeting}, {userdata?.data?.name}</li>
-            <li className='text-[#667085] font-normal'>{currentTime}</li>
+          <ul>
+            <li className='font-sans text-[18px] text-[#1D2939] font-semibold'>Good Afternoon, Isaac</li>
+            <li className='text-[#667085] font-normal'>16 June, 2025 - 21:23 PM</li>
           </ul>
+
           {/* <ul className='flex gap-[8px] items-center'>
             <li className='flex justify-center w-[60px] bg-[#F1F0FA] text-[#685BC7] py-[8px] px-[16px] rounded-[8px]'>CTA</li>
             <li className='flex justify-center w-[60px] bg-[#685BC7] text-[#F1F0FA] py-[8px] px-[16px] rounded-[8px]'>CTA</li>
@@ -262,19 +264,19 @@ const MainDashboard = () => {
                 </div>
               </div>
 
-
-              <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
-                <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-                  <img src="/timer.png" />
-                  <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                    {" "}
-                    Avg. Response Time
-                  </div>
-                </div>
-                <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-                  0
-                </div>
+          
+          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
+              <img src="/timer.png" />
+              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+                {" "}
+                Avg. Response Time
               </div>
+            </div>
+             <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+              0
+            </div>
+          </div>
 
 
               <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">

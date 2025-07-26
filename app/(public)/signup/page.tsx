@@ -95,8 +95,8 @@ const Signupform = () => {
           // if(res.data){
           //   localStorage.setItem("user",JSON.stringify(res.data))
           // }
-          localStorage.setItem('registeredEmail', values.email)
-          console.log("email:", values.email)
+         localStorage.setItem('registeredEmail',values.email)
+         console.log("email:",values.email)
 
           // router.push(`/emailverification?email=${encodeURIComponent(values.email)}`);
           router.push("/login")
@@ -236,7 +236,7 @@ const Signupform = () => {
 
                 </div>
                 {/* <Link href={"/emailverification"} > */}
-                <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
+                  <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
                 {/* </Link> */}
                 <div className="text-center text-sm text-[#101828] mt-2">
                   Already have an account?{' '}

@@ -1,56 +1,55 @@
-'use client'
 
-import React, { useState, useEffect } from 'react'
-import { Icon } from '@iconify/react/dist/iconify.js'
+
+
+
+
+'use client';
+
+import React, { useState, useEffect, useContext } from 'react';
+import { Icon } from '@iconify/react/dist/iconify.js';
 import DeletePopup from './settingDelete';
-import { useContext } from 'react';
 import { SettingContext } from '@/app/context/SettingContext';
 import { logoutapi, updatePassword } from '@/app/Apis/publicapi';
 import { useRouter } from 'next/navigation';
 
-
-
-
-const SettingTwo = (props: any) => {
-  const [Open, setOpen] = useState(false)
-  const { setOpenSettingDelete } = useContext<any>(SettingContext)
-  const { setOpenSetting3 } = useContext<any>(SettingContext)
-  const { setOpenSetting2 } = useContext<any>(SettingContext)
-  const { setOpenSetting1 } = useContext<any>(SettingContext)
+const SettingTwo = () => {
+  const [Open, setOpen] = useState(false);
+  const { setOpenSettingDelete, setOpenSetting3, setOpenSetting2, setOpenSetting1 } = useContext<any>(SettingContext);
 
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
-
+  const [currentPasswordInput, setCurrentPasswordInput] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
-    if (Open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+    document.body.style.overflow = Open ? 'hidden' : 'auto';
   }, [Open]);
 
   const handlelogout = async () => {
-
-
     try {
-      await logoutapi({});
-      localStorage.removeItem("token");
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('No token found. Please login again.');
+        router.push('/login');
+        return;
+      }
+
+      await logoutapi({}); // You can pass token here if API expects it
+      localStorage.removeItem('token');
+      localStorage.removeItem('password'); // Optional: clear password
       setOpenSetting2(false);
       setSnackbarMessage('Logout successful');
       setOpenSnackbar(true);
-
-
       setTimeout(() => {
-        router.push("/login");
+        router.push('/login');
       }, 1000);
     } catch (err: any) {
-      setSnackbarMessage(err.message || "Logout failed");
+      setSnackbarMessage(err.message || 'Logout failed');
       setOpenSnackbar(true);
     }
-
   };
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -85,8 +84,7 @@ const SettingTwo = (props: any) => {
 
   return (
     <div>
-      <div className="fixed inset-0  flex items-center justify-center bg-[#9999] p-4 sm:p-6">
-
+      <div className="fixed inset-0 flex items-center justify-center bg-[#9999] p-4 sm:p-6">
         <div className="relative z-10 flex justify-center items-center w-full">
           <div className="w-full max-w-[717px] h-[732px] opacity-100 border-[#E2E4E84D] bg-[#ffffff] rounded-[16px] border border-solid">
             <section className="w-full h-auto flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
@@ -98,35 +96,32 @@ const SettingTwo = (props: any) => {
               </span>
             </section>
 
-            <section className="w-full  px-4 py-6 sm:px-[64px] bg-[#ffffff] h-[611px] sm:py-[32px] flex flex-col gap-8">
-              <div className="w-full flex flex-col gap-6">
-                <div className="w-full flex flex-wrap items-center gap-2 sm:gap-5">
-                  <div className="flex flex-wrap gap-2 w-full">
-                    <button className="rounded-sm text-sm px-3 py-2" onClick={() => {
-                      setOpenSetting1(true)
-                      setOpenSetting2(false)
-                      setOpenSetting3(false)
-                    }} >
-                      <span className="font-semibold text-[14px] text-[#667085]">Profile</span>
-                    </button>
-                    <button className="rounded-sm w-[131px]  bg-[#F9F5FF] text-sm px-3 py-2">
-                      <span className="font-semibold text-[14px] text-[#685BC7] ">Security</span>
-                    </button>
-                    <button className="rounded-sm text-sm px-2 py-2"
-                      onClick={() => {
-                        setOpenSetting3(true)
-                        setOpenSetting2(false)
-                        setOpenSetting1(false)
-
-                      }}>
-                      <span className="font-semibold text-[14px] text-[#667085]">Billing</span>
-                    </button>
-                    <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout} >
-                      <span className="font-semibold text-[14px] text-[#667085]">Log Out</span>
-                    </button>
-                  </div>
+            {/* Tabs */}
+            <section className="w-full px-4 py-6 sm:px-[64px] h-[611px] flex flex-col gap-8">
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-5">
+                  <button className="rounded-sm text-sm px-3 py-2" onClick={() => {
+                    setOpenSetting1(true);
+                    setOpenSetting2(false);
+                    setOpenSetting3(false);
+                  }}>
+                    <span className="font-semibold text-[14px] text-[#667085]">Profile</span>
+                  </button>
+                  <button className="rounded-sm w-[131px] bg-[#F9F5FF] text-sm px-3 py-2">
+                    <span className="font-semibold text-[14px] text-[#685BC7]">Security</span>
+                  </button>
+                  <button className="rounded-sm text-sm px-2 py-2" onClick={() => {
+                    setOpenSetting3(true);
+                    setOpenSetting2(false);
+                    setOpenSetting1(false);
+                  }}>
+                    <span className="font-semibold text-[14px] text-[#667085]">Billing</span>
+                  </button>
+                  <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout}>
+                    <span className="font-semibold text-[14px] text-[#667085]">Log Out</span>
+                  </button>
                 </div>
-                <div className="text-[18px] font-inter font-semibold  leading-[28px] tracking-[0] text-[#101828]">Security</div>
+                <div className="text-[18px] font-inter font-semibold leading-[28px] text-[#101828]">Security</div>
               </div>
               <section className='w-full h-[314px] flex  gap-[32px]'>
                 <div className='w-full h-[74px] mt-2 flex flex-col'>
@@ -212,12 +207,10 @@ const SettingTwo = (props: any) => {
         </div>
       </div>
 
-
-      {Open ? <DeletePopup setOpen={setOpen} /> : ''}
+      {Open ? <DeletePopup setOpen={setOpen} /> : null}
     </div>
+  );
+};
 
+export default SettingTwo;
 
-  )
-}
-
-export default SettingTwo

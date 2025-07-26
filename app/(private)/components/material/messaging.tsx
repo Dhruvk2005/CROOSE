@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import Spacenav from '../../components/spacenav';
+import Spacenav from '../spacenav';
 
 const users = [
   {
@@ -130,12 +130,13 @@ const page = () => {
                   <td className="px-6 py-4 text-[#475467]">
                     <div
                       className={`inline-flex w-fit items-center border gap-[0px] rounded-full font-inter font-semibold text-[12px] leading-[18px]
-      ${user.status === 'Scheduled'
-                          ? 'bg-[#F9FAFB] text-[#344054] border-[#EAECF0]'
-                          : user.status === 'Sent'
-                            ? 'bg-[#ECFDF3] text-[#067647] pl-0 border-[#ABEFC6]'
-                            : 'bg-gray-100 text-gray-600 pl-0 border-gray-300'
-                        }`}
+      ${
+        user.status === 'Scheduled'
+          ? 'bg-[#F9FAFB] text-[#344054] border-[#EAECF0]'
+          : user.status === 'Sent'
+            ? 'bg-[#ECFDF3] text-[#067647] pl-0 border-[#ABEFC6]'
+            : 'bg-gray-100 text-gray-600 pl-0 border-gray-300'
+      }`}
                     >
                       <span className=" h-full  flex items-center justify-center pl-[0px]">
                         {user.icon}
@@ -150,12 +151,13 @@ const page = () => {
                   <td className="px-6 py-4 text-[#475467]">
                     <div
                       className={`inline-flex w-fit items-center border gap-[0px] rounded-full font-inter font-semibold text-[12px] leading-[18px]
-      ${user.target === 'Everyone'
-                          ? 'bg-[#EFF8FF] text-[#175CD3] border-[#B2DDFF]'
-                          : user.target === 'Recent customers'
-                            ? 'bg-[#FEF6EE] text-[#B93815] pl-0 border-[#F9DBAF]'
-                            : ''
-                        }`}
+      ${
+        user.target === 'Everyone'
+          ? 'bg-[#EFF8FF] text-[#175CD3] border-[#B2DDFF]'
+          : user.target === 'Recent customers'
+            ? 'bg-[#FEF6EE] text-[#B93815] pl-0 border-[#F9DBAF]'
+            : ''
+      }`}
                     >
                       <span className="px-2 py-[2px]"> {user.target}</span>{' '}
                     </div>
@@ -170,7 +172,7 @@ const page = () => {
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan={7} className="px-6 py-4">
+                <td colSpan="7" className="px-6 py-4">
                   <div className="flex justify-between items-center w-full">
                     {/* Left Button */}
                     <div className="">

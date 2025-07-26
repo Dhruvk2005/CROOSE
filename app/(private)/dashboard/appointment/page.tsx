@@ -5,16 +5,21 @@ import { appointmentList, fetchAppointmentStatistics, getCancelledAppointments, 
 import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download } from "lucide-react";
 
 import { Icon } from "@iconify/react";
-import Navbar from './component/Navbar';
-import { DateSelectButton } from '../../components/DateSelectButton';
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { dividerClasses } from "@mui/material/Divider";
+import Navbar from "./component/Navbar";
+// import { getTotalAppointment } from '../api'; 
+// import { getTotalAppointment } from "@/app/Apis/publicapi";
+
+
 
 const AppointmentTable = () => {
   const [appointments, setAppointments] = useState([]);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [serviceFilter, setServiceFilter] = useState('');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [serviceFilter, setServiceFilter] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [newappointments, setNewAppointments] = useState<number | null>(null);
   const [totalappointments, setTotalAppointments] = useState<number | null>(null);
@@ -24,31 +29,31 @@ const AppointmentTable = () => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   const defaultTypography: React.CSSProperties = {
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: "Inter, sans-serif",
     fontWeight: 400,
-    fontSize: '14px',
-    lineHeight: '20px',
-    letterSpacing: '0',
-    color: '#475467',
+    fontSize: "14px",
+    lineHeight: "20px",
+    letterSpacing: "0",
+    color: "#475467",
   };
 
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    appointmentTime: '',
-    service: 'Dental Cleaning',
-    status: 'pending',
-    notes: ''
+    name: "",
+    phone: "",
+    appointmentTime: "",
+    service: "Dental Cleaning",
+    status: "pending",
+    notes: "",
   });
 
   const statusColorMap: any = {
-    confirmed: 'bg-green-500',
-    pending: 'bg-yellow-400',
-    cancelled: 'bg-red-500',
-    completed: 'bg-blue-500',
+    confirmed: "bg-green-500",
+    pending: "bg-yellow-400",
+    cancelled: "bg-red-500",
+    completed: "bg-blue-500",
   };
 
   const fetchAppointments = async () => {
@@ -56,11 +61,12 @@ const AppointmentTable = () => {
       const res = await appointmentList();
       const formatted = res.data.map((appt: any) => ({
         ...appt,
-        statusColor: statusColorMap[appt.status?.toLowerCase()] || 'bg-gray-300',
+        statusColor:
+          statusColorMap[appt.status?.toLowerCase()] || "bg-gray-300",
       }));
       setAppointments(formatted);
     } catch (err) {
-      console.log('Error fetching appointments:', err);
+      console.log("Error fetching appointments:", err);
     }
   };
 
@@ -81,7 +87,7 @@ const AppointmentTable = () => {
       );
       setAppointments(updatedAppointments);
     } catch (err) {
-      console.error('Failed to update appointment status', err);
+      console.error("Failed to update appointment status", err);
     }
   };
   useEffect(() => {
@@ -126,6 +132,33 @@ const AppointmentTable = () => {
     fetchAppointments();
   }, []);
 
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        customer_name: formData.name,
+        customer_number: formData.phone,
+        service_name: formData.service,
+        date: formData.appointmentTime,
+        status: formData.status,
+        notes: formData.notes,
+      };
+
+      await fetchAppointments();
+      setShowModal(false);
+      setFormData({
+        name: "",
+        phone: "",
+        appointmentTime: "",
+        service: "Dental Cleaning",
+        status: "pending",
+        notes: "",
+      });
+    } catch (err) {
+      console.log("Failed to create appointment:", err);
+    }
+  };
+
   const filteredAppointments = appointments.filter((appt: any) => {
     const searchTerm = search.toLowerCase();
     const matchesSearch =
@@ -133,14 +166,24 @@ const AppointmentTable = () => {
       appt.customer_number?.toLowerCase().includes(searchTerm) ||
       appt.service_name?.toLowerCase().includes(searchTerm);
 
-    const matchesStatus = statusFilter ? appt.status?.toLowerCase() === statusFilter.toLowerCase() : true;
-    const matchesService = serviceFilter ? appt.service_name?.toLowerCase() === serviceFilter.toLowerCase() : true;
+    const matchesStatus = statusFilter
+      ? appt.status?.toLowerCase() === statusFilter.toLowerCase()
+      : true;
+    const matchesService = serviceFilter
+      ? appt.service_name?.toLowerCase() === serviceFilter.toLowerCase()
+      : true;
 
     const apptDate = new Date(appt.date);
     const matchesDateFrom = dateFrom ? apptDate >= new Date(dateFrom) : true;
     const matchesDateTo = dateTo ? apptDate <= new Date(dateTo) : true;
 
-    return matchesSearch && matchesStatus && matchesService && matchesDateFrom && matchesDateTo;
+    return (
+      matchesSearch &&
+      matchesStatus &&
+      matchesService &&
+      matchesDateFrom &&
+      matchesDateTo
+    );
   });
 
   // const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
@@ -150,10 +193,10 @@ const AppointmentTable = () => {
   // );
 
   const statusOptions = [
-    { value: 'pending', label: '🟡 Pending' },
-    { value: 'confirmed', label: '🟢 Confirmed' },
-    { value: 'cancelled', label: '🔴 Cancelled' },
-    { value: 'completed', label: '🔵 Completed' },
+    { value: "pending", label: "🟡 Pending" },
+    { value: "confirmed", label: "🟢 Confirmed" },
+    { value: "cancelled", label: "🔴 Cancelled" },
+    { value: "completed", label: "🔵 Completed" },
   ];
 const rowsPerPage = 10;
 const indexOfLastAppointment = currentPage * itemsPerPage;
@@ -195,16 +238,20 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
 
   return (
     <div>
+    <div>
 
 
       <Navbar />
+
 
       <div className="p-6 space-y-6">
 
         <div className="flex justify-between items-start px-8">
           <div>
             <h2 className="text-xl font-semibold">Appointments</h2>
-            <p className="text-sm text-gray-500">Dive deep into who your customers are</p>
+            <p className="text-sm text-gray-500">
+              Dive deep into who your customers are
+            </p>
           </div>
           <div className='border-none' >
             {/* <DateSelectButton
@@ -263,14 +310,17 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
 
 
           {/* <div className="p-6">
+          {/* <div className="p-6">
       <div className="flex justify-between items-center border-b border-[#EAECF0] pb-4">
        <h2 className="text-xl font-semibold text-[#121217]">Appointment</h2> */}
+          {/* <button
           {/* <button
           onClick={() => setShowModal(true)}
           className="border px-4 py-2 rounded-md text-sm font-medium text-white bg-[#685BC7] hover:bg-[#5a4bb3]"
         >
           Create Appointment
         </button> */}
+        </div>
         </div>
 
         {showModal && (
@@ -416,8 +466,10 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
                       onChange={(e) => handleStatusUpdate(appt.id, e.target.value)}
                       className="border p-1 rounded-md text-sm"
                     >
-                      {statusOptions.map(opt => (
-                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      {statusOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
                       ))}
                     </select>
 
@@ -464,7 +516,8 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
                         Next
                     </button>
                 </div>
-    </div>
+                </div>
+    
   );
 };
 
