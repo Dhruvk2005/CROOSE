@@ -217,7 +217,7 @@ const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
   
   try {
     const response = await uploadBulkFile(file, activeTab, formState.space_id);
-   toast.success("File uploaded successfully!")
+   toast.success("Products Processing...");
     setShowBulkModal(false);
     e.target.value = "";
   } catch (err: any) {

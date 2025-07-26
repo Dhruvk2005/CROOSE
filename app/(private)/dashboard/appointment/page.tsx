@@ -1,7 +1,7 @@
 'use client';
 //import { formatDbDate } from '@/app/(private)/utils/date';
 import React, { useEffect, useState, useRef } from 'react';
-import { appointmentList, getCancelledAppointments, getNewAppointments, getTotalAppointments, updateAppointmentStatus } from '@/app/Apis/publicapi';
+import { appointmentList, fetchAppointmentStatistics, getCancelledAppointments, getNewAppointments, getTotalAppointments, updateAppointmentStatus } from '@/app/Apis/publicapi';
 import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download } from "lucide-react";
 
 import { Icon } from "@iconify/react";
@@ -171,6 +171,28 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
 
+
+ const [AppointmentStatistic, setAppointmentStatistic] = useState<any>({});
+    useEffect(() => {
+        const fetchAppointments = async () => {
+            try {
+                let res = await fetchAppointmentStatistics()
+                console.log("Customer Statistics:", res)
+                setAppointmentStatistic(res)
+                
+
+
+            } catch (err) {
+                console.error("Error in Customers component:", err);
+            }
+        }
+        fetchAppointments()
+    }, [AppointmentStatistic])
+
+
+
+
+
   return (
     <div>
 
@@ -205,7 +227,7 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
                 <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Appointments</p>
                 <div className='flex items-center gap-[16px] justify-between  '>
                   <p className='font-semibold text-[#101828] text-[30px] ' >
-                    {newappointments !== null ? newappointments : "—"}
+                  {AppointmentStatistic.total_new_appointments}
                   </p>
                   <img className='w-[71px] ' src={"/100.png"} alt='badge' />
                 </div>
@@ -218,7 +240,7 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
                 <div className='flex items-center gap-[16px] justify-between  '>
                   <p className='font-semibold text-[#101828] text-[30px] ' >
 
-                    {totalappointments !== null ? totalappointments : "—"}
+              {AppointmentStatistic.total_appointments}
                   </p>
                   <img className='w-[71px] ' src={"/100.png"} alt='badge' />
                 </div>
@@ -228,7 +250,7 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
                 <p className='text-[#475467] text-[14px] font-medium font-Inter' >Canceled Appointments</p>
                 <div className='flex items-center gap-[16px] justify-between  '>
                   <p className='font-semibold text-[#101828] text-[30px] ' >
-                    {cancelappointments !== null ? cancelappointments : "—"}
+                    {AppointmentStatistic.cancelled_appointments}
                   </p>
 
                   <img className='w-[71px] ' src={"/35.png"} alt='badge' />

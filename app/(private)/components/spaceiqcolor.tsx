@@ -1,42 +1,63 @@
 'use client'
 import Link from 'next/link'
 import Documentpopup from './documentpopup'
-import { BussinessCategories } from '@/app/Apis/publicapi'
-import { useState,useEffect } from 'react'
+import { BussinessCategories, GetSpaceId, getSpacePrompt, updateSpacePrompt } from '@/app/Apis/publicapi'
+import { useState, useEffect } from 'react'
 
 interface Category {
-  id:number,
-  name:string,
-  description:string,
-  template:string,
-  created_at:string,
-  updated_at:string,
-   deleted_at: null;
+  id: number,
+  name: string,
+  description: string,
+  template: string,
+  created_at: string,
+  updated_at: string,
+  deleted_at: null;
   uuid: any;
 
 }
 const Spaceiqcolor = (props: any) => {
 
-    const [spaceData,setSpaceData] = useState<Category[]>([])
-    const [selectedIndex, setSelectedIndex] = useState<number>(0)
-  useEffect(()=>{
-    const SpaceCategories = async()=>{
-  
-  
-    try{
-      const res  = await BussinessCategories()
-      setSpaceData(res.data)
-  console.log(res.data)
-  
-  
-    }catch(err){
-      console.log(err)
-  
+  const [spaceData, setSpaceData] = useState<Category[]>([])
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
+  useEffect(() => {
+    const SpaceCategories = async () => {
+
+
+      try {
+        const res = await BussinessCategories()
+        setSpaceData(res.data)
+        console.log(res.data)
+
+
+      } catch (err) {
+        console.log(err)
+
+      }
     }
-     }
-     SpaceCategories()
-  
-  },[])
+    SpaceCategories()
+
+  }, [])
+
+  const [spaceId, setSpaceId] = useState<number | null>(null);
+  const [description, setDescription] = useState('');
+  useEffect(() => {
+    const fetchPrompt = async () => {
+      try {
+        const spaceRes = await GetSpaceId();
+        const id = spaceRes?.spaces?.[0]?.id;
+        if (!id) throw new Error("No space ID found!");
+
+        setSpaceId(id); // Save ID for later use
+        const promptRes = await getSpacePrompt(id);
+        const promptContent = promptRes?.data?.prompt_content || "";
+        setDescription(promptContent);
+      } catch (err) {
+        console.error("Error fetching prompt:", err);
+      }
+    };
+
+    fetchPrompt();
+  }, []);
 
 
 
@@ -78,18 +99,18 @@ const Spaceiqcolor = (props: any) => {
                       Plain Text
                     </span>
 
-                    <div className="w-[80%] h-[150px] rounded-xl border-[#EAECF0] border-2 p-4   flex flex-col gap-3 text-[#101828]">
-
-                      <div className="w-[100%]  h-[216px] font-sans font-normal text-[15px] leading-5 tracking-normal overflow-y-auto ">
-                        <ul className="list-disc">
-                         <p>
-                          {spaceData[selectedIndex]?.description}
-                         </p>
-                        </ul>
+                    <div className="w-[80%] h-[150px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
+                      <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="text-[#71717A] font-sans text-sm leading-5 bg-transparent resize-none outline-none w-full h-full"
+                      />
+                      <div className="flex items-center justify-end gap-2 mt-auto">
+                        <span className="text-[10px] text-[#71717A] font-sans">Write with</span>
+                        <span className="text-[10px] text-[#71717A] font-sans">Cactus AI</span>
+                        <img src="/sms.png" alt="sms" className="h-4 w-4" />
                       </div>
-
                     </div>
-
                   </div>
 
 
@@ -139,14 +160,31 @@ const Spaceiqcolor = (props: any) => {
 
 
                 <div className="w-[55%] ml-6 flex flex-col gap-[7px] sm:flex-row items-center  gap-[8px] px-4">
-                  <button onClick={() => {
-                    props.setDocopen(false);
-                    props.setSpaceiqcoloropen(false);
-                    props.setSpaceiqopen(false);
-                    props.setProopen(true);
-                  }} className=" w-[70%] py-2 bg-[#685BC7] text-white font-sans font-semibold text-sm rounded-md text-center">
-                    Finish
-                  </button>
+                 <button
+  onClick={async () => {
+    try {
+      if (!spaceId) {
+        console.error("spaceId not found");
+        return;
+      }
+
+      await updateSpacePrompt(spaceId, description);
+      console.log("Prompt updated successfully");
+
+      // Close all modals and go to next
+      props.setDocopen(false);
+      props.setSpaceiqcoloropen(false);
+      props.setSpaceiqopen(false);
+      props.setProopen(true);
+    } catch (err) {
+      console.error("Failed to update prompt:", err);
+    }
+  }}
+  className=" w-[70%] py-2 bg-[#685BC7] text-white font-sans font-semibold text-sm rounded-md text-center"
+>
+  Finish
+</button>
+
                   <button className=" w-[23%] py-2 border border-zinc-200 bg-[#F4F4F5] text-[#685BC7] font-sans font-semibold text-sm rounded-md text-center">
                     Skip
                   </button>
