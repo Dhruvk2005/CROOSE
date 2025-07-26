@@ -17,7 +17,11 @@ type SignupFormValues = {
   phone_number: string;
   email: string;
   password: string;
+  security_question: any;
+  security_answer: any;
+
 };
+
 
 const Signupform = () => {
   const router = useRouter();
@@ -48,6 +52,10 @@ const Signupform = () => {
       phone_number: '',
       email: '',
       password: '',
+      security_question: "",
+      security_answer: "",
+
+
     },
     validate: (values) => {
       const errors: Partial<SignupFormValues> = {};
@@ -58,7 +66,7 @@ const Signupform = () => {
       ) {
         errors.email = 'Invalid email address';
       }
-      
+
       if (!values.password || values.password.length < 8) {
         errors.password = 'Password must be at least 8 characters';
       }
@@ -87,11 +95,13 @@ const Signupform = () => {
           // if(res.data){
           //   localStorage.setItem("user",JSON.stringify(res.data))
           // }
+          localStorage.setItem('registeredEmail', values.email)
+          console.log("email:", values.email)
 
-
-          router.push('/dashboard/space');
+          // router.push(`/emailverification?email=${encodeURIComponent(values.email)}`);
+          router.push("/login")
         } else {
-          let errorMsg = res.message ;
+          let errorMsg = res.message;
 
           if (res.errors?.email?.length > 0) {
             errorMsg = res.errors.email[0];
@@ -102,7 +112,7 @@ const Signupform = () => {
             severity: 'error',
           });
         }
-      } catch (err:any) {
+      } catch (err: any) {
         if (err.response?.data?.errors?.email) {
           setSnackbar({
             open: true,
@@ -185,8 +195,49 @@ const Signupform = () => {
                   {formik.touched.password && formik.errors.password && <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>}
                 </div>
 
-                <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
+                <div className=''  >
 
+
+
+
+
+<label  className="block mb-2 text-sm font-medium text-[#344054]" >Select question</label>
+                  <select
+                    name="security_question"
+                    value={formik.values.security_question || ''}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className='text-[#344054] rounded-[10px] border-[#344054] border-1 text-[11px] font-medium w-full p-[13px]'
+                  >
+                    
+                    <option value='What service did you book first using Croose?'>What service did you book first using Croose?</option>
+                    <option value='What was the location of your first appointment with Croose?'>What was the location of your first appointment with Croose?</option>
+                    <option value='What was your most recent service on Croose?'>What was your most recent service on Croose?</option>
+                    <option value='Which salon or service provider do you visit most often via Croose?'>Which salon or service provider do you visit most often via Croose?</option>
+                    <option value='Who referred you to Croose or introduced you to our platform?'>Who referred you to Croose or introduced you to our platform?</option>
+                  </select>
+
+
+
+                </div>
+                <div>
+                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-[#344054]">Security answer</label>
+                  <input
+                    type="text"
+                    name="security_answer"
+                    id="security_answer"
+                    value={formik.values.security_answer || ''}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter Answer"
+                    className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none"
+                  />
+
+
+                </div>
+                {/* <Link href={"/emailverification"} > */}
+                <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
+                {/* </Link> */}
                 <div className="text-center text-sm text-[#101828] mt-2">
                   Already have an account?{' '}
                   <Link href="/login" className="text-[#685BC7] font-medium hover:underline">Log In</Link>
