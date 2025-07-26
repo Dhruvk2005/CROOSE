@@ -301,7 +301,7 @@ const MainDashboard = () => {
 
 
       {iqIncreased === 1 && (
-        <div className='text-[30px] ml-[25px] font-semibold text-[purple] ' >Welcome to Croose</div>
+        <div className='text-[60px] mt-[60px] w-full h-auto flex justify-center items-center font-semibold text-[purple] ' >Welcome to Croose</div>
       )}
 
       {!loading && filteredSlideData.length > 0 && (
