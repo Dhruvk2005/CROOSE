@@ -23,27 +23,27 @@ const slideData = [
     link: "/dashboard/space"
 
   },
-  // {
-  //   image: "/payment.png",
-  //   name: "Enable payments",
-  //   description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
-  //   bg: "#E7ECEE",
-  //   link:""
-  // },
-  // {
-  //   image: "/email.png",
-  //   name: "Verify your email",
-  //   description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
-  //   bg: "#E2EBF3",
-  //   link:""
-  // },
-  // {
-  //   image: "/bank.png",
-  //   name: "Add bank details",
-  //   description: "Add your company bank details to the platform. This way your business can get paid refunds or other payments due to you by the platform or your customers.",
-  //   bg: "#F0EBE5",
-  //   link:""
-  // },
+  {
+    image: "/payment.png",
+    name: "Enable payments",
+    description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
+    bg: "#E7ECEE",
+    link:""
+  },
+  {
+    image: "/email.png",
+    name: "Verify your email",
+    description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
+    bg: "#E2EBF3",
+    link:""
+  },
+  {
+    image: "/bank.png",
+    name: "Add bank details",
+    description: "Add your company bank details to the platform. This way your business can get paid refunds or other payments due to you by the platform or your customers.",
+    bg: "#F0EBE5",
+    link:""
+  },
 ];
 
 const MainDashboard = () => {
@@ -295,7 +295,7 @@ const MainDashboard = () => {
       </div>
 
 
-      {iqIncreased === 0 && (
+      {/* {iqIncreased === 0 && ( */}
         <div>
           <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between px-[24px]'>
             <div>
@@ -316,7 +316,7 @@ const MainDashboard = () => {
             </div>
           </div>
         </div>
-      )}
+      {/* )} */}
 
 
       {/* {iqIncreased === 1 && (
