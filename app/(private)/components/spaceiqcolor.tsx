@@ -66,10 +66,10 @@ const Spaceiqcolor = (props: any) => {
       <div className="relative  z-[40]">
         <div className="fixed inset-0 bg-[#18181B66] transition-opacity flex justify-center items-center">
           <div className="w-full flex justify-center   px-4 sm:px-6">
-            <div className="w-full max-w-4xl  flex flex-col items-center border-2 border-[#EAECF0] rounded-2xl bg-white">
+            <div className="w-full max-w-4xl h-[700px]  flex flex-col items-center border-2 border-[#EAECF0] rounded-2xl bg-white">
 
 
-              <div className="w-[97%] h-[50px] flex text-center p-[10px]  items-center justify-between ">
+              <div className="w-[97%] h-[100px] flex text-center p-[10px]  items-center justify-between ">
                 <img src="/arrow-left.png" className="h-5 w-5" />
                 <div className="text-white font-sans font-semibold text-xl leading-none tracking-tight text-center">
                   Scan QR code
@@ -91,7 +91,7 @@ const Spaceiqcolor = (props: any) => {
                 </div>
 
 
-                <div className=" sm:w-[80%]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
+                <div className=" sm:w-[80%] h-[396px]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
 
 
                   <div className="w-[80%] h-[186px] items-center flex  flex-col gap-3">
@@ -114,12 +114,12 @@ const Spaceiqcolor = (props: any) => {
                   </div>
 
 
-                  {/* <div className="w-[70%]">
+                  <div className="w-[70%]">
                     <img src="/Line 10.png" alt="line" className="w-[90%]" />
-                  </div> */}
+                  </div>
 
 
-                  {/* <div className="w-[80%] h-[116px] items-center flex flex-col gap-3">
+                  <div className="w-[80%] h-[116px] items-center flex flex-col gap-3">
                     <span className="text-[#18181B] h-[24px] font-sans font-medium text-base leading-6">
                       Documents
                     </span>
@@ -155,7 +155,7 @@ const Spaceiqcolor = (props: any) => {
                         </Link>
                       </div>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
 
 

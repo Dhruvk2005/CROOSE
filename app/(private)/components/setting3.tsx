@@ -262,7 +262,7 @@ const Setting3 = () => {
               </section>
             </section> */}
 
-           <div className="text-[40px] text-[#667085] " >Coming Soon.....</div>
+            <h1>Billing details upcoming...</h1>
           </section>
         </div>
       </div>

@@ -122,11 +122,11 @@ const Spaceiq = (props: any) => {
 
                   </div>
 
-                  {/* <div className="w-[70%]">
+                  <div className="w-[70%]">
                     <img src="/Line 10.png" alt="line" className="w-[90%]" />
-                  </div> */}
+                  </div>
 
-                  {/* <div className="w-[80%] h-[116px]  flex flex-col items-center gap-3">
+                  <div className="w-[80%] h-[116px]  flex flex-col items-center gap-3">
                     <span className="text-[#18181B]  h-[24px] font-sans font-medium text-base leading-6">
                       Documents
                     </span>
@@ -142,7 +142,7 @@ const Spaceiq = (props: any) => {
                         <img src="/Featured icon.png" className="h-10 w-10" />
                       </div>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
 
 
