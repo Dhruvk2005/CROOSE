@@ -6,22 +6,64 @@ import Spaceiqcolor from './spaceiqcolor'
 import Upgradetopro from './upgradetopro'
 import Scanqrpage from './scanqr'
 import Spacenav from './spacenav'
+import { spaceIqCheck } from "@/app/Apis/publicapi";
+import { useSearchParams } from 'next/navigation';
+import { useIq } from '../Iqcontext'
+
 
 
 const Myspace = () => {
 
-    const[spaceiqopen, setSpaceiqopen] = useState(false)
-    const[docopen,setDocopen] = useState(false)
-    const [spaceipcoloropen, setSpaceiqcoloropen] = useState(false)
-    const[proopen,setProopen] = useState(false)
-    const[scanopen,setScanopen]=useState(false)
+  const [spaceiqopen, setSpaceiqopen] = useState(false)
+  const [docopen, setDocopen] = useState(false)
+  const [spaceipcoloropen, setSpaceiqcoloropen] = useState(false)
+  const [proopen, setProopen] = useState(false)
+  const [scanopen, setScanopen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const { iqIncreased,setIqIncreased } = useIq();
+
+
+
+
+const handleCheck = async () => {
+  setLoading(true)
+  try {
+    const res = await spaceIqCheck({})
+    console.log("spaceIqData:", res)
+
+    // ✅ Updated conditional logic here
+    if (res?.data?.iq_increased === 1) {
+      if (iqIncreased !== 1) {
+        setIqIncreased(1);
+        console.log("✅ iqIncreased set to 1");
+      }
+    } else {
+      if (iqIncreased !== 0) {
+        setIqIncreased(0);
+        console.log("✅ iqIncreased set to 0");
+      }
+    }
+
+  } catch (err) {
+    console.log(err)
+  } finally {
+    setLoading(false)
+  }
+};
+
+
+
+  const searchParams = useSearchParams();
+  const spaceName = searchParams.get('name');
+
+
 
 
   return (
     <div>
-        <Spacenav/>
-     <div className="h-auto w-full bg-[#FFFFFF] relative mt-[15px] flex flex-col gap-5  items-center">
-        <div className="w-[100%]  items-center mt-[-17px]   flex flex-row h-[64px] " style={{borderBottom:"1px solid #EAECF0"}}>
+      <Spacenav />
+      <div className="h-auto w-full bg-[#FFFFFF] relative mt-[15px] flex flex-col gap-5  items-center">
+        <div className="w-[100%]  items-center mt-[-17px]   flex flex-row h-[64px] " style={{ borderBottom: "1px solid #EAECF0" }}>
           <img
             src="/arrow.png"
             alt="arrow"
@@ -35,11 +77,15 @@ const Myspace = () => {
             ></img>
           </div>
           <div className="w-[50%] sm:w-[70%] text-[13px] sm:text-[1.125rem] text-[#101828] ml-[18px] font-sans font-semibold text-lg leading-7 tracking-normal align-middle h-[28px]">
-            Space Name
+            {spaceName}
           </div>
           <div className="w-[180px] sm:w-[211px] right-[0px] flex flex-row  gap-[8px] h-[36px]">
             <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px]  flex flex-row border-[white] pt-2 pr-4 pb-2 bg-[#EAECF0] pl-4 gap-[10px] rounded-[8px] ">
-              <div onClick={()=>setSpaceiqopen(true)} className="font-sans font-semibold text-[10px]  sm:text-[12px] w-[100%] leading-5 tracking-normal text-center  text-[#685BC7] h-[20px]">
+              <div onClick={() => {
+                setSpaceiqopen(true)
+                handleCheck()
+              }
+              } className="font-sans font-semibold text-[10px]  sm:text-[12px] w-[100%] leading-5 tracking-normal text-center  text-[#685BC7] h-[20px]">
                 Spaces IQ
               </div>
             </button>
@@ -50,10 +96,10 @@ const Myspace = () => {
             </button>
           </div>
         </div>
-        
+
 
         <div className=" flex flex-row flex-wrap gap-[20px] justify-center w-[100%]   rounded-lg">
-      
+
           <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/chat.png" />
@@ -66,7 +112,7 @@ const Myspace = () => {
             </div>
           </div>
 
-      
+
           <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/message.png" />
@@ -80,7 +126,7 @@ const Myspace = () => {
             </div>
           </div>
 
-          
+
           <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/timer.png" />
@@ -89,12 +135,12 @@ const Myspace = () => {
                 Avg. Response Time
               </div>
             </div>
-             <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
               0
             </div>
           </div>
 
-          
+
           <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/party-popper.png" />
@@ -111,7 +157,7 @@ const Myspace = () => {
 
         <section className="flex justify-center w-[95%]">
           <div className="w-[89%] h-[486px]   bottom-0  rounded-lg border border-[#EAECF0]">
-            <div className="w-[100%] flex flex-row items-center justify-center  gap-[10px]  rounded-t-[10px] h-[60px]" style={{borderBottom:"1px solid #EAECF0"}}>
+            <div className="w-[100%] flex flex-row items-center justify-center  gap-[10px]  rounded-t-[10px] h-[60px]" style={{ borderBottom: "1px solid #EAECF0" }}>
               <div className="h-[32px] bg-[#F2F4F7] ml-[5px] border border-[#F2F4F7] p-[8px] flex  gap-[10px]  rounded-[8px] w-[32px]">
                 <img
                   src="/message-circle.png"
@@ -155,16 +201,16 @@ const Myspace = () => {
           </div>
         </section>
       </div>
-      { spaceiqopen? <Spaceiq setSpaceiqopen={setSpaceiqopen} setSpaceiqcoloropen={setSpaceiqcoloropen} setDocopen = {setDocopen} setProopen={setProopen} /> :""}
+      {spaceiqopen ? <Spaceiq setSpaceiqopen={setSpaceiqopen} setSpaceiqcoloropen={setSpaceiqcoloropen} setDocopen={setDocopen} setProopen={setProopen} /> : ""}
 
-      {spaceipcoloropen? <Spaceiqcolor setSpaceiqcoloropen={setSpaceiqcoloropen} setDocopen = {setDocopen} setSpaceiqopen={setSpaceiqopen} setProopen={setProopen} />:""}
+      {spaceipcoloropen ? <Spaceiqcolor setSpaceiqcoloropen={setSpaceiqcoloropen} setDocopen={setDocopen} setSpaceiqopen={setSpaceiqopen} setProopen={setProopen} /> : ""}
 
-      {docopen ? <Documentpopup setDocopen = {setDocopen} />:""}
+      {docopen ? <Documentpopup setDocopen={setDocopen} /> : ""}
 
-      {proopen? <Upgradetopro setProopen = {setProopen} setScanopen ={setScanopen}  />:""}
+      {proopen ? <Upgradetopro setProopen={setProopen} setScanopen={setScanopen} /> : ""}
 
-      { scanopen? <Scanqrpage setScanopen={setScanopen} />:""}
-      
+      {scanopen ? <Scanqrpage setScanopen={setScanopen} /> : ""}
+
     </div>
 
   )

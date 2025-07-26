@@ -86,11 +86,11 @@ const Setting3 = () => {
                   </button>
                 </div>
               </div>
-              <div className="text-[18px] font-inter font-semibold  leading-[28px] tracking-[0] text-[#101828]">
+              {/* <div className="text-[18px] font-inter font-semibold  leading-[28px] tracking-[0] text-[#101828]">
                 Billing Details
-              </div>
+              </div> */}
             </div>
-            <section className="h-[386px] flex gap-[40px] flex-col w-[100%] ">
+            {/* <section className="h-[386px] flex gap-[40px] flex-col w-[100%] ">
               <section className="w-full h-[78px] flex-col flex gap-[8px]">
                 <span className="w-[68px] h-[18px] font-medium text-[10px] leading-[18px] tracking-[0.02em] font-inter text-[#667085]">
                   ACTIVE PLAN
@@ -260,7 +260,9 @@ const Setting3 = () => {
                   </span>
                 </div>
               </section>
-            </section>
+            </section> */}
+
+           <div className="text-[40px] text-[#667085] " >Coming Soon.....</div>
           </section>
         </div>
       </div>
