@@ -327,6 +327,37 @@ export const getCancelledAppointment= async ()=>{
   }
 } 
 
+export const getnewCustomer= async ()=>{
+  try{
+    const token=localStorage.getItem('token');
+    const res = await axiosRequest({
+      method: "get",
+      url:`${BASE_URL}/api/newCustomers`,
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+
+    })
+    return res;
+  }
+  catch(err){
+    console.log(err);
+
+  }
+} 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 export const getAllServices = async () => {
   try {
     const token = localStorage.getItem("token");

@@ -7,6 +7,7 @@ import {
   getNewAppointment,
   getTotalAppointment,
   updateAppointmentStatus,
+  getappointmentstatic
 } from "@/app/Apis/publicapi";
 import {
   Calendar,
@@ -167,73 +168,39 @@ const AppointmentTable = () => {
     { value: "completed", label: "🔵 Completed" },
   ];
 
-  const [NewAppointment, setNewAppointment] = useState<any>({});
-  // const [TotalAppointment, setTotalAppointment] = useState();
-  const [CancelledAppointment, setCancelledAppointment] = useState<any>({});
+//   const [NewAppointment, setNewAppointment] = useState<any>({});
+//   // const [TotalAppointment, setTotalAppointment] = useState();
+//   const [CancelledAppointment, setCancelledAppointment] = useState<any>({});
 
-// At top of component
+// // At top of component
+// const [totalAppointment, setTotalAppointment] = useState<any>({});
+
+// // Replace your existing useEffect for getTotalAppointment with:
+
+
+// useEffect(() => {
+//   const fetchTApp = async () => {
+//     const res = await getTotalAppointment();
+//     console.log("My response yooooo:",res);
+
+//     setTotalAppointment(res);
+//   };
+
+//   fetchTApp();
+// }, []);
+
+const [NewAppointment, setNewAppointment] = useState<any>([]);
 const [totalAppointment, setTotalAppointment] = useState<any>({});
-
-// Replace your existing useEffect for getTotalAppointment with:
-
-
-useEffect(() => {
-  const fetchTApp = async () => {
-    const res = await getTotalAppointment();
-    console.log("My response yooooo:",res);
-
-    setTotalAppointment(res);
-  };
-
-  fetchTApp();
-}, []);
-
-
-
-
-  // useEffect(() => {
-  //   const fetchTApp = async () => {
-  //     try {
-  //       let res = await getTotalAppointment();
-  //        console.log("yo yo honey singer",res)
-  //       setTotalAppointment(res);
-       
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   fetchTApp()
-  // },[]);
+ const [CancelledAppointment, setCancelledAppointment] = useState<any>({});
 
  
+  
+
 
 
 
  
-  useEffect(() => {
-    const fetchNewApp = async () => {
-      try {
-        let res = await getNewAppointment();
-        setNewAppointment(res);
-        console.log("yoooooooo:",totalAppointment)
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchNewApp()
-  },[]);
-
-  useEffect(() => {
-    const fetchCancelApp = async () => {
-      try {
-        let res = await getCancelledAppointment();
-        setCancelledAppointment(res);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchCancelApp()
-  },[]);
+ 
 
   return (
     <div>
@@ -264,7 +231,7 @@ useEffect(() => {
                 </p>
                 <div className="flex items-center gap-[16px] justify-between  ">
                   <p className="font-semibold text-[#101828] text-[30px] ">
-                     {NewAppointment.total_new_appointments}
+                    
                   </p>
                   <img className="w-[71px] " src={"/100.png"} alt="badge" />
                 </div>
@@ -276,7 +243,7 @@ useEffect(() => {
                 </p>
                 <div className="flex items-center gap-[16px] justify-between  ">
             <p className="font-semibold text-[#101828] text-[30px]">
-  {totalAppointment.total_appointments}
+ 
 </p>
                   <img className="w-[71px] " src={"/100.png"} alt="badge" />
                 </div>
@@ -288,7 +255,7 @@ useEffect(() => {
                 </p>
                 <div className="flex items-center gap-[16px] justify-between  ">
                   <p className="font-semibold text-[#101828] text-[30px] ">
-                  {CancelledAppointment.cancelled_appointments}
+                  {/* {CancelledAppointment.cancelled_appointments} */}
                   </p>
 
                   <img className="w-[71px] " src={"/35.png"} alt="badge" />
