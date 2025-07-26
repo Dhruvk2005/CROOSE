@@ -1,42 +1,78 @@
 'use client'
-import { BussinessCategories } from '@/app/Apis/publicapi'
+import { BussinessCategories, GetSpaceId, getSpacePrompt } from '@/app/Apis/publicapi'
 import React from 'react'
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 interface Category {
-  id:number,
-  name:string,
-  description:string,
-  template:string,
-  created_at:string,
-  updated_at:string,
-   deleted_at: null;
+  id: number,
+  name: string,
+  description: string,
+  template: string,
+  created_at: string,
+  updated_at: string,
+  deleted_at: null;
   uuid: any;
 
 }
 
-const Spaceiq = (props:any) => {
+const Spaceiq = (props: any) => {
 
-  const [spaceData,setSpaceData] = useState<Category[]>([])
+  const [spaceData, setSpaceData] = useState<Category[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
-useEffect(()=>{
-  const SpaceCategories = async()=>{
+  useEffect(() => {
+    const SpaceCategories = async () => {
 
 
-  try{
-    const res  = await BussinessCategories()
-    setSpaceData(res.data)
-console.log(res.data)
+      try {
+        const res = await BussinessCategories()
+        setSpaceData(res.data)
+        console.log(res.data)
 
 
-  }catch(err){
-    console.log(err)
+      } catch (err) {
+        console.log(err)
 
-  }
-   }
-   SpaceCategories()
+      }
+    }
+    SpaceCategories()
 
-},[])
+  }, [])
+
+
+
+  const [description, setDescription] = useState('');
+
+
+  // useEffect(() => {
+  //   if (spaceData[selectedIndex]?.description) {
+  //     setDescription(spaceData[selectedIndex].description);
+  //   }
+  // }, [selectedIndex, spaceData]);
+
+  const [prompt, setPrompt] = useState<any>()
+
+  useEffect(() => {
+    const fetchPrompt = async () => {
+      try {
+        const spaceRes = await GetSpaceId();
+        const spaceId = spaceRes?.spaces?.[0]?.id;
+        if (!spaceId) throw new Error("No space ID found!");
+
+        const promptRes = await getSpacePrompt(spaceId);
+        const promptContent = promptRes?.data?.prompt_content || ""; 
+        console.log("PromtRes:",promptRes)
+
+        setDescription(promptContent); 
+      } catch (err) {
+        console.error("Error fetching prompt:", err);
+      }
+    };
+
+    fetchPrompt();
+  }, []);
+
+
+
 
   return (
     <div>
@@ -44,8 +80,8 @@ console.log(res.data)
         <div className="fixed inset-0 bg-gray-500/75 transition-opacity flex justify-center items-center">
           <div className="w-full flex justify-center px-4 sm:px-6">
             <div className="w-full  max-w-4xl h-auto flex flex-col items-center  rounded-2xl bg-white">
-              
-              <div  className="w-[90%] flex items-center justify-between h-16">
+
+              <div className="w-[90%] flex items-center justify-between h-16">
                 <img src="/arrow-left.png" className="h-5 w-5" />
                 <div className="text-white font-sans font-semibold text-xl leading-none tracking-tight text-center">
                   Scan QR code
@@ -54,7 +90,7 @@ console.log(res.data)
               </div>
 
               <div className="bg-white flex flex-col px-4 pb-12 gap-3 rounded-2xl  w-full items-center">
-                
+
                 <div className="w-full flex flex-col justify-center items-center gap-2 text-center">
                   <span className="text-[#121217] font-sans font-semibold text-xl leading-none tracking-tight">
                     Increase Space IQ
@@ -64,23 +100,25 @@ console.log(res.data)
                   </span>
                 </div>
 
-                <div className="sm:w-[80%]  flex flex-col items-center px-4 py-6 rounded-lg gap-6"> 
-                  
+                <div className="sm:w-[80%]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
+
                   <div className="w-[80%] h-[186px]  flex flex-col items-center gap-3">
                     <span className="text-[#18181B] font-sans font-medium text-base leading-6">
                       Plain Text
                     </span>
-                    
-                   <div className="w-[80%] h-[150px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
-  <div className="text-[#71717A] font-sans text-sm leading-5">
-   <p>{spaceData[selectedIndex]?.description}</p>
-  </div>
-  <div className="flex items-center justify-end gap-2 mt-auto">
-    <span className="text-[10px] text-[#71717A] font-sans">Write with</span>
-    <span className="text-[10px] text-[#71717A] font-sans">Cactus AI</span>
-    <img src="/sms.png" alt="sms" className="h-4 w-4" />
-  </div>
-</div>
+
+                    <div className="w-[80%] h-[150px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
+                      <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="text-[#71717A] font-sans text-sm leading-5 bg-transparent resize-none outline-none w-full h-full"
+                      />
+                      <div className="flex items-center justify-end gap-2 mt-auto">
+                        <span className="text-[10px] text-[#71717A] font-sans">Write with</span>
+                        <span className="text-[10px] text-[#71717A] font-sans">Cactus AI</span>
+                        <img src="/sms.png" alt="sms" className="h-4 w-4" />
+                      </div>
+                    </div>
 
                   </div>
 
@@ -107,7 +145,7 @@ console.log(res.data)
                   </div> */}
                 </div>
 
-             
+
 
                 {/* FINAL BUTTON SECTION FIXED */}
                 <div className="w-[55%] ml-6 flex flex-col gap-[7px] sm:flex-row items-center  mt-6 px-4">
@@ -118,9 +156,9 @@ console.log(res.data)
                     Skip
                   </button>
                 </div>
-                </div>
-                {/* END FINAL BUTTON SECTION */}
-              
+              </div>
+              {/* END FINAL BUTTON SECTION */}
+
             </div>
           </div>
         </div>
@@ -129,11 +167,8 @@ console.log(res.data)
   )
 }
 
+
 export default Spaceiq
-
-
-
-
 
 
 
