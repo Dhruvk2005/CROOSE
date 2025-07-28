@@ -5,9 +5,9 @@ import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from 'react';
-import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
+import { addProduct, addServices, getAllProducts, getAllServices, getProductPage, getServicePage, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
-
+import Navbar from "../../components/Navbar";
 import Pagination from '../../components/pagination';
 //import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
@@ -76,41 +76,37 @@ price: '',
  
   });
 
- const fetchItems = async (page: number = 1) => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}?page=${page}`;
-      
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      
-      const data = await response.json();
-      
-      if (data.status) {
-       
-        setItems(data.data);
-  
-      
-      
-        
-         setData((p :any ) =>{ return {
-     
-           [activeTab]: data?.data || [],
-    //...data
-        }});
-        setTotalPages(data.meta.last_page);
-        setTotalItems(data.meta.total);
-      }
-    } catch (error) {
-      console.error(`Error fetching ${activeTab}:`, error);
-    } finally {
-      setLoading(false);
+const fetchItems = async (page: number = 1) => {
+  try {
+    setLoading(true);
+
+    let data;
+
+    if (activeTab === "products") {
+      data = await getProductPage(page);
+    } else if (activeTab === "services") {
+      data = await getServicePage(page);
     }
-  };
+
+    console.log("Fetched Data:", data); // ✅ debug actual response
+
+    if (data?.status) { 
+      setItems(data.data || []);
+      setData((p: any) => ({
+        ...p,
+        [activeTab]: data.data || [],
+      }));
+      setTotalPages(data.meta?.last_page || 1);
+      setTotalItems(data.meta?.total || 0);
+    }
+  } catch (error) {
+    console.error(`Error fetching ${activeTab}:`, error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   useEffect(() => {
     fetchItems(currentPage);
@@ -181,7 +177,11 @@ price: '',
 
 useEffect(() => {
   const delay = setTimeout(async () => {
-    if (searchTerm.trim() === "") return;
+    if (searchTerm.trim() === "") {
+      // ✅ Reload or refetch original list when search is cleared
+      fetchItems(); // <-- Re-fetch your default API data
+      return;
+    }
 
     try {
       const result =
@@ -190,13 +190,12 @@ useEffect(() => {
           : await searchServices(searchTerm);
 
       if (result?.status) {
-        // console.log(result ,"result191" );
         setItems(result.data);
       }
     } catch (err) {
       console.error("Search error:", err);
     }
-  }, 400); 
+  }, 400); // debounce delay
 
   return () => clearTimeout(delay);
 }, [searchTerm, activeTab]);
@@ -220,6 +219,10 @@ const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
    toast.success("Products Processing...");
     setShowBulkModal(false);
     e.target.value = "";
+        
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500); // 1.5s delay
   } catch (err: any) {
     console.error("Upload failed:", err);
     	toast.error(err.message || "Failed to upload file. Please check console for details.")
@@ -476,16 +479,16 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           </div>
         </td>
 
-        <td className="px-4 py-3">{item.space_name}</td>
+        <td className="px-4 py-3 text-[#475467]">{item.space_name}</td>
 
         {activeTab === "products" ? (
           <>
-            <td className="px-4 py-3">{item.product_name}</td>
-            <td className="px-4 py-3">{item.product_stock || '-'}</td>
-            <td className="px-4 py-3">{item.type || '-'}</td>
+            <td className="px-4 py-3 text-[#475467]">{item.product_name}</td>
+            <td className="px-4 py-3 text-[#475467]">{item.product_stock || '-'}</td>
+            <td className="px-4 py-3 text-[#475467]">{item.type || '-'}</td>
          
-            <td className="px-4 py-3">{item.product_price}</td>
-            <td className="px-4 py-3">
+            <td className="px-4 py-3  font-bold">{item.product_price}</td>
+            <td className="px-4 py-3 text-[#475467]">
               <button
                 onClick={() => {
                   setFormState(item);
@@ -499,14 +502,14 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           </>
         ) : (
           <>
-            <td className="px-4 py-3">{item.service_name}</td>
-            <td className="px-4 py-3">{item.service_category}</td>
-            <td className="px-4 py-3">
+            <td className="px-4 py-3 text-[#475467]">{item.service_name}</td>
+            <td className="px-4 py-3 text-[#475467]">{item.service_category}</td>
+            <td className="px-4 py-3 text-[#475467]">
               {item.service_duration ? `${item.service_duration} mins` : '-'}
             </td>
-            <td className="px-4 py-3">{item.service_price}</td>
-            <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
-            <td className="px-4 py-3">
+            <td className="px-4 py-3 font-bold">{item.service_price}</td>
+            <td className="px-4 py-3 text-[#475467]">{(item.available_days || []).join(', ')}</td>
+            <td className="px-4 py-3 text-[#475467]">
               <button
                 onClick={() => {
                   setFormState(item);
@@ -527,10 +530,11 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
 
   return (
-    <div className="p-2 space-y-6">
+    <div className=" space-y-6">
+         <Navbar heading="Products" />
 
       {/* Top Header */}
-      <div
+      {/* <div
         className="flex  w-full items-center justify-between border-b  border-[#EAECF0]"
         style={{
 
@@ -553,7 +557,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
             }
           }>Products</h1>
 
-        <div className="flex items-center gap-5 text-black">
+        <div className="flex items-center gap-5 text-black"> */}
           {/* <button>
             <Search className="w-5 h-5 " />
           </button>
@@ -561,8 +565,8 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           <button>
             <Bell className="w-5 h-5" />
           </button> */}
-        </div>
-      </div>
+        {/* </div>
+      </div> */}
 
 
 
@@ -643,20 +647,21 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
             
           </div>
           <button
-            ref={buttonRef}
-            onClick={() => setShowBulkModal(true)}
-            className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium leading-5 whitespace-nowrap" style={
-              {
-                fontFamily: "Inter",
-                fontWeight: "500",
-                fontSize: "14px",
-                lineHeight: "20px",
-                letterSpacing: "0%",
+  ref={buttonRef}
+  onClick={() => setShowBulkModal(true)}
+  className="flex items-center gap-1 px-5 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium leading-5 whitespace-nowrap"
+  style={{
+    fontFamily: "Inter",
+    fontWeight: "500",
+    fontSize: "14px",
+    lineHeight: "20px",
+    letterSpacing: "0%",
+  }}
+>
+  <img src="/icons/bulk_uplod.svg" alt="bulk upload" className="w-4 h-4 object-contain" />
+  <span>Bulk upload</span>
+</button>
 
-              }}>
-            <img src="/icons/bulk_uplod.svg" alt="" sizes='w-3 h-3' />
-            Bulk upload
-          </button>
           {/* <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
             style={
               {
@@ -708,7 +713,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 <th className="px-4 py-2">Actions</th>
               </>
             )}
-  `
+  
             </tr>
           </thead>
           <tbody><RenderTableRows items={items} /></tbody>

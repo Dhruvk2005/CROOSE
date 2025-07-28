@@ -7,7 +7,7 @@ import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download 
 import { Icon } from "@iconify/react";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { dividerClasses } from "@mui/material/Divider";
-import Navbar from "./component/Navbar";
+import Navbar from "../../components/Navbar";
 // import { getTotalAppointment } from '../api'; 
 // import { getTotalAppointment } from "@/app/Apis/publicapi";
 
@@ -241,7 +241,7 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
     <div>
 
 
-      <Navbar />
+      <Navbar heading="Appointments" />
 
 
       <div className="p-6 space-y-6">
