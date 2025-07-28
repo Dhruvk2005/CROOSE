@@ -1,13 +1,14 @@
 'use client'
 import Link from 'next/link';
-import React, { useState  , useEffect} from 'react';
-import { BussinessCategories , GetSpaceId } from '@/app/Apis/publicapi';
+import React, { useState, useEffect } from 'react';
+import { BussinessCategories, GetSpaceId } from '@/app/Apis/publicapi';
+import { Description } from '@headlessui/react';
 const Spacebusiness = () => {
 
     const [selectedBusiness, setSelectedBusiness] = useState('');
-  const [boxes, setBoxes] = useState<
-    { businessname: string; description: string }[]
-  >([]);// top of the component
+    const [boxes, setBoxes] = useState<
+        { id: number; businessname: string; description: string }[]
+    >([]);// top of the component
 
     // const boxes = [
     //     {
@@ -50,28 +51,44 @@ const Spacebusiness = () => {
 
 
     useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const res = await BussinessCategories();  // your axios helper
-        const data = res?.data;                   // Axios puts JSON here
+        const getCategories = async () => {
+            try {
+                const res = await BussinessCategories();  // your axios helper
+                const data = res?.data;                   // Axios puts JSON here
 
-        // API might return an array directly or wrap it; handle both:
-        const arr = Array.isArray(data) ? data : data?.data ?? [];
+                // API might return an array directly or wrap it; handle both:
+                const arr = Array.isArray(data) ? data : data?.data ?? [];
 
-        // take ONLY name & template (rename for UI)
-        const simplified = arr.map((item: any) => ({
-          businessname: item.name,
-          description: item.template,
+                // take ONLY name & template (rename for UI)
+                const simplified = arr.map((item: any) => ({
+                    id: item.id,
+                    businessname: item.name,
+                    description: item.template,
+                }));
+
+                setBoxes(simplified);
+            } catch (err) {
+                console.error('Failed to load categories', err);
+            }
+        };
+        getCategories();
+    }, []);
+
+    const handleSelectSpace = (space: any) => {
+        console.log("Selected space:", space);
+        localStorage.setItem('spaceDesc', JSON.stringify({
+            description: space.description
         }));
-        
+        // localStorage.setItem('category', space.businessname);
+        localStorage.setItem('categoryID', String(space.id));
+          localStorage.setItem('categoryName', space.businessname);
 
-        setBoxes(simplified);
-      } catch (err) {
-        console.error('Failed to load categories', err);
-      }
+        console.log("saved category:", space.businessname)
+        console.log("spaceid:",space.id)
+        setSelectedBusiness(space.businessname);
     };
-    getCategories();
-  }, []);
+
+
     return (
         <div className='w-full min-h-screen px-[20px] py-[14px]'>
             <div className='w-full flex flex-col items-center gap-[32px]'>
@@ -97,7 +114,7 @@ const Spacebusiness = () => {
                     {boxes.map((values, index) => (
                         <div
                             key={index}
-                            onClick={() => setSelectedBusiness(values.businessname)}
+                            onClick={() => handleSelectSpace(values)}
                             className={`
                 w-full rounded-[18px] p-[24px] h-[140px] relative flex flex-col justify-between cursor-pointer
                 ${selectedBusiness === values.businessname
@@ -131,18 +148,19 @@ const Spacebusiness = () => {
                     Previous
                 </button>
                 <Link
-                href={"/customisespace"}>
-                <button
-                    className={`
+                    href={"/customisespace"} >
+
+                    <button
+                        className={`
     py-[11.5px] px-[14px] w-[200px] rounded-[8px] font-inter text-[14px]
     ${selectedBusiness
-                            ? 'bg-[#685BC7] text-white'
-                            : 'bg-[#D0D5DD] text-[#344054] cursor-not-allowed'}
+                                ? 'bg-[#685BC7] text-white'
+                                : 'bg-[#D0D5DD] text-[#344054] cursor-not-allowed'}
   `}
-                    disabled={!selectedBusiness}
-                >
-                    Proceed
-                </button>
+                        disabled={!selectedBusiness}
+                    >
+                        Proceed
+                    </button>
                 </Link>
 
             </div>

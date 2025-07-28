@@ -12,6 +12,7 @@ interface AxiosOptions {
   formData?: FormData;
 }
 
+
 export const axiosRequest = async ({
   method,
   url,
@@ -45,7 +46,8 @@ export const createSpace = async (formData: FormData) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.post(
-      "https://joincroose.com/croose/api/create_space",
+      `${BASE_URL}/api/create_space`,
+
       formData,
       {
         headers: {
@@ -56,10 +58,35 @@ export const createSpace = async (formData: FormData) => {
     );
     return res.data;
   } catch (err) {
+
+
     console.log(err);
     throw err;
   }
 };
+
+export const spaceIqCheck = async (data: any) => {
+  try {
+    const token = localStorage.getItem("token")
+    const res = await axiosRequest({
+      method: "post",
+      url: `${BASE_URL}/api/checkspaceIQincresed`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: data
+
+    })
+    console.log("spaceIqCheck API function response:", res)
+    return res
+
+
+
+
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 export const getCustomer = async () => {
   try {
@@ -68,7 +95,8 @@ export const getCustomer = async () => {
 
     const res = await axiosRequest({
       method: "get",
-      url: `https://joincroose.com/croose/api/getCustomer`,
+      url: `${BASE_URL}/api/getCustomer`,
+
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -96,7 +124,7 @@ export const getSpaceList = async () => {
 
     const res = await axiosRequest({
       method: "get",
-      url: `https://joincroose.com/croose/api/space`,
+      url: `${BASE_URL}/api/get_space_list`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -115,7 +143,60 @@ export const getSpaceList = async () => {
   }
 };
 
+export const getNewAppointments = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `${BASE_URL}/api/new_appointments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch new appointments:", error);
+    throw error;
+  }
+};
+export const getTotalAppointments = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `${BASE_URL}/api/total_appointments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch new appointments:", error);
+    throw error;
+  }
+};
+export const getCancelledAppointments = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `${BASE_URL}/api/cancelled_appointments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch new appointments:", error);
+    throw error;
+  }
+};
 
 export const appointmentList = async () => {
   try {
@@ -135,11 +216,11 @@ export const appointmentList = async () => {
 
 export const BussinessCategories = async () => {
   try {
-    
+
     const res = await axiosRequest({
       method: "get",
       url: `${BASE_URL}/api/business_categories`,
-      
+
     });
     return res;
   } catch (err) {
@@ -166,7 +247,7 @@ export const updateAppointmentStatus = async (id: number, status: string) => {
     throw err;
   }
 };
-//https://joincroose.com/croose/api/space
+
 export const GetSpaceId = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -203,7 +284,18 @@ export const addProduct = async (formData: FormData) => {
     formData,
   });
 };
-
+//update product
+export const updateProduct = async (id: string, data: any) => {
+  const token = localStorage.getItem("token");
+  return await axiosRequest({
+    method: 'put',
+    url: `${BASE_URL}/api/products/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: data,
+  });
+};
 export const addServices = async (data: any) => {
   try {
     const token = localStorage.getItem("token");
@@ -221,13 +313,138 @@ export const addServices = async (data: any) => {
     throw new Error(err?.message || "Failed to add service.");
   }
 };
+export const uploadBulkFile = async (
+  file: File,
+  activeTab: 'products' | 'services',
+  space_id: string
+) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    formData.append("space_id", space_id);
+
+    console.log('FormData entries:');
+
+
+    const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}/bulkupload`;
+
+
+    const res = await axios.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return res.data;
+  } catch (err: any) {
+    console.error('Full error:', err);
+    if (err.response) {
+      console.error('Response data:', err.response.data);
+      console.error('Response status:', err.response.status);
+      console.error('Response headers:', err.response.headers);
+    }
+    throw new Error(err?.response?.data?.message || "Failed to upload file.");
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+export const getSpacePrompt = async (spaceId: number) => {
+  const token = localStorage.getItem("token");
+
+  return await axios({
+    method: "get",
+    url: `${BASE_URL}/api/get_space_prompt`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      space_id: spaceId,
+    },
+  });
+};
+
+export const updateSpacePrompt = async (spaceId: number, promptContent: string) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) throw new Error("Token not found");
+
+  return await axios({
+    method: "post",
+    url: `${BASE_URL}/api/update_space_prompt`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      space_id: spaceId,
+      prompt_content: promptContent,
+    },
+  });
+};
+
+export const updatePassword = async (currentPassword: string, newPassword: string) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("Token not found");
+
+    return await axios({
+      method: "post",
+      url: `${BASE_URL}/api/update_password`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        current_password: currentPassword,
+        new_password: newPassword,
+      },
+    });
+
+
+  } catch (err) {
+    console.log("Error updating password:", err);
+    throw err;
+  }
+};
+
+
+
+
+export const updateServices = async (id: string, data: any) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: 'put',
+      url: `${BASE_URL}/api/services/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: data,
+    });
+    return res;
+  } catch (err: any) {
+    console.log(err);
+    throw new Error(err?.message || "Failed to add service.");
+  }
+};
 
 export const getAllProducts = async () => {
   try {
     const token = localStorage.getItem("token");
     const res = await axiosRequest({
       method: "get",
-      url: `${BASE_URL}/api/products/products_list`,
+      url: `${BASE_URL}/api/products`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -239,10 +456,103 @@ export const getAllProducts = async () => {
   return { data: [] };
 };
 
+ 
+
+export const getTotalAppointment = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/total_appointments`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // ✅ Log and return the actual response
+    console.log("API total_appointments response", res);
+
+     return res// <-- Expecting: { total: number }
+  } catch (err) {
+    console.error("Error fetching total appointments", err);
+    return null; // Return null or empty fallback only on error
+  }
+};
+
+
+export const getNewAppointment= async ()=>{
+  try{
+    const token=localStorage.getItem('token');
+    const res = await axiosRequest({
+      method: "get",
+      url:`${BASE_URL}/api/new_appointments`,
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+
+    })
+    return res;
+  }
+  catch(err){
+    console.log(err);
+
+  }
+} 
+
+export const getCancelledAppointment= async ()=>{
+  try{
+    const token=localStorage.getItem('token');
+    const res = await axiosRequest({
+      method: "get",
+      url:`${BASE_URL}/api/cancelled_appointments`,
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+
+    })
+    return res;
+  }
+  catch(err){
+    console.log(err);
+
+  }
+} 
+
+export const getnewCustomer= async ()=>{
+  try{
+    const token=localStorage.getItem('token');
+    const res = await axiosRequest({
+      method: "get",
+      url:`${BASE_URL}/api/newCustomers`,
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+
+    })
+    return res;
+  }
+  catch(err){
+    console.log(err);
+
+  }
+} 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 export const getAllServices = async () => {
   try {
     const token = localStorage.getItem("token");
-    const res = await axios.get(`${BASE_URL}/api/services/get_services`, {
+    const res = await axios.get(`${BASE_URL}/api/services`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -312,11 +622,37 @@ export const registerApi = async (data: any) => {
       headers: {},
       body: data,
     });
+    
     return res;
+    
   } catch (err) {
     console.log(err);
   }
+  
 };
+
+export const searchProducts = async (query: string) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${BASE_URL}/api/products?search=${query}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+
+export const searchServices = async (query: string) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${BASE_URL}/api/services?search=${query}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+
 
 export const countryApi = async () => {
   try {
@@ -328,5 +664,69 @@ export const countryApi = async () => {
     return res;
   } catch (err) {
     console.log(err);
+  }
+};
+
+
+
+
+export const fetchCustomerStatistics = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/customer_statistics`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    return res;
+  } catch (err) {
+    console.error('Error fetching customer statistics:', err);
+    throw err; // Optional: rethrow for higher-level handling
+  }
+};
+
+
+export const fetchAppointmentStatistics = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/appointment_statistics`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    return res;
+  } catch (err) {
+    console.error('Error fetching customer statistics:', err);
+    throw err; // Optional: rethrow for higher-level handling
+  }
+};
+
+export const fetchTotalChats = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/total_chats`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    return res;
+  } catch (err) {
+    console.error('Error fetching customer statistics:', err);
+    throw err; // Optional: rethrow for higher-level handling
   }
 };

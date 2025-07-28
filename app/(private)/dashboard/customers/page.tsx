@@ -1,139 +1,97 @@
 'use client'
-import React from 'react'
-import Customerspace from '../customerspace/page'
+import React, { useState, useEffect } from 'react'
 import { Icon } from "@iconify/react";
-import UserTable from '../../components/table';
-import { useState , useEffect } from 'react';
 import Customerpopup from '../../components/customerpopup';
-import { getCustomer } from '@/app/Apis/publicapi';
-// const users = [
-//     {
-//         name: "Neil Sims",
-//         email: "neil.sims@flowbite.com",
-//         img: "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-//         Status: "Active",
-//         PhoneNumber: "0241763214",
-//         TotalSpent: "$18",
-//         Noofvisits: "12",
-//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-//     },
-//     {
-//         name: "Bonnie Green",
-//         email: "bonnie@flowbite.com",
-//         img: "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
-//         Status: "Active",
-//         PhoneNumber: "0241763214",
-//         TotalSpent: "$18",
-//         Noofvisits: "3",
-//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-//     },
-//     {
-//         name: "Jese Leos",
-//         email: "jese@flowbite.com",
-//         img: "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-//         Status: "Active",
-//         PhoneNumber: "0241763214",
-//         TotalSpent: "$18",
-//         Noofvisits: "6",
-//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-//     },
-//     {
-//         name: "Thomas Lean",
-//         email: "thomes@flowbite.com",
-//         img: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-//         Status: "Active",
-//         PhoneNumber: "0241763214",
-//         TotalSpent: "$18",
-//         Noofvisits: "19",
-//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-//     },
-//     {
-//         name: "Leslie Livingston",
-//         email: "leslie@flowbite.com",
-//         img: "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-//         Status: "Active",
-//         PhoneNumber: "0241763214",
-//         TotalSpent: "$18",
-//         Noofvisits: "4",
-//         DateofLastTransaction: "Wed 14 Nov, 1:00pm"
-//     }
-// ];
-interface SimplifiedCustomer {
-  id: number;
-  name: string;
-  whatsapp_number: string;
-  address: string;
-  pin_code: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { fetchCustomerStatistics, getCustomer } from '@/app/Apis/publicapi';
 
+interface SimplifiedCustomer {
+    id: number;
+    name: string;
+    whatsapp_number: string;
+    address: string;
+    pin_code: number;
+    createdAt: string;
+    updatedAt: string;
+}
 
 const Customers = () => {
     const [open, setOpen] = useState(false);
     const [users, setUsers] = useState<SimplifiedCustomer[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const rowsPerPage = 10;
+
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            try {
+                const data = await getCustomer();
+                console.log("API response:", data);
+                const customerArray = data?.data || [];
+                const simplified: SimplifiedCustomer[] = customerArray.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                    whatsapp_number: item.whatsapp_number,
+                    address: item.address,
+                    pin_code: item.pin_code,
+                    createdAt: item.created_at,
+                    updatedAt: item.updated_at,
+                }));
+                setUsers(simplified);
+            } catch (err) {
+                console.error("Failed to load customers", err);
+            }
+        };
+        fetchCustomers();
+    }, []);
+
+    // Pagination logic
+    const indexOfLastUser = currentPage * rowsPerPage;
+    const indexOfFirstUser = indexOfLastUser - rowsPerPage;
+    const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+    const totalPages = Math.ceil(users.length / rowsPerPage);
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
 
 
-  
-useEffect(() => {
-  const fetchCustomers = async () => {
-    try {
-     const data = await getCustomer();
-
-      console.log("API response:", data);
-      
-
-      const customerArray = data?.data || [];
-
-  const simplified: SimplifiedCustomer[] = customerArray.map((item : any) => ({
-  id: item.id,
-  name: item.name,
-  whatsapp_number: item.whatsapp_number,
-  address: item.address,
-  pin_code: item.pin_code,
-  createdAt: item.created_at,
-  updatedAt: item.updated_at,
-}));
-
-      setUsers(simplified);
-    } catch (err) {
-      console.error("Failed to load customers", err);
-    }
-  };
-
-  fetchCustomers();
-}, []);
+    const [customerStatistic, setCustomerStatistic] = useState<any>({});
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            try {
+                let res = await fetchCustomerStatistics()
+                console.log("Customer Statistics:", res)
+                setCustomerStatistic(res)
+                
 
 
-
+            } catch (err) {
+                console.error("Error in Customers component:", err);
+            }
+        }
+        fetchCustomers()
+    }, [customerStatistic])
 
     return (
         <div>
-            <div>
-
-                <div className='w-[100%] h-[64px]  flex justify-between items-center' style={{ borderBottom: "1px solid #EAECF0" }}>
-                    <div className='flex items-center  gap-[20px] text-[#121217] '>
-                        <span className='font-semi font-bold text-[20px] pl-[20px] ml-[10px]' >Customers</span>
-
-                    </div>
-                    <div className='mr-[20px]' >
-                        <li className='flex w-[98px] gap-[23px] justify-center items-center '>
-                            <div className='w-[46px] flex gap-[10px] border-r-[2px]  border-[#F2F4F7]' >
-                                <Icon icon="mynaui:search" width="24" height="24" style={{ color: '#000' }} />
-                            </div>
-                            <div className='w-[16px] flex gap-[10px]'>
-                                <svg width="24" height="20" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.99255 15.0123C10.3499 16.346 9.55845 17.7168 8.22478 18.0742C6.89112 18.4315 5.52028 17.6401 5.16292 16.3064M7.07633 4.78404C7.32983 4.32796 7.41334 3.77671 7.26762 3.23288C6.96983 2.12149 5.82746 1.46194 4.71607 1.75974C3.60468 2.05753 2.94514 3.1999 3.24293 4.31129C3.38865 4.85512 3.73659 5.29076 4.18418 5.55899M11.53 7.87107C11.2325 6.76096 10.4384 5.83266 9.32236 5.29038C8.2063 4.74811 6.8597 4.63627 5.5788 4.97949C4.2979 5.32271 3.18763 6.09285 2.49223 7.12051C1.79683 8.14817 1.57327 9.34915 1.87072 10.4593C2.36287 12.296 2.2673 13.7613 1.95651 14.8747C1.60229 16.1438 1.42518 16.7783 1.47302 16.9057C1.52777 17.0515 1.56737 17.0915 1.71256 17.1478C1.83947 17.1969 2.37261 17.0541 3.4389 16.7684L13.3265 14.119C14.3927 13.8333 14.9259 13.6904 15.0112 13.5844C15.1088 13.4631 15.1231 13.4086 15.0976 13.255C15.0754 13.1208 14.6047 12.6598 13.6634 11.7379C12.8375 10.929 12.0221 9.70778 11.53 7.87107Z" stroke="#101828" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </div>
-
-                        </li>
-
-                    </div>
-
-
+            {/* Header */}
+            <div className='w-full h-[64px] flex justify-between items-center border-b border-[#EAECF0]'>
+                <span className='font-bold text-[20px] pl-[30px] text-[#121217]'>Customers</span>
+                <div className='mr-[20px]'>
+                    <li className='flex w-[98px] gap-[23px] justify-center items-center'>
+                        <div className='w-[46px] flex gap-[10px] border-r-[2px] border-[#F2F4F7]'>
+                            <Icon icon="mynaui:search" width="24" height="24" style={{ color: '#000' }} />
+                        </div>
+                        <div className='w-[16px] flex gap-[10px]'>
+                            <Icon icon="carbon:notification" width="20" height="20" style={{ color: '#000' }} />
+                        </div>
+                    </li>
                 </div>
             </div>
+
             <div>
                 <div className='w-full h-auto' >
                     <div className='w-full h-full flex flex-wrap flex-col gap-[64px] ' >
@@ -150,44 +108,46 @@ useEffect(() => {
                                 <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
                                     <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Customers</p>
                                     <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >12</p>
+                                        <p className='font-semibold text-[#101828] text-[30px] ' >{customerStatistic.new_customers
+}</p>
                                         <img className='w-[71px] ' src={"/100.png"} alt='badge' />
                                     </div>
                                 </li>
                                 <li className='w-full  lg:w-[32.1%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Customers</p>
+                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Returning Customers</p>
                                     <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >700</p>
+                                        <p className='font-semibold text-[#101828] text-[30px] ' >{customerStatistic.returning_customer}</p>
                                         <img className='w-[71px] ' src={"/100.png"} alt='badge' />
                                     </div>
                                 </li>
                                 <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Customers</p>
+                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Return Customer Rate</p>
                                     <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >68%</p>
+                                        <p className='font-semibold text-[#101828] text-[30px] ' >{customerStatistic.return_customer_rate}</p>
                                         <img className='w-[71px] ' src={"/90.png"} alt='badge' />
                                     </div>
                                 </li>
                             </ul>
                             <ul className='flex flex-wrap gap-[16px]' >
                                 <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Customers</p>
+                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Inactive Customers</p>
                                     <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >50</p>
+                                        <p className='font-semibold text-[#101828] text-[30px] ' >{customerStatistic.inactive_customers}</p>
                                         <img className='w-[71px] ' src={"/35.png"} alt='badge' />
                                     </div>
                                 </li>
                                 <li className='w-full  lg:w-[32.1%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Customers</p>
+                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Dormant Customers</p>
                                     <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >$1700</p>
+                                        <p className='font-semibold text-[#101828] text-[30px] ' >{customerStatistic.highest_order_value}</p>
                                         <img className='w-[71px] ' src={"/100.png"} alt='badge' />
                                     </div>
                                 </li>
                                 <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Customers</p>
+                                    <p className='text-[#475467] text-[14px] font-medium font-Inter' >Average Customer Value</p>
                                     <div className='flex items-center gap-[16px] justify-between  '>
-                                        <p className='font-semibold text-[#101828] text-[30px] ' >$28</p>
+                                        <p className='font-semibold text-[#101828] text-[30px] ' >{customerStatistic.average_customer_value
+}</p>
                                         <img className='w-[71px] ' src={"/100.png"} alt='badge' />
                                     </div>
                                 </li>
@@ -196,100 +156,74 @@ useEffect(() => {
 
                     </div>
                 </div>
-                <div className='w-full h-auto '  >
-                    <div className=' flex flex-col gap-[24px] w-[full] p-[32px] h-auto ' >
-                        <div className='flex flex-col gap-[8px] w-full h-auto ' >
-                            <p className='font-Inter tetx-[16px] font-semibold text-[#101828] ' >Customer Insights</p>
-                            <p className='text-[#475467] font-Inter font-normal text-[14px]' >All the details about your customers</p>
+            </div>
+            <div className='p-[32px]'>
+                <p className='font-semibold text-[#101828] text-[16px] mb-2'>Customer Insights</p>
+                <p className='text-[#475467] text-[14px] mb-4'>All the details about your customers</p>
 
-                        </div>
-                        <div className='w-full flexflex-col items-center  ' >
-                            <ul className='w-full flex  items-center justify-between ' >
-                                <li className=' w-full gap-[12px] flex items-center ' >
-                                    <button className='px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
-                                        <Icon icon="mynaui:filter-solid" width="20" height="20" style={{ color: "#667085" }} />
-                                        <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Filters</p>
-                                    </button>
-                                   
-                                        <button className=' w-[121px] gap-[8px] rounded-[8px] border-[2px] border-[#EAECF0] flex items-center  px-[14px] py-[9px] ' >
-                                            <Icon icon="uil:calender" width="24" height="24" style={{ color: "#667085" }} />
-                                            <p className='font-semibold text-[16px]  text-[#344054] ' >Select</p>
-                                        </button>
-
-                                
-                                </li>
-                                <li className='flex gap-[12px] ' >
-                                    <div className="w-full max-w-[320px] flex items-center gap-2 border-[2px] border-[#EAECF0] bg-white px-3 py-2 rounded-[8px]">
-                                        <input
-                                            type="text"
-                                            placeholder="Search"
-                                            className="outline-none text-sm text-[#101828] placeholder-[#667085] font-Inter bg-transparent"
-                                        />
-                                        <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
-                                    </div>
-                                    <div onClick={() => setOpen(true)} className=' w-full  flex items-center ' >
-                                        <button className=' items-center px-[14px] py-[10px] flex gap-[4px] border-[2px] rounded-[8px] border-[#EAECF0]  ' >
-                                            <Icon icon="bitcoin-icons:export-outline" width="24" height="24" style={{ color: '#344054' }} />
-                                            <p className='text-[#344054] font-Inter font-semibold text-[14px] ' >Export</p>
-                                        </button>
-                                    </div>
-                                </li>
-
-                            </ul>
-                            <div className='w-full' >
-                                <div className="w-full overflow-x-auto mt-[20px] rounded-[10px] ">
-                                    <table className="min-w-[700px] w-full border border-[#EAECF0] text-sm text-left text-gray-500 bg-white rounded-[5px]">
-                                        <thead className="text-xs  text-[#475467] bg-[#F9FAFB] font-medium">
-                                            <tr className='w-full' >
-                                                <th className="px-6 py-3">Customer</th>
-                                                <th className="px-6 py-3">Status</th>
-                                                <th className="px-6 py-3">Phone Number</th>
-                                                <th className="px-6 py-3">Address</th>
-                                                <th className="px-6 py-3">Pin Code</th>
-                                                {/* <th className="px-6 py-3">Date of Last Transaction</th> */}
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          {users.map((user, index) => (
-    <tr key={user.id || index} className="border-b border-[#EAECF0]">
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-          />
-          <div>
-            <div className="text-[#101828] font-medium">{user.name}</div>
-            <div className="text-gray-500 text-sm"></div>
-          </div>
-        </div>
-      </td>
-      <td className="px-6 py-4">Active</td>
-      <td className="px-6 py-4 text-[#101828]">{user.whatsapp_number}</td>
-      <td className="px-6 py-4 text-[#475467]">{user.address}</td>
-      <td className="px-6 py-4 text-[#475467]">{user.pin_code}</td>
-      <td className="px-6 py-4 text-[#475467]">
-        <Icon icon="bi:three-dots-vertical" width="16" height="16" />
-      </td>
-    </tr>
-  ))}
-</tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
+                <div className="overflow-x-auto rounded-[10px]">
+                    <table className="min-w-[700px] w-full border border-[#EAECF0] text-sm text-left bg-white">
+                        <thead className="text-xs text-[#475467] bg-[#F9FAFB] font-medium">
+                            <tr>
+                                <th className="px-6 py-3">Customer</th>
+                                <th className="px-6 py-3">Status</th>
+                                <th className="px-6 py-3">Phone Number</th>
+                                <th className="px-6 py-3">Address</th>
+                                <th className="px-6 py-3">Pin Code</th>
+                                <th className="px-6 py-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentUsers.map((user) => (
+                                <tr key={user.id} className="border-b border-[#EAECF0]">
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                            <input
+                                                type="checkbox"
+                                                className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD]"
+                                            />
+                                            <div className="text-[#101828] font-medium">{user.name}</div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">Active</td>
+                                    <td className="px-6 py-4 text-[#101828]">{user.whatsapp_number}</td>
+                                    <td className="px-6 py-4 text-[#475467]">{user.address}</td>
+                                    <td className="px-6 py-4 text-[#475467]">{user.pin_code}</td>
+                                    <td className="px-6 py-4 text-[#475467]">
+                                        <Icon icon="bi:three-dots-vertical" width="16" height="16" />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
 
-
-
+                {/* Pagination */}
+                <div className="flex justify-center gap-[20px] items-center mt-4">
+                    <button
+                        onClick={handlePrevPage}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-[#685BC7] text-white rounded disabled:opacity-50"
+                    >
+                        Previous
+                    </button>
+                    <span className="text-[#344054] font-medium">
+                        Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-[#685BC7] text-white rounded disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
-            {open ? <Customerpopup setOpen={setOpen} /> : ""}
+
+            {/* Customer popup */}
+            {open && <Customerpopup setOpen={setOpen} />}
         </div>
     )
 }
 
-export default Customers
+export default Customers;

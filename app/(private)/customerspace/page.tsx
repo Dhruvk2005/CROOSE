@@ -1,9 +1,11 @@
 'use client'
 import React, { useState } from 'react'
-import Spacenav from '../../components/spacenav'
-import Customerpopup from '../../components/customerpopup'
+import Spacenav from '../components/spacenav'
+import Customerpopup from '../components/customerpopup'
 
 const Customerspace = () => {
+
+    
 
    
     return (
