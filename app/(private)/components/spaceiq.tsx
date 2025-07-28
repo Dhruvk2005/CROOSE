@@ -102,12 +102,12 @@ const Spaceiq = (props: any) => {
 
                 <div className="sm:w-[80%]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
 
-                  <div className="w-[80%] h-[186px]  flex flex-col items-center gap-3">
+                  <div className="w-[80%] h-[186px]  flex flex-col items-center gap-1">
                     <span className="text-[#18181B] font-sans font-medium text-base leading-6">
                       Plain Text
                     </span>
 
-                    <div className="w-[80%] h-[150px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
+                    <div className="w-[80%] h-[250px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
                       <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -121,12 +121,12 @@ const Spaceiq = (props: any) => {
                     </div>
 
                   </div>
-
+{/* 
                   <div className="w-[70%]">
                     <img src="/Line 10.png" alt="line" className="w-[90%]" />
-                  </div>
+                  </div> */}
 
-                  <div className="w-[80%] h-[116px]  flex flex-col items-center gap-3">
+                  {/* <div className="w-[80%] h-[116px]  flex flex-col items-center gap-3">
                     <span className="text-[#18181B]  h-[24px] font-sans font-medium text-base leading-6">
                       Documents
                     </span>
@@ -142,7 +142,7 @@ const Spaceiq = (props: any) => {
                         <img src="/Featured icon.png" className="h-10 w-10" />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
 

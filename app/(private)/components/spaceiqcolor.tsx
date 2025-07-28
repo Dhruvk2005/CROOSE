@@ -66,7 +66,7 @@ const Spaceiqcolor = (props: any) => {
       <div className="relative  z-[40]">
         <div className="fixed inset-0 bg-[#18181B66] transition-opacity flex justify-center items-center">
           <div className="w-full flex justify-center   px-4 sm:px-6">
-            <div className="w-full max-w-4xl h-[700px]  flex flex-col items-center border-2 border-[#EAECF0] rounded-2xl bg-white">
+            <div className="w-full max-w-4xl h-[300px] mb-[250px]  flex flex-col items-center border-2 border-[#EAECF0] rounded-2xl bg-white">
 
 
               <div className="w-[97%] h-[100px] flex text-center p-[10px]  items-center justify-between ">
@@ -91,7 +91,7 @@ const Spaceiqcolor = (props: any) => {
                 </div>
 
 
-                <div className=" sm:w-[80%] h-[396px]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
+                <div className=" sm:w-[80%] h-[]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
 
 
                   <div className="w-[80%] h-[186px] items-center flex  flex-col gap-3">
@@ -99,7 +99,7 @@ const Spaceiqcolor = (props: any) => {
                       Plain Text
                     </span>
 
-                    <div className="w-[80%] h-[150px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
+                    <div className="w-[80%] h-[250px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">
                       <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -118,7 +118,7 @@ const Spaceiqcolor = (props: any) => {
                     <img src="/Line 10.png" alt="line" className="w-[90%]" />
                   </div>
 
-
+{/* 
                   <div className="w-[80%] h-[116px] items-center flex flex-col gap-3">
                     <span className="text-[#18181B] h-[24px] font-sans font-medium text-base leading-6">
                       Documents
@@ -155,7 +155,7 @@ const Spaceiqcolor = (props: any) => {
                         </Link>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
 
