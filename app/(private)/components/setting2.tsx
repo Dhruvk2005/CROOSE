@@ -91,7 +91,9 @@ const SettingTwo = () => {
               <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
                 Settings
               </span>
-              <span className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA]" onClick={() => {setOpenSetting1(false)}} >
+              <span className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA]" onClick={() => {setOpenSetting1(false)
+                setOpenSetting2(false)
+              }} >
                 <Icon icon="iconamoon:close-bold" width="24" height="24" style={{ color: '#000' }} />
               </span>
             </section>
