@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from 'react';
-import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
+import { addProduct, addServices, getAllProducts, getAllServices, getProductPage, getServicePage, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
 
 import Pagination from '../../components/pagination';
@@ -76,41 +76,37 @@ price: '',
  
   });
 
- const fetchItems = async (page: number = 1) => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}?page=${page}`;
-      
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      
-      const data = await response.json();
-      
-      if (data.status) {
-       
-        setItems(data.data);
-  
-      
-      
-        
-         setData((p :any ) =>{ return {
-     
-           [activeTab]: data?.data || [],
-    //...data
-        }});
-        setTotalPages(data.meta.last_page);
-        setTotalItems(data.meta.total);
-      }
-    } catch (error) {
-      console.error(`Error fetching ${activeTab}:`, error);
-    } finally {
-      setLoading(false);
+const fetchItems = async (page: number = 1) => {
+  try {
+    setLoading(true);
+
+    let data;
+
+    if (activeTab === "products") {
+      data = await getProductPage(page);
+    } else if (activeTab === "services") {
+      data = await getServicePage(page);
     }
-  };
+
+    console.log("Fetched Data:", data); // ✅ debug actual response
+
+    if (data?.status) { 
+      setItems(data.data || []);
+      setData((p: any) => ({
+        ...p,
+        [activeTab]: data.data || [],
+      }));
+      setTotalPages(data.meta?.last_page || 1);
+      setTotalItems(data.meta?.total || 0);
+    }
+  } catch (error) {
+    console.error(`Error fetching ${activeTab}:`, error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   useEffect(() => {
     fetchItems(currentPage);
@@ -708,7 +704,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 <th className="px-4 py-2">Actions</th>
               </>
             )}
-  `
+  
             </tr>
           </thead>
           <tbody><RenderTableRows items={items} /></tbody>

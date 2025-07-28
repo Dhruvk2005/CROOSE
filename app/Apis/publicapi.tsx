@@ -455,6 +455,39 @@ export const getAllProducts = async () => {
   }
   return { data: [] };
 };
+export const getProductPage = async (page: number = 1) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/products?page=${page}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
+    return { status: false, data: [] };
+  }
+};
+
+export const getServicePage = async (page: number = 1) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/services?page=${page}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return { status: false, data: [] };
+  }
+};
 
  
 
