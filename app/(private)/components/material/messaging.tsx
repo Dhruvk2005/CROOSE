@@ -172,7 +172,7 @@ const page = () => {
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan="7" className="px-6 py-4">
+                <td colSpan={7} className="px-6 py-4">
                   <div className="flex justify-between items-center w-full">
                     {/* Left Button */}
                     <div className="">
