@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Documentpopup from './documentpopup'
 import { BussinessCategories, GetSpaceId, getSpacePrompt, updateSpacePrompt } from '@/app/Apis/publicapi'
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 interface Category {
   id: number,
@@ -40,11 +41,13 @@ const Spaceiqcolor = (props: any) => {
 
   const [spaceId, setSpaceId] = useState<number | null>(null);
   const [description, setDescription] = useState('');
+    const searchParams = useSearchParams();
+      const spaceIds = searchParams.get('id');
   useEffect(() => {
     const fetchPrompt = async () => {
       try {
-        const spaceRes = await GetSpaceId();
-        const id = spaceRes?.spaces?.[0]?.id;
+        // const spaceRes = await GetSpaceId();
+        const id:any = spaceIds
         if (!id) throw new Error("No space ID found!");
 
         setSpaceId(id); // Save ID for later use

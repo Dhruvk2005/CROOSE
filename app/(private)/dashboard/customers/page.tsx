@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Icon } from "@iconify/react";
 import Customerpopup from '../../components/customerpopup';
 import { fetchCustomerStatistics, getCustomer } from '@/app/Apis/publicapi';
-
+import Navbar from "../../components/Navbar";
 interface SimplifiedCustomer {
     id: number;
     name: string;
@@ -78,19 +78,7 @@ const Customers = () => {
     return (
         <div>
             {/* Header */}
-            <div className='w-full h-[64px] flex justify-between items-center border-b border-[#EAECF0]'>
-                <span className='font-bold text-[20px] pl-[30px] text-[#121217]'>Customers</span>
-                <div className='mr-[20px]'>
-                    <li className='flex w-[98px] gap-[23px] justify-center items-center'>
-                        <div className='w-[46px] flex gap-[10px] border-r-[2px] border-[#F2F4F7]'>
-                            <Icon icon="mynaui:search" width="24" height="24" style={{ color: '#000' }} />
-                        </div>
-                        <div className='w-[16px] flex gap-[10px]'>
-                            <Icon icon="carbon:notification" width="20" height="20" style={{ color: '#000' }} />
-                        </div>
-                    </li>
-                </div>
-            </div>
+           <Navbar heading="Customers" />
 
             <div>
                 <div className='w-full h-auto' >

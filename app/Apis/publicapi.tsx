@@ -328,7 +328,7 @@ export const uploadBulkFile = async (
     console.log('FormData entries:');
 
 
-    const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}/bulkupload`;
+    const url = `${BASE_URL}/api/${activeTab}/bulkupload`;
 
 
     const res = await axios.post(url, formData, {
@@ -454,6 +454,39 @@ export const getAllProducts = async () => {
     console.log(err);
   }
   return { data: [] };
+};
+export const getProductPage = async (page: number = 1) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/products?page=${page}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
+    return { status: false, data: [] };
+  }
+};
+
+export const getServicePage = async (page: number = 1) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/services?page=${page}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err) {
+    console.log(err);
+    return { status: false, data: [] };
+  }
 };
 
  
