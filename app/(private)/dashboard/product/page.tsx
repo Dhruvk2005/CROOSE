@@ -9,6 +9,8 @@ import { addProduct, addServices, getAllProducts, getAllServices, getProductPage
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
 import Navbar from "../../components/Navbar";
 import Pagination from '../../components/pagination';
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 //import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
   products: [],
@@ -128,8 +130,8 @@ const fetchItems = async (page: number = 1) => {
 
   const templateUrl =
     activeTab === 'services'
-      ? 'http://68.183.108.227/croose/public/storage/Bulk_upload_templates/new_services_template.xlsx'
-      : 'http://68.183.108.227/croose/public/storage/Bulk_upload_templates/New_products_template.xlsx';
+      ? 'https://68.183.108.227/croose/public/storage/Bulk_upload_templates/new_services_template.xlsx'
+      : 'https://68.183.108.227/croose/public/storage/Bulk_upload_templates/New_products_template.xlsx';
 
   useEffect(() => {
     const fetchData = async () => {
