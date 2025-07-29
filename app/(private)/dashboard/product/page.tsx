@@ -220,9 +220,9 @@ const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setShowBulkModal(false);
     e.target.value = "";
         
-    setTimeout(() => {
-      window.location.reload();
-    }, 1500); // 1.5s delay
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 1500); // 1.5s delay
   } catch (err: any) {
     console.error("Upload failed:", err);
     	toast.error(err.message || "Failed to upload file. Please check console for details.")

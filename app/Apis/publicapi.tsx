@@ -482,7 +482,7 @@ export const getServicePage = async (page: number = 1) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return res;
   } catch (err) {
     console.log(err);
     return { status: false, data: [] };
