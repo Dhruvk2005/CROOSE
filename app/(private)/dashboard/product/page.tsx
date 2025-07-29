@@ -319,6 +319,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         formData.append('price', formState.product_price);
    
         formData.append('stock', formState.product_stock);
+        formData.append('stock', formState.product_stock);
         if (formState.image instanceof File) {
           formData.append('image', formState.image);
         }
@@ -653,8 +654,11 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 letterSpacing: "0%",
 
               }}>
+
+                <div className='flex justify-center gap-[8px]' >
             <img src="/icons/bulk_uplod.svg" alt="" sizes='w-3 h-3' />
-            Bulk upload
+          <p className='font-Inter font-semibold' >  Bulk upload</p>
+          </div>
           </button>
           {/* <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
             style={
@@ -883,12 +887,10 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
         </div>
       )}
       {/* Bulk Modal */}
-      {showBulkModal && (
-        <div className="fixed inset-0 bg-opacity-30 flex items-center justify-center z-50"
-        // style={{ top: modalPosition.top, left: modalPosition.left }}
-        >
-          <div className="w-[416px] bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-
+   {showBulkModal && (
+  <div className="fixed inset-0  bg-opacity-30 flex items-center justify-end z-50">
+    <div className="w-[416px] bg-white rounded-lg shadow-lg p-6 relative mr-4">
+   
             <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
 
               <h2 className="flex text-lg font-semibold mb-4">Bulk upload</h2>

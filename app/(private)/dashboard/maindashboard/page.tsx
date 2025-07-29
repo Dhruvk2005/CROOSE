@@ -23,27 +23,27 @@ const slideData = [
     link: "/dashboard/space"
 
   },
-  {
-    image: "/payment.png",
-    name: "Enable payments",
-    description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
-    bg: "#E7ECEE",
-    link:""
-  },
-  {
-    image: "/email.png",
-    name: "Verify your email",
-    description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
-    bg: "#E2EBF3",
-    link:""
-  },
-  {
-    image: "/bank.png",
-    name: "Add bank details",
-    description: "Add your company bank details to the platform. This way your business can get paid refunds or other payments due to you by the platform or your customers.",
-    bg: "#F0EBE5",
-    link:""
-  },
+  // {
+  //   image: "/payment.png",
+  //   name: "Enable payments",
+  //   description: "Choose Stripe or Mobile Money to receive bookings, invoices and product payments.",
+  //   bg: "#E7ECEE",
+  //   link:""
+  // },
+  // {
+  //   image: "/email.png",
+  //   name: "Verify your email",
+  //   description: "It's important we know you're real. Verifying your email address is one of the ways we do this.",
+  //   bg: "#E2EBF3",
+  //   link:""
+  // },
+  // {
+  //   image: "/bank.png",
+  //   name: "Add bank details",
+  //   description: "Add your company bank details to the platform. This way your business can get paid refunds or other payments due to you by the platform or your customers.",
+  //   bg: "#F0EBE5",
+  //   link:""
+  // },
 ];
 
 const MainDashboard = () => {
@@ -206,7 +206,7 @@ const MainDashboard = () => {
               }
           }
           fetchCustomers()
-      }, [customerStatistic])
+      }, [])
 
   return (
     
@@ -238,7 +238,7 @@ const MainDashboard = () => {
           <ul className='w-full h-auto flex flex-wrap gap-[16px]'>
             <div className=" flex flex-row flex-wrap gap-[20px]  w-[100%]   rounded-lg">
 
-              <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+              <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
                 <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
                   <img src="/chat.png" />
                   <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
@@ -251,7 +251,7 @@ const MainDashboard = () => {
               </div>
 
 
-              {/* <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+              <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
                 <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
                   <img src="/message.png" />
                   <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
@@ -265,7 +265,7 @@ const MainDashboard = () => {
               </div>
 
           
-          <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+          <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/timer.png" />
               <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
@@ -279,7 +279,7 @@ const MainDashboard = () => {
           </div>
 
 
-              <div className="w-[280px] rounded-[16px] border border-gray-300 h-[160px]">
+              <div className="w-[220px] rounded-[16px] border border-gray-300 h-[160px]">
                 <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
                   <img src="/party-popper.png" />
                   <div className="w-[100%] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
@@ -290,14 +290,14 @@ const MainDashboard = () => {
                 <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
                   0
                 </div>
-              </div> */}
+              </div>
             </div>
           </ul>
         </div>
       </div>
 
 
-      {/* {iqIncreased === 0 && ( */}
+      {iqIncreased === 0 && (
         <div>
           <div className='w-full flex flex-col md:flex-row items-start md:items-center justify-between px-[24px]'>
             <div>
@@ -318,7 +318,7 @@ const MainDashboard = () => {
             </div>
           </div>
         </div>
-      {/* )} */}
+      )} 
 
 
       {/* {iqIncreased === 1 && (

@@ -87,7 +87,7 @@ const Newspace = () => {
 
                 spaceData.map((space) => (
                   <Link
-                    href={`/dashboard/space?name=${encodeURIComponent(space.name)}`}                  >
+                    href={`/dashboard/space?name=${encodeURIComponent(space.name)}&id=${space.id}`}                  >
                     <li
                       key={space.id}
                       className='w-[352px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0]'

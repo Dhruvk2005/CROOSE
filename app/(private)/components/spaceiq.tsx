@@ -1,5 +1,6 @@
 'use client'
 import { BussinessCategories, GetSpaceId, getSpacePrompt } from '@/app/Apis/publicapi'
+import { useSearchParams } from 'next/navigation';
 import React from 'react'
 import { useState, useEffect } from 'react'
 
@@ -50,12 +51,14 @@ const Spaceiq = (props: any) => {
   // }, [selectedIndex, spaceData]);
 
   const [prompt, setPrompt] = useState<any>()
+  const searchParams = useSearchParams();
+    const spaceIds = searchParams.get('id');
 
   useEffect(() => {
     const fetchPrompt = async () => {
       try {
-        const spaceRes = await GetSpaceId();
-        const spaceId = spaceRes?.spaces?.[0]?.id;
+        // const spaceRes = await GetSpaceId();
+        const spaceId:any= spaceIds
         if (!spaceId) throw new Error("No space ID found!");
 
         const promptRes = await getSpacePrompt(spaceId);
@@ -71,6 +74,8 @@ const Spaceiq = (props: any) => {
     fetchPrompt();
   }, []);
 
+
+    
 
 
 
