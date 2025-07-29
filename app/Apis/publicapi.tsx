@@ -328,7 +328,7 @@ export const uploadBulkFile = async (
     console.log('FormData entries:');
 
 
-    const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}/bulkupload`;
+    const url = `${BASE_URL}/${activeTab}/bulkupload`;
 
 
     const res = await axios.post(url, formData, {
