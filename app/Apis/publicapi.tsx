@@ -328,7 +328,7 @@ export const uploadBulkFile = async (
     console.log('FormData entries:');
 
 
-    const url = `${BASE_URL}/${activeTab}/bulkupload`;
+    const url = `${BASE_URL}/api/${activeTab}/bulkupload`;
 
 
     const res = await axios.post(url, formData, {
@@ -482,7 +482,7 @@ export const getServicePage = async (page: number = 1) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return res;
   } catch (err) {
     console.log(err);
     return { status: false, data: [] };
