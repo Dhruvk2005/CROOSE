@@ -328,7 +328,7 @@ export const uploadBulkFile = async (
     console.log('FormData entries:');
 
 
-    const url = `${BASE_URL}/${activeTab}/bulkupload`;
+    const url = `${BASE_URL}/api/${activeTab}/bulkupload`;
 
 
     const res = await axios.post(url, formData, {
