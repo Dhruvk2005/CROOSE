@@ -230,7 +230,7 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
             }
         }
         fetchAppointments()
-    }, [AppointmentStatistic])
+    }, [])
 
 
 
@@ -276,7 +276,11 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
                   <p className='font-semibold text-[#101828] text-[30px] ' >
                   {AppointmentStatistic.total_new_appointments}
                   </p>
-                  <img className='w-[71px] ' src={"/100.png"} alt='badge' />
+                 
+                  <div className='w-[71px] border-[1px] rounded-[99px] flex justify-center gap-[5px] text-[#067647] bg-[#ECFDF3] border-[#ABEFC6]  ' >
+
+                     <Icon icon="jam:arrow-up" width="18" height="24"  style={{color: '#17B26A'}} />
+                    {AppointmentStatistic.total_new_appointments_growth}</div>
                 </div>
               </li>
 
@@ -289,7 +293,10 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
 
               {AppointmentStatistic.total_appointments}
                   </p>
-                  <img className='w-[71px] ' src={"/100.png"} alt='badge' />
+                  <div className='w-[71px] border-[1px] rounded-[99px] gap-[5px] flex justify-center text-[#067647] bg-[#ECFDF3] border-[#ABEFC6]  ' >
+                    <Icon icon="jam:arrow-up" width="18" height="24"  style={{color: '#17B26A'}} />{AppointmentStatistic.total_appointments_growth}</div>
+                
+                 
                 </div>
               </li>
 
@@ -300,7 +307,9 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
                     {AppointmentStatistic.cancelled_appointments}
                   </p>
 
-                  <img className='w-[71px] ' src={"/35.png"} alt='badge' />
+                  <div className='w-[71px] border-[1px] rounded-[99px] gap-[5px] flex justify-center text-[#B42318] bg-[#FEF3F2] border-[#FECDCA]  ' >
+                    <Icon icon="charm:arrow-down" width="16" height="24"  style={{color: '#F04438'}} />{AppointmentStatistic.cancelled_appointments_growth}</div>
+              
                 </div>
               </li>
             </ul>
