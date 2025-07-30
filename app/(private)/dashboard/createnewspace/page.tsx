@@ -14,6 +14,7 @@ interface Space {
   client_name?: string;
   updated_at?: string;
   created_at?: string;
+  category?: string;
 
 }
 
@@ -119,8 +120,8 @@ const Newspace = () => {
                             <li>
                               <img
                                 // src={`${IMAGE_BASE_URL}/${space.image}`}
-                                src="/profile-picture-4.png"
-                                alt={space.name}
+                                src={space.image}
+                                alt={space.image}
                                 className='w-[59px] h-[59px] absolute top-[75%] rounded-full'
                               />
 
@@ -144,7 +145,7 @@ const Newspace = () => {
 
                               <ul>
                                 <li className='flex text-[#475467] -mt font-500 text-[12px] font-Inter'>
-                                  Hair salon
+                                  {space.category}
                                 </li>
                                 {/* <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
                                 Category

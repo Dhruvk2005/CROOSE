@@ -10,10 +10,29 @@ const Customisespace = () => {
     const [number, setNumber] = useState("");
     const [image, setImage] = useState<File | null>(null);
     const [chatBotName, setChatBotName] = useState("")
-    const [StartTime, setStartTime] = useState("")
-    const [EndTime, setEndTime] = useState("")
+
     const router = useRouter()
 
+
+       const [StartTime, setStartTime] = useState('');
+        const [EndTime, setEndTime] = useState('');
+        const [startError, setStartError] = useState('');
+        const [endError, setEndError] = useState('');
+
+        const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/; 
+
+        const handleStartChange = (e: any) => {
+            const value = e.target.value;
+            setStartTime(value);
+            setStartError(timeRegex.test(value) ? '' : 'Please use format like 02:00');
+        };
+
+        const handleEndChange = (e: any) => {
+            const value = e.target.value;
+            setEndTime(value);
+            setEndError(timeRegex.test(value) ? '' : 'Please use format like 02:00');
+        };
+        
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -50,8 +69,8 @@ const Customisespace = () => {
         }
     };
 
-
-
+     
+    
 
     return (
 
@@ -98,26 +117,38 @@ const Customisespace = () => {
                                 onChange={(e) => setChatBotName(e.target.value)}
                             />
                         </div>
-                        <div className='flex flex-col gap-[10px]'>
-                            <label className='font-medium text-[14px]'>Start time</label>
-                            <input
-                                className='w-full p-[16px] border-2 border-[#D0D5DD] rounded-[16px]'
-                                type='text'
-                                placeholder='Enter Start time'
-                                value={StartTime}
-                                onChange={(e) => setStartTime(e.target.value)}
-                            />
+                        <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-[10px]">
+                                <label className="font-medium text-[14px]">Start time</label>
+                                <input
+                                    className={`w-full p-[16px] border-2 rounded-[16px] ${startError ? 'border-red-500' : 'border-[#D0D5DD]'
+                                        }`}
+                                    type="text"
+                                    placeholder="Enter Start time (e.g., 02:00)"
+                                    value={StartTime}
+                                    onChange={handleStartChange}
+                                />
+                                {startError && (
+                                    <span className="text-sm text-red-500">{startError}</span>
+                                )}
+                            </div>
+
+                            <div className="flex flex-col gap-[10px]">
+                                <label className="font-medium text-[14px]">End time</label>
+                                <input
+                                    className={`w-full p-[16px] border-2 rounded-[16px] ${endError ? 'border-red-500' : 'border-[#D0D5DD]'
+                                        }`}
+                                    type="text"
+                                    placeholder="Enter End time (e.g., 14:30)"
+                                    value={EndTime}
+                                    onChange={handleEndChange}
+                                />
+                                {endError && (
+                                    <span className="text-sm text-red-500">{endError}</span>
+                                )}
+                            </div>
                         </div>
-                        <div className='flex flex-col gap-[10px]'>
-                            <label className='font-medium text-[14px]'>End time</label>
-                            <input
-                                className='w-full p-[16px] border-2 border-[#D0D5DD] rounded-[16px]'
-                                type='text'
-                                placeholder='Enter End time'
-                                value={EndTime}
-                                onChange={(e) => setEndTime(e.target.value)}
-                            />
-                        </div>
+
 
                         {/* <div className='flex flex-col gap-[10px]'>
                                 <label className='font-medium text-[14px]'>Number</label>
@@ -164,6 +195,7 @@ const Customisespace = () => {
         </div>
 
     )
+
 }
 
 export default Customisespace;
