@@ -2,7 +2,7 @@
 
 import axios, { AxiosRequestConfig } from 'axios';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 interface AxiosOptions {
   method: 'get' | 'post' | 'put' | 'delete';
@@ -486,6 +486,7 @@ export const getAllProducts = async () => {
   }
   return { data: [] };
 };
+
 export const getProductPage = async (page: number = 1) => {
   try {
     const token = localStorage.getItem("token");

@@ -9,6 +9,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { addProduct, addServices, deleteProduct, deleteService, getAllProducts, getAllServices, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
 
+import {BASE_URL} from '../../../Apis/publicapi';
+
 import Pagination from '../../components/pagination';
 //import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
@@ -85,7 +87,7 @@ price: '',
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}?page=${page}`;
+      const url = `${BASE_URL}/api/${activeTab}?page=${page}`;
       
       const response = await fetch(url, {
         headers: {
