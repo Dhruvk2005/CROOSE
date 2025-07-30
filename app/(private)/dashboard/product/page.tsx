@@ -317,6 +317,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         formData.append('stock', formState.product_stock);
         if (formState.image instanceof File) {
           formData.append('image', formState.image);
+          toast.success("Image uploaded successfully");
         }
 
        
@@ -693,7 +694,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
                 <th className="px-4 py-2">Actions</th>
               </>
-            )}`
+            )}
             </tr>
           </thead>
           <tbody><RenderTableRows items={items} /></tbody>
@@ -701,7 +702,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
         {showModal && (
           <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
-              <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">`
+              <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
               <h3 className="flex text-lg font-semibold mb-4">New {activeTab === 'products' ? 'Product' : 'Service'}</h3>
               <button
                 type="button"
