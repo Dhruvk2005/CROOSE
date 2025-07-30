@@ -43,7 +43,7 @@ const Newspace = () => {
   const IMAGE_BASE_URL = "http://localhost:5000";
 
   return (
-    <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col' >
+    <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col select-none ' >
       <div>
         <Spacenav />
       </div>
@@ -54,7 +54,7 @@ const Newspace = () => {
             <Link
               href="/spacebusiness"
             >
-              <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500] items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px]'>
+              <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500] items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px] hover:cursor-pointer '>
                 Create New Space
               </button>
             </Link>
@@ -144,7 +144,7 @@ const Newspace = () => {
                               </ul>
 
                               <ul>
-                                <li className='flex text-[#475467] -mt font-500 text-[12px] font-Inter'>
+                                <li className='flex text-[#475467] -mt font-500 text-[12px] font-Inter  '>
                                   {space.category}
                                 </li>
                                 {/* <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
