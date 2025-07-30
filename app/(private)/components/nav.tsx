@@ -27,7 +27,7 @@ export const Nav = ({ show, setShow }: any) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [userdata, setUser] = useState<any>()
   const { setOpenSetting1 } = useContext<any>(SettingContext);
-
+  const [showNAv, SetShowNav] = useState(false)
 
 
   const router = useRouter()
@@ -60,8 +60,17 @@ export const Nav = ({ show, setShow }: any) => {
   };
 
   return (
+
+
     <div className={`${show ? "block" : "hidden"} ${show ? "fixed" : "relative"} xl:block z-1 bg-[#13102E] w-[272px] h-[100%] max-w-[272px]`}>
+      
+     
+      
       <div className="bg-[#13102E] w-[272px] h-[100vh] max-w-[272px] fixed">
+
+
+
+
         <div className="flex w-[272px] h-[76px] justify-left gap-[12px] pt-[24px] pr-[32px] pd-[12px] pl-[32px] items-center">
           <img className="w-[82.95893096923828px] h-[19.239667892456055px]" src="../logo.png" alt='logo' />
         </div>
@@ -106,7 +115,7 @@ export const Nav = ({ show, setShow }: any) => {
                   </li>
                 </Link>
 
-{/* 
+                {/* 
                 <li onClick={handlelogout} className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
                   <div>
                     <Icon icon="material-symbols:logout" width="24" height="24" color="white" />
@@ -122,22 +131,26 @@ export const Nav = ({ show, setShow }: any) => {
             <div className="flex flex-col w-[272px] h-auto p-[12px] gap-[10px]">
               <hr className="border-[#475467]" />
               <div className="bg-[#FFFFFF1F] flex w-[248px] h-auto p-[12px] gap-[12px] rounded-[10px]">
-                <div>
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="40" height="40" rx="20" fill="#EAECF0" />
-                    <g clipPath="url(#clip0)">
-                      <circle cx="20" cy="16" r="8" fill="#ccc" />
-                    </g>
-                  </svg>
+                <div className='w-[40px] h-[40px] bg-[#EAECF0] rounded-full flex items-center justify-center text-[#475467] font-semibold text-[14px] uppercase'>
+                  {userdata?.data?.name
+                    ? userdata.data.name
+                      .split(' ')
+                      .map((word: any) => word[0])
+                      .slice(0, 2)
+                      .join('')
+                    : 'NA'}
                 </div>
+
                 <div className="flex flex-col w-[136px] h-auto">
                   <p className="font-medium text-[14px] text-[#F2F4F7] ">{userdata?.data?.name || "naem"}</p>
                   <p className="font-normal text-[12px] text-[#F2F4F7] ">{userdata?.data?.email || "email"}</p>
                 </div>
                 <div className="flex items-center">
-                  <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.833344 10.5002L5.00001 14.6668L9.16668 10.5002M0.833344 5.50016L5.00001 1.3335L9.16668 5.50016" stroke="#EAECF0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <button>
+                    <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.833344 10.5002L5.00001 14.6668L9.16668 10.5002M0.833344 5.50016L5.00001 1.3335L9.16668 5.50016" stroke="#EAECF0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>

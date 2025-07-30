@@ -73,7 +73,7 @@ const Customers = () => {
             }
         }
         fetchCustomers()
-    }, [])
+    },[])
 
     return (
         <div>
