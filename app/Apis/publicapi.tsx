@@ -438,6 +438,22 @@ export const updateServices = async (id: string, data: any) => {
     throw new Error(err?.message || "Failed to add service.");
   }
 };
+export const deleteProduct = async (id: string) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: 'delete',
+      url: `${BASE_URL}/api/products/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err: any) {
+    console.log(err);
+    throw new Error(err?.message || "Failed to delete product.");
+  }
+};
 
 export const getAllProducts = async () => {
   try {

@@ -1,16 +1,15 @@
 'use client';
 import { Search, Bell, X } from 'lucide-react';
+import { HiDotsVertical } from "react-icons/hi";
 import axios from "axios";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from 'react';
-import { addProduct, addServices, getAllProducts, getAllServices, getProductPage, getServicePage, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
+import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
-import Navbar from "../../components/Navbar";
-import Pagination from '../../components/pagination';
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+import Pagination from '../../components/pagination';
 //import MultiSelectDays from './components/MultiSelectDays';
 const initialData = {
   products: [],
@@ -26,7 +25,9 @@ const options = [
   { value: "sunday", label: "Sunday" }
 ];
 
+
 const ProductServiceTabs = () => {
+   const [menuOpen, setMenuOpen] = useState(false);
    const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +50,9 @@ const [searchdata, setSearchData] = useState([]);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showDeleteModal,setShowDeleteModal] = useState(false);
   const [showBulkModal, setShowBulkModal] = useState(false);
+  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [message, setMessage] = useState("");
   const [formState, setFormState] = useState({
@@ -78,37 +81,37 @@ price: '',
  
   });
 
-const fetchItems = async (page: number = 1) => {
-  try {
-    setLoading(true);
-
-    let data;
-
-    if (activeTab === "products") {
-      data = await getProductPage(page);
-    } else if (activeTab === "services") {
-      data = await getServicePage(page);
+ const fetchItems = async (page: number = 1) => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const url = `http://68.183.108.227/croose/public/index.php/api/${activeTab}?page=${page}`;
+      
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      const data = await response.json();
+      
+      if (data.status) {
+       
+        setItems(data.data);
+         setData((p :any ) =>{ return {
+     
+           [activeTab]: data?.data || [],
+    //...data
+        }});
+        setTotalPages(data.meta.last_page);
+        setTotalItems(data.meta.total);
+      }
+    } catch (error) {
+      console.error(`Error fetching ${activeTab}:`, error);
+    } finally {
+      setLoading(false);
     }
-
-    console.log("Fetched Data:", data); // ✅ debug actual response
-
-    if (data?.status) { 
-      setItems(data.data || []);
-      setData((p: any) => ({
-        ...p,
-        [activeTab]: data.data || [],
-      }));
-      setTotalPages(data.meta?.last_page || 1);
-      setTotalItems(data.meta?.total || 0);
-    }
-  } catch (error) {
-    console.error(`Error fetching ${activeTab}:`, error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+  };
 
   useEffect(() => {
     fetchItems(currentPage);
@@ -130,8 +133,8 @@ const fetchItems = async (page: number = 1) => {
 
   const templateUrl =
     activeTab === 'services'
-      ? 'https://68.183.108.227/croose/public/storage/Bulk_upload_templates/new_services_template.xlsx'
-      : 'https://68.183.108.227/croose/public/storage/Bulk_upload_templates/New_products_template.xlsx';
+      ? 'http://68.183.108.227/croose/public/storage/Bulk_upload_templates/new_services_template.xlsx'
+      : 'http://68.183.108.227/croose/public/storage/Bulk_upload_templates/New_products_template.xlsx';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -179,11 +182,7 @@ const fetchItems = async (page: number = 1) => {
 
 useEffect(() => {
   const delay = setTimeout(async () => {
-    if (searchTerm.trim() === "") {
-      // ✅ Reload or refetch original list when search is cleared
-      fetchItems(); // <-- Re-fetch your default API data
-      return;
-    }
+    if (searchTerm.trim() === "") return;
 
     try {
       const result =
@@ -192,12 +191,13 @@ useEffect(() => {
           : await searchServices(searchTerm);
 
       if (result?.status) {
+        // console.log(result ,"result191" );
         setItems(result.data);
       }
     } catch (err) {
       console.error("Search error:", err);
     }
-  }, 400); // debounce delay
+  }, 400); 
 
   return () => clearTimeout(delay);
 }, [searchTerm, activeTab]);
@@ -205,32 +205,35 @@ useEffect(() => {
 
 
  
+const [selectedFile, setSelectedFile] = useState<File | null>(null);
 const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (!file) return;
-
-  if (!formState.space_id) {
-    
- toast.warn("Please select a Space Name before uploading.");
+  setSelectedFile(file);
+  if (!formState.space_id) {toast.warn("Please select a Space Name before uploading.");
     return;
   }
-
-  
+};
+const handleFileUpload = async () => {
+  if (!selectedFile) {
+    toast.warn("Please select a file first.");
+    return;
+  }
+  if (!formState.space_id) {
+    toast.warn("Please select a Space Name before uploading.");
+    return;
+  }
   try {
-    const response = await uploadBulkFile(file, activeTab, formState.space_id);
-   toast.success("Products Processing...");
+    await uploadBulkFile(selectedFile, activeTab, formState.space_id);
+    toast.success("Upload Processing...");
     setShowBulkModal(false);
-    e.target.value = "";
-        
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 1500); // 1.5s delay
+    setSelectedFile(null); // clear after upload
   } catch (err: any) {
     console.error("Upload failed:", err);
-    	toast.error(err.message || "Failed to upload file. Please check console for details.")
-    
+    toast.error(err.message || "Failed to upload file. Please check console for details.");
   }
 };
+
 
 
 
@@ -250,15 +253,7 @@ const handleUpdateItem = async (e: React.FormEvent) => {
   stock:formState.product_stock,
 
 }
-    // if (formState.image instanceof File) {
-      //   formData.append('image', formState.image);
-  // }
-
-   
-
-
-      updated = await updateProduct(product_id ,productData); 
-
+  updated = await updateProduct(product_id ,productData); 
     } else {
        const service_id = formState.service_id;
       const serviceData = {
@@ -297,23 +292,16 @@ const handleUpdateItem = async (e: React.FormEvent) => {
         )
       }));
     }
-
     setShowUpdateModal(false);
-     toast.success('Updated successfully!');
-
+    toast.success('Updated successfully!');
   } catch (err: any) {
     toast.error(err?.response?.data?.message || err.message || 'Failed to update item.');
   }
 };
-
-
-
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       let normalized: any;
-
       if (activeTab === 'products') {
         const formData = new FormData();
         formData.append('space_id', formState.space_id);
@@ -460,6 +448,12 @@ product_id: '',
 
   const RenderTableRows = ({items}:any) => {
   // const items = activeTab === 'products' ? data.products : data.services;
+  function getInitials(name: string) {
+  if (!name) return '';
+  const words = name.trim().split(' ');
+  if (words.length === 1) return words[0][0].toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
+}
 const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
   return items?.map((item: any) => {
@@ -467,30 +461,80 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
       <tr key={item[id]} className="hover:bg-gray-50 border-b border-[#EAECF0]">
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="flex items-center gap-3">
-            <input
+            {/* <input
               type="checkbox"
               className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-            />
+            /> */}
             <div className="flex items-center gap-2">
-              {item.image ? (
-                <img src={item.image} alt="" className="w-10 h-10 object-cover" />
-              ) : (
-                <span className="w-10 h-10 bg-gray-200" />
-              )}
+          {item.image ? (
+          <img src={item.image} alt="" className="w-10 h-10 object-cover rounded-full" />
+        ) : (
+          <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-sm font-semibold text-gray-700">
+            {getInitials(
+              activeTab === "products" ? item.product_name : item.service_name
+            )}
+          </div>
+        )}
             </div>
           </div>
         </td>
 
-        <td className="px-4 py-3 text-[#475467]">{item.space_name}</td>
+        <td className="px-4 py-3">{item.space_name}</td>
 
         {activeTab === "products" ? (
           <>
-            <td className="px-4 py-3 text-[#475467]">{item.product_name}</td>
-            <td className="px-4 py-3 text-[#475467]">{item.product_stock || '-'}</td>
-            <td className="px-4 py-3 text-[#475467]">{item.type || '-'}</td>
+            <td className="px-4 py-3">{item.product_name}</td>
+            <td className="px-4 py-3">{item.product_stock || '-'}</td>
+            <td className="px-4 py-3">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#ECFDF3] text-[#027A48] border border-[#D1FADF]">
+                  Active
+                </span>
+              </td>
+
+            {/* <td className="px-4 py-3">{item.type || '-'}</td> */}
          
-            <td className="px-4 py-3  font-bold">{item.product_price}</td>
-            <td className="px-4 py-3 text-[#475467]">
+            <td className="px-4 py-3">{item.product_price}</td>
+        <td className="px-4 py-3 relative">
+  
+  <button
+    onClick={() =>
+      setActiveMenuId(activeMenuId === item.space_id ? null : item.space_id)
+    }
+    className="p-2 rounded hover:bg-gray-100"
+  >
+    <HiDotsVertical size={20} />
+  </button>
+
+ 
+  {activeMenuId === item.space_id && (
+    <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-50">
+      <button
+        onClick={() => {
+          setFormState(item);
+          setShowUpdateModal(true);
+          setActiveMenuId(null);
+        }}
+        className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+      >
+        Update
+      </button>
+      <button
+        onClick={() => {
+          setFormState(item);
+          setShowDeleteModal(true);
+          setActiveMenuId(null);
+        }}
+        className="block w-full px-4 py-2 text-left hover:bg-gray-100 text-red-600"
+      >
+        Delete
+      </button>
+    </div>
+  )}
+</td>
+  
+
+
+            {/* <td className="px-4 py-3">
               <button
                 onClick={() => {
                   setFormState(item);
@@ -500,18 +544,23 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
               >
                 Update
               </button>
-            </td>
+            </td> */}
           </>
         ) : (
           <>
-            <td className="px-4 py-3 text-[#475467]">{item.service_name}</td>
-            <td className="px-4 py-3 text-[#475467]">{item.service_category}</td>
-            <td className="px-4 py-3 text-[#475467]">
+            <td className="px-4 py-3">{item.service_name}</td>
+            <td className="px-4 py-3">{item.service_category}</td>
+            <td className="px-4 py-3">
               {item.service_duration ? `${item.service_duration} mins` : '-'}
             </td>
-            <td className="px-4 py-3 font-bold">{item.service_price}</td>
-            <td className="px-4 py-3 text-[#475467]">{(item.available_days || []).join(', ')}</td>
-            <td className="px-4 py-3 text-[#475467]">
+            <td className="px-4 py-3">{item.service_price}</td>
+            <td className="px-4 py-3">{(item.available_days || []).join(', ')}</td>
+                        <td className="px-4 py-3">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#ECFDF3] text-[#027A48] border border-[#D1FADF]">
+                  Active
+                </span>
+              </td>
+            <td className="px-4 py-3">
               <button
                 onClick={() => {
                   setFormState(item);
@@ -532,74 +581,47 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
 
   return (
-    <div className=" space-y-6">
-         <Navbar heading="Products" />
-
-      {/* Top Header */}
-      {/* <div
-        className="flex  w-full items-center justify-between border-b  border-[#EAECF0]"
-        style={{
-
-          height: '60px',
-          padding: '14px 32px',
-          opacity: 1,
-          top: 0,
-        }}
-      >
-        <h1 className="text-lg font-semibold text-gray-900"
-          style={
-            {
-              fontFamily: "Inter",
-              fontWeight: "700",
-              fontSize: "20px",
-              lineHeight: "30px",
-              letterSpacing: "0%",
-              verticalAlign: "middle",
-
-            }
-          }>Products</h1>
-
-        <div className="flex items-center gap-5 text-black"> */}
-          {/* <button>
-            <Search className="w-5 h-5 " />
-          </button>
-
-          <button>
-            <Bell className="w-5 h-5" />
-          </button> */}
-        {/* </div>
-      </div> */}
-
-
-
-      <div className="flex justify-between items-center p-4 ">
-        <div>
-
-          <div className='flex gap-2 pb-2'>
-            <button className={`px-4 py-2 rounded ${activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('products')}>Products</button>
-            <button className={`px-4 py-2 rounded ${activeTab === 'services' ? 'bg-[#685BC7] text-white' : 'bg-gray-200'}`} onClick={() => setActiveTab('services')}>Services</button>
-
-          </div>
-          <p className=" text-[#475467]"
-            style={
-              {
-                fontFamily: "Inter",
-                fontWeight: "400",
-                fontSize: "14px",
-                lineHeight: "20px",
-                letterSpacing: "0%",
-
-              }}>All the details about your customers</p>
-        </div>
-
-        <button
-className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md"
-
-          onClick={() => {
-
-
-            setShowModal(true);
-          }} style={
+<div className="p-2 space-y-6">
+  <div
+    className="flex  w-full items-center justify-between border-b  border-[#EAECF0]"
+    style={{
+      height: '60px',
+      padding: '14px 32px',
+      opacity: 1,
+      top: 0,
+    }}
+  >
+<h1 className="text-lg text-gray-900" style={{
+      fontWeight: "700",
+      fontSize: "20px",
+      lineHeight: "30px",
+      letterSpacing: "0%",
+      verticalAlign: "middle",
+    }
+  }>Products/Services</h1>
+</div>
+<div className="px-4 text-sm text-[#475467]">
+  <div className="flex justify-between items-center">
+    <div className="flex gap-2">
+      <button
+        className={`px-4 rounded font-medium ${
+          activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200 text-gray-700'
+        }`}
+        onClick={() => setActiveTab('products')}>
+        Products
+      </button>
+      <button
+        className={`px-4 py-2 rounded font-medium ${
+          activeTab === 'services' ? 'bg-[#685BC7] text-white' : 'bg-gray-200 text-gray-700'
+        }`}
+        onClick={() => setActiveTab('services')}>
+        Services
+      </button>
+    </div>
+    <button
+      className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md"
+ onClick={() => setShowModal(true)}
+      style={
             {
               fontFamily: "Inter",
               fontWeight: "600",
@@ -607,78 +629,39 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
               lineHeight: "20px",
               letterSpacing: "0%",
 
-            }}>Add {activeTab === 'products' ? 'Product' : 'Service'}</button>
-
-      </div>
-
-
-
-      
-      <div className="flex justify-between items-center flex-wrap gap-4 p-4">
-      
-        {/* <button className="flex items-center gap-3 px-4 py-2 border border-gray-300 rounded-md text-[#344054] bg-white hover:bg-gray-50"
-          style={
-            {
-              fontFamily: "Inter",
-              fontWeight: "500",
-              fontSize: "14px",
-              lineHeight: "20px",
-              letterSpacing: "0%",
-
             }}>
-          <FiSliders className="w-4 h-4" />
-          Filters
-        </button> */}
+      Add {activeTab === 'products' ? 'Product' : 'Service'}
+    </button>
+  </div>
+  <p className="mt-2 font-normal">
+    All the details about your customers
+  </p>
+</div>
 
-
-
-
-
-        < div className="flex flex-row gap-2 items-center ml-auto ">
-          {/* Search Input */}
-          <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white max-w-xs w-full">
-                                             
-            <input
-              type="text"
-              placeholder="Search"
-              className="flex-1 outline-none bg-transparent text-sm text-gray-700"
-               value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-            />
-             <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
-            
-          </div>
-          <button
+<div className="flex justify-between items-center flex-wrap gap-4 p-4">
+  <div className="flex flex-row gap-3 items-center ml-auto">
+    <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white w-full max-w-xs shadow-sm">
+      <input type="text" placeholder="Search" className="flex-1 outline-none bg-transparent text-sm text-gray-700" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
+      <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
+    </div>
+    
+<button
   ref={buttonRef}
   onClick={() => setShowBulkModal(true)}
-  className="flex items-center gap-1 px-5 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium leading-5 whitespace-nowrap"
+  className="flex items-center justify-center gap-2 px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-bold whitespace-nowrap"
   style={{
-    fontFamily: "Inter",
-    fontWeight: "500",
+    fontWeight: 500,
     fontSize: "14px",
     lineHeight: "20px",
     letterSpacing: "0%",
   }}
 >
-  <img src="/icons/bulk_uplod.svg" alt="bulk upload" className="w-4 h-4 object-contain" />
-  <span>Bulk upload</span>
+  <img src="/icons/bulk_uplod.svg" alt="" className="w-4 h-4" />
+  Bulk upload
 </button>
 
-          {/* <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md  text-gray-700 bg-white hover:bg-gray-50"
-            style={
-              {
-                fontFamily: "Inter",
-                fontWeight: "500",
-                fontSize: "14px",
-                lineHeight: "20px",
-                letterSpacing: "0%",
-
-              }}>
-            <FiExternalLink className="w-4 h-4" />
-            Export
-          </button> */}
-        </div>
-      </div>
+  </div>
+</div>
 
 
       <table className="min-w-full text-sm text-left border  text-gray-900 bg-white rounded-md overflow-hidden p-4">
@@ -688,59 +671,46 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
             <th className="px-4 py-2">Space Name</th>
             {activeTab === 'products' && (
               <>
-
-
-
                 <th className="px-4 py-2">Product Name</th>
                 <th className="px-4 py-2">Stock</th>
-                <th className="px-4 py-2">Type</th>
-
+                <th className="px-4 py-2">Status</th>
+                
+                {/* <th className="px-4 py-2">Type</th> */}
                 <th className="px-4 py-2">Price</th>
                 <th className="px-4 py-2">Actions</th>
-
               </>
             )}
-
             {activeTab === 'services' && (
               <>
-
-
                 <th className="px-4 py-2">Service Name</th>
                 <th className="px-4 py-2">Category</th>
                 <th className="px-4 py-2">Duration</th>
                 <th className="px-4 py-2">Price</th>
-
-
                 <th className="px-4 py-2">Available Days</th>
+                <th className="px-4 py-2">Status</th>
+
                 <th className="px-4 py-2">Actions</th>
               </>
-            )}
-  
+            )}`
             </tr>
           </thead>
           <tbody><RenderTableRows items={items} /></tbody>
         </table>
-
         {showModal && (
           <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
               <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">`
               <h3 className="flex text-lg font-semibold mb-4">New {activeTab === 'products' ? 'Product' : 'Service'}</h3>
-
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
                 className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
               >
-
                 <X className="w-4 h-4" />
               </button>
             </div>
-
-
             <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
               <select
-
                 className="col-span-2 border border-bg-gray-100 rounded px-3 py-3"
                 value={formState.space_id}
                 onChange={(e) => {
@@ -753,7 +723,6 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                   }));
                 }}
               >
-
                 <option value="">Select Space Name</option>
                 {spaces.map((space) => (
                   <option key={space.id} value={String(space.id)}>
@@ -761,7 +730,6 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                   </option>
                 ))}
               </select>
-
       <label className="col-span-2">
   <span>Name</span>
   <input
@@ -774,19 +742,11 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
     className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
   />
 </label>
-
-
-
-             
-           
-
-              {activeTab === 'products' && (
-                <>
-                       <label>
+  {activeTab === 'products' && (
+  <>
+  <label>
   <span>Type</span>
-  <select
-
-    value={formState.type} // optional if you're controlling it
+  <select value={formState.type}
   onChange={(e) => setFormState(f => ({ ...f, type: e.target.value }))} 
   name="type" className="border border-bg-gray-100 p-2 py-4 rounded w-full mt-1"
   >
@@ -892,48 +852,36 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
       )}
       {/* Bulk Modal */}
    {showBulkModal && (
-  <div className="fixed inset-0  bg-opacity-30 flex items-center justify-end z-50">
+<div className="fixed inset-0  bg-opacity-30 flex items-center justify-end z-50">
     <div className="w-[416px] bg-white rounded-lg shadow-lg p-6 relative mr-4">
-   
             <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
-
               <h2 className="flex text-lg font-semibold mb-4">Bulk upload</h2>
               <button
-
                 onClick={() => setShowBulkModal(false)}
                 className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
               >
-
                 <X className="w-4 h-4" />
               </button>
-
             </div>
-
-
             <div className='flex p-4  '>
               <div className="bg-[#F8FAFC] p-4 border border-[#F1F5F9] rounded-lg mb-4 ">
                 <p className="font-medium mb-2 text-[#020617]"
                   style={
                     {
-                      fontFamily: "Inter",
                       fontWeight: "500",
                       fontSize: "14px",
                       lineHeight: "14px",
                       letterSpacing: "0%",
-
                     }}>Before you proceed</p>
-
                 {activeTab === "services" && (
                   <>
                     <p className="text-[#0F172A]  mb-3"
                       style={
                         {
-                          fontFamily: "Inter",
                           fontWeight: "400",
                           fontSize: "14px",
                           lineHeight: "20px",
                           letterSpacing: "0%",
-
                         }}>
                       Please download our template below to help you organize and upload your services in bulk.
                     </p>
@@ -944,20 +892,15 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                     <p className="text-[#0F172A]  mb-3"
                       style={
                         {
-                          fontFamily: "Inter",
                           fontWeight: "400",
                           fontSize: "14px",
                           lineHeight: "20px",
                           letterSpacing: "0%",
-
                         }}>
                       Please download our template below to help you organize and upload your products in bulk.
                     </p>
                   </>
                 )}
-
-
-
                 <a
                   href={templateUrl}
                   target="_blank"
@@ -976,7 +919,6 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
             <p className="text-sm text-[#0F172A] mb-6"
               style={
                 {
-                  fontFamily: "Inter",
                   fontWeight: "400",
                   fontSize: "14px",
                   lineHeight: "20px",
@@ -985,9 +927,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                 }}>
               If you have done that already, then you can proceed to do your Bulk upload.
             </p>
-  <select
-
-                className="w-full border border-bg-gray-100 rounded px-3 py-3 mb-6"
+  <select className="w-full border border-bg-gray-100 rounded px-3 py-3 mb-6"
                 value={formState.space_id}
                 onChange={(e) => {
                   const space_id = e.target.value;
@@ -1007,62 +947,65 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                   </option>
                 ))}
               </select>
+          {selectedFile && (
+            <p className="text-green-600 text-xs mb-2">Selected File: {selectedFile.name}</p>
+          )}
+            <div className="flex flex-row gap-2">
+  <button
+    onClick={() => setShowBulkModal(false)}
+    className="w-full py-2 bg-[#F1F5F9] rounded-lg hover:bg-gray-200"
+  >
+    Cancel
+  </button>
 
+  <label className="w-full">
+    <input
+      type="file"
+      accept=".xlsx,.xls,.csv"
+      onChange={handleFileChange}
+      hidden
+      id="file-upload"
+    />
 
-            <div className="flex flex-row   gap-2">
-              <button
-                onClick={() => setShowBulkModal(false)}
-                className="w-full py-2 bg-[#F1F5F9] rounded-lg hover:bg-gray-200"
-              >
-                Cancel
-              </button>
-              <label className="w-full">
-                <input
-                  type="file"
-                  accept=".xlsx,.xls,.csv"
-                  onChange={handleFileChange}
-                  hidden
-                  id="file-upload"
-                />
-                <button
-                  type="button"
-                  onClick={() => document.getElementById('file-upload')?.click()}
-                  className="w-full py-2 bg-[#685BC7] text-white rounded hover:bg-purple-700"
-                >
-                  Upload
-                </button>
-              </label>
-
-            </div>
+    <button
+      type="button"
+      className={`w-full py-2 rounded text-white ${
+        selectedFile ? 'bg-[#685BC7] hover:bg-purple-700' : 'bg-gray-500 cursor-pointer'
+      }`}
+      onClick={() => {
+        if (!selectedFile) {
+          document.getElementById('file-upload')?.click();
+        } else {
+          handleFileUpload();
+        }
+      }}
+    >
+      {selectedFile ? 'Upload' : 'Select File'}
+    </button>
+  </label>
+</div>
 
           </div>
         </div>
       )}
-
       {message && (
         <div className="text-sm text-green-600">
           {message}
         </div>
       )}
-      {/* 
-      UpdateModal */}
       {showUpdateModal && (
         <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
             <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
               <h3 className="flex text-lg font-semibold mb-4">Update {activeTab === 'products' ? 'Product' : 'Service'}</h3>
-
               <button
                 type="button"
                 onClick={() => setShowUpdateModal(false)}
                 className="flex text-black  bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
               >
-
                 <X className="w-4 h-4" />
               </button>
             </div>
-
-
             <form onSubmit={handleUpdateItem} className="grid grid-cols-2 gap-4">
               <label className="col-span-2">
                 <span>Space Name</span>
@@ -1073,8 +1016,6 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
                   className="border border-bg-gray-100 rounded px-3 py-3 w-full mt-1 bg-gray-100 text-gray-700"
                 />
               </label>
-
-
               <label className="col-span-2">
   <span>Name</span>
   <input
@@ -1096,15 +1037,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
     className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
   />
 </label>
-
-
-
-
-
-             
-
-
-              {activeTab === 'products' && (
+ {activeTab === 'products' && (
                 <>
                 
                   <label>
