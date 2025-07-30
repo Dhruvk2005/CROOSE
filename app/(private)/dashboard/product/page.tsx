@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from 'react';
-import { addProduct, addServices, getAllProducts, getAllServices, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
+import { addProduct, addServices, deleteProduct, deleteService, getAllProducts, getAllServices, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
 
 import Pagination from '../../components/pagination';
@@ -498,15 +498,15 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
   
   <button
     onClick={() =>
-      setActiveMenuId(activeMenuId === item.space_id ? null : item.space_id)
+      setActiveMenuId(activeMenuId === item[id] ? null : item[id])
     }
     className="p-2 rounded hover:bg-gray-100"
   >
     <HiDotsVertical size={20} />
   </button>
 
- 
-  {activeMenuId === item.space_id && (
+  
+  {activeMenuId === item[id] && (
     <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-50">
       <button
         onClick={() => {
@@ -514,7 +514,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           setShowUpdateModal(true);
           setActiveMenuId(null);
         }}
-        className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+        className="block w-full px-4 py-2 text-left bg-[#685BC7] text-white hover:bg-gray-200  hover:text-gray-700"
       >
         Update
       </button>
@@ -524,7 +524,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           setShowDeleteModal(true);
           setActiveMenuId(null);
         }}
-        className="block w-full px-4 py-2 text-left hover:bg-gray-100 text-red-600"
+        className="block w-full px-4 py-2 text-left bg-[#F9F5FF]  hover:bg-violet-200 text-black"
       >
         Delete
       </button>
@@ -1146,6 +1146,58 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           </div>
         </div>
       )}
+
+      {showDeleteModal && (
+  <div className="fixed inset-0 flex bg-opacity-30 flex items-center justify-end z-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-[400px]">
+      <h2 className="text-lg font-semibold mb-4">
+        Confirm Delete
+      </h2>
+      <p className="mb-6">
+        Are you sure you want to delete this {activeTab === "products" ? "product" : "service"}?
+      </p>
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => setShowDeleteModal(false)}
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+         <button
+          onClick={async () => {
+            try {
+              if (activeTab === "products") {
+                await deleteProduct(formState.product_id);
+                setData((prev: any) => ({
+                  ...prev,
+                  products: prev.products.filter(
+                    (p: any) => p.product_id !== formState.product_id
+                  ),
+                }));
+              } else {
+                await deleteService(formState.service_id);
+                setData((prev: any) => ({
+                  ...prev,
+                  services: prev.services.filter(
+                    (s: any) => s.service_id !== formState.service_id
+                  ),
+                }));
+              }
+              setShowDeleteModal(false);
+            } catch (err) {
+              console.error(err);
+              alert("Failed to delete item.");
+            }
+          }}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
   <Pagination
             currentPage={currentPage}

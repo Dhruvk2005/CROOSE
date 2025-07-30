@@ -454,7 +454,22 @@ export const deleteProduct = async (id: string) => {
     throw new Error(err?.message || "Failed to delete product.");
   }
 };
-
+export const deleteService = async (id: string) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: 'delete',
+      url: `${BASE_URL}/api/services/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err: any) {
+    console.log(err);
+    throw new Error(err?.message || "Failed to delete service.");
+  }
+};
 export const getAllProducts = async () => {
   try {
     const token = localStorage.getItem("token");
