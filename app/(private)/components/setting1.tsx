@@ -104,24 +104,24 @@ const Setting1 = () => {
                 <div className="w-full flex flex-wrap items-center gap-2 sm:gap-5">
                   <div className="flex flex-wrap gap-2 w-full">
                     <button className="rounded-sm text-sm px-3 py-2 bg-[#F9F5FF]">
-                      <span className="font-semibold text-[14px] text-[#685BC7]">Profile</span>
+                      <span className="font-semibold text-[14px]  text-[#685BC7]    ">Profile</span>
                     </button>
                     <button className="rounded-sm text-sm px-3 py-2" onClick={() => {
                       setOpenSetting2(true)
                       setOpenSetting1(false)
                       setOpenSetting3(false)
                     }} >
-                      <span className="font-semibold text-[14px] text-[#667085]">Security</span>
+                      <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2 ">Security</span>
                     </button>
-                    <button className="rounded-sm text-sm px-3 py-2" onClick={() => {
+                    <button className="rounded-sm text-sm " onClick={() => {
                       setOpenSetting3(true)
                       setOpenSetting1(false)
                       setOpenSetting2(false)
                     }}  >
-                      <span className="font-semibold text-[14px] text-[#667085]">Billing</span>
+                      <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2  ">Billing</span>
                     </button>
                     <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout} >
-                      <span className="font-semibold text-[14px] text-[#667085]">Log Out</span>
+                      <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2  ">Log Out</span>
                     </button>
                   </div>
                 </div>

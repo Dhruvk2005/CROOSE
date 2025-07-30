@@ -43,7 +43,7 @@ const Setting3 = () => {
         <div className="absolute w-full max-w-[717px] h-[732px] bg-[#ffffff] z-10 rounded-[16px] border-[#E2E4E84D] border-1 ">
 
           <section className="w-full h-auto flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
-            <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
+            <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]  ">
               Settings
             </span>
             <span className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA]" onClick={() => {setOpenSetting1(false)
@@ -63,7 +63,7 @@ const Setting3 = () => {
                     setOpenSetting2(false)
                     setOpenSetting3(false)
                   }}  >
-                    <span className="font-semibold text-[14px] text-[#667085]">
+                    <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2  ">
                       Profile
                     </span>
                   </button>
@@ -72,17 +72,17 @@ const Setting3 = () => {
                     setOpenSetting2(true)
                     setOpenSetting3(false)
                   }}  >
-                    <span className="font-semibold text-[14px] text-[#667085] ">
+                    <span className="font-semibold text-[14px] text-[#667085] hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2  ">
                       Security
                     </span>
                   </button>
                   <button className="rounded-sm w-[131px] text-sm px-3 bg-[#F9F5FF] py-2">
-                    <span className="font-semibold text-[14px] text-[#685BC7]">
+                    <span className="font-semibold text-[14px] text-[#685BC7]  ">
                       Billing
                     </span>
                   </button>
                   <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout} >
-                    <span className="font-semibold text-[14px] text-[#667085]">Log Out</span>
+                    <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2  ">Log Out</span>
                   </button>
                 </div>
               </div>
