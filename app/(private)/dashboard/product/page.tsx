@@ -5,6 +5,7 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
 import Select from "react-select";
+
 import React, { useState, useEffect, useRef } from 'react';
 import { addProduct, addServices, deleteProduct, deleteService, getAllProducts, getAllServices, GetSpaceId, searchProducts, searchServices, updateProduct, updateServices, uploadBulkFile } from '@/app/Apis/publicapi';
 import { FiSliders, FiExternalLink, FiSearch } from "react-icons/fi";
@@ -34,6 +35,7 @@ const ProductServiceTabs = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [showMainModal, setShowMainModal] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
@@ -517,17 +519,18 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           setShowUpdateModal(true);
           setActiveMenuId(null);
         }}
-        className="block w-full px-4 py-2 text-left bg-[#685BC7] text-white hover:bg-gray-200  hover:text-gray-700"
+        className="block w-full px-4  py-2 text-left bg-[#685BC7] text-white "
       >
         Update
       </button>
+      <div className='flex border-b border-black '/>
       <button
         onClick={() => {
           setFormState(item);
           setShowDeleteModal(true);
           setActiveMenuId(null);
         }}
-        className="block w-full px-4 py-2 text-left bg-[#F9F5FF]  hover:bg-violet-200 text-black"
+        className="block w-full   px-4 py-2 text-left bg-[#F9F5FF]  text-black"
       >
         Delete
       </button>
@@ -604,67 +607,71 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
   }>Products/Services</h1>
 </div>
 <div className="px-4 text-sm text-[#475467]">
-  <div className="flex justify-between items-center">
-    <div className="flex gap-2">
-      <button
-        className={`px-4 rounded font-medium ${
-          activeTab === 'products' ? 'bg-[#685BC7] text-white' : 'bg-gray-200 text-gray-700'
-        }`}
-        onClick={() => setActiveTab('products')}>
-        Products
-      </button>
-      <button
-        className={`px-4 py-2 rounded font-medium ${
-          activeTab === 'services' ? 'bg-[#685BC7] text-white' : 'bg-gray-200 text-gray-700'
-        }`}
-        onClick={() => setActiveTab('services')}>
-        Services
-      </button>
-    </div>
+ <div className="flex justify-between items-center w-full">
+  {/* Left Side: Products & Services Buttons */}
+  <div className="flex gap-2">
     <button
-      className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md"
- onClick={() => setShowModal(true)}
-      style={
-            {
-              fontFamily: "Inter",
-              fontWeight: "600",
-              fontSize: "14px",
-              lineHeight: "20px",
-              letterSpacing: "0%",
-
-            }}>
-      Add {activeTab === 'products' ? 'Product' : 'Service'}
+      className={`px-4 py-2 rounded font-medium ${
+        activeTab === 'products'
+          ? 'bg-[#685BC7] text-white'
+          : 'bg-gray-200 text-gray-700'
+      }`}
+      onClick={() => setActiveTab('products')}
+    >
+      Products
+    </button>
+    <button
+      className={`px-4 py-2 rounded font-medium ${
+        activeTab === 'services'
+          ? 'bg-[#685BC7] text-white'
+          : 'bg-gray-200 text-gray-700'
+      }`}
+      onClick={() => setActiveTab('services')}
+    >
+      Services
     </button>
   </div>
+
+  {/* Right Side: Add Button & Search Bar */}
+  <div className="flex gap-4 items-center">
+    <button
+      className="bg-[#F9F5FF] text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md"
+      onClick={() => setShowMainModal(true)}
+      style={{
+        fontFamily: 'Inter',
+        fontWeight: '600',
+        fontSize: '14px',
+        lineHeight: '20px',
+        letterSpacing: '0%',
+      }}
+    >
+      Add {activeTab === 'products' ? 'Product' : 'Service'}
+    </button>
+
+    <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white w-full max-w-xs shadow-sm">
+      <input
+        type="text"
+        placeholder="Search"
+        className="flex-1 outline-none bg-transparent text-sm text-gray-700"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <Icon icon="mynaui:search" width="20" height="20" style={{ color: '#344054' }} />
+    </div>
+  </div>
+</div>
+
+
   <p className="mt-2 font-normal">
     All the details about your customers
   </p>
+
+  
+
 </div>
 
-<div className="flex justify-between items-center flex-wrap gap-4 p-4">
-  <div className="flex flex-row gap-3 items-center ml-auto">
-    <div className="flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm text-[#344054] bg-white w-full max-w-xs shadow-sm">
-      <input type="text" placeholder="Search" className="flex-1 outline-none bg-transparent text-sm text-gray-700" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
-      <Icon icon="mynaui:search" width="20" height="20" style={{ color: "#344054" }} />
-    </div>
-    
-<button
-  ref={buttonRef}
-  onClick={() => setShowBulkModal(true)}
-  className="flex items-center justify-center gap-2 px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-bold whitespace-nowrap"
-  style={{
-    fontWeight: 500,
-    fontSize: "14px",
-    lineHeight: "20px",
-    letterSpacing: "0%",
-  }}
->
-  <img src="/icons/bulk_uplod.svg" alt="" className="w-4 h-4" />
-  Bulk upload
-</button>
 
-  </div>
-</div>
+
 
 
       <table className="min-w-full text-sm text-left border  text-gray-900 bg-white rounded-md overflow-hidden p-4">
@@ -704,6 +711,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
             <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 relative">
               <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
               <h3 className="flex text-lg font-semibold mb-4">New {activeTab === 'products' ? 'Product' : 'Service'}</h3>
+              
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
@@ -1195,6 +1203,44 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
         >
           Delete
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+{showMainModal && (
+  <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+      <div className="flex justify-between items-center mb-4 border-b border-[#F1F2F3] pb-1">
+        <h3 className="text-lg font-semibold">Choose Action</h3>
+        <button
+          type="button"
+          onClick={() => setShowMainModal(false)}
+          className="flex text-black bg-[#F6F8FA] rounded-full p-1 border border-[#F1F2F3]"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-4">
+        <button
+          onClick={() => {
+            setShowMainModal(false);
+            setShowModal(true);
+          }}
+          className="px-6 py-3 bg-[#685BC7] text-white rounded-md text-lg"
+        >
+          New {activeTab === 'products' ? 'Product' : 'Service'}
+        </button>
+        <button
+          onClick={() => {
+            setShowMainModal(false);
+            setShowBulkModal(true);
+          }}
+          className="px-6 py-3 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-lg"
+        >
+          <img src="/icons/bulk_uplod.svg" alt="" className="w-4 h-4 inline-block mr-2" />
+          Bulk Upload
         </button>
       </div>
     </div>
