@@ -121,7 +121,7 @@ const Setting1 = () => {
                       <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Billing</span>
                     </button>
                     <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout} >
-                      <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Log Out</span>
+                      <span className="font-semibold text-[14px] text-[#667085]  hover:text-[red] bg-[white] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Log Out</span>
                     </button>
                   </div>
                 </div>

@@ -99,7 +99,7 @@ const Spaceiqcolor = (props: any) => {
 
                   <div className="w-[80%] h-[186px] items-center flex  flex-col gap-3">
                     <span className="text-[#18181B] font-sans font-medium text-base leading-6">
-                      Plain Text
+                      Prompt
                     </span>
 
                     <div className="w-[80%] h-[250px] rounded-[16px] border border-[#EAECF0] p-4 flex flex-col gap-3 bg-white overflow-y-auto scrollbar-thin">

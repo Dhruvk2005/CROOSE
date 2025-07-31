@@ -489,87 +489,30 @@ export const getServicePage = async (page: number = 1) => {
   }
 };
 
- 
 
-export const getTotalAppointment = async () => {
+
+
+
+
+export const getnewCustomer = async () => {
   try {
     const token = localStorage.getItem('token');
     const res = await axiosRequest({
       method: "get",
-      url: `${BASE_URL}/api/total_appointments`,
+      url: `${BASE_URL}/api/newCustomers`,
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-    });
-
-    // ✅ Log and return the actual response
-    console.log("API total_appointments response", res);
-
-     return res// <-- Expecting: { total: number }
-  } catch (err) {
-    console.error("Error fetching total appointments", err);
-    return null; // Return null or empty fallback only on error
-  }
-};
-
-
-export const getNewAppointment= async ()=>{
-  try{
-    const token=localStorage.getItem('token');
-    const res = await axiosRequest({
-      method: "get",
-      url:`${BASE_URL}/api/new_appointments`,
-      headers:{
-        Authorization:`Bearer ${token}`,
       }
 
     })
     return res;
   }
-  catch(err){
+  catch (err) {
     console.log(err);
 
   }
-} 
+}
 
-export const getCancelledAppointment= async ()=>{
-  try{
-    const token=localStorage.getItem('token');
-    const res = await axiosRequest({
-      method: "get",
-      url:`${BASE_URL}/api/cancelled_appointments`,
-      headers:{
-        Authorization:`Bearer ${token}`,
-      }
-
-    })
-    return res;
-  }
-  catch(err){
-    console.log(err);
-
-  }
-} 
-
-export const getnewCustomer= async ()=>{
-  try{
-    const token=localStorage.getItem('token');
-    const res = await axiosRequest({
-      method: "get",
-      url:`${BASE_URL}/api/newCustomers`,
-      headers:{
-        Authorization:`Bearer ${token}`,
-      }
-
-    })
-    return res;
-  }
-  catch(err){
-    console.log(err);
-
-  }
-} 
- 
 
 
 
@@ -655,13 +598,13 @@ export const registerApi = async (data: any) => {
       headers: {},
       body: data,
     });
-    
+
     return res;
-    
+
   } catch (err) {
     console.log(err);
   }
-  
+
 };
 
 export const searchProducts = async (query: string) => {
@@ -701,6 +644,42 @@ export const countryApi = async () => {
 };
 
 
+export const fetchOrders = async () => {
+  try {
+    let token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/orders`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+
+
+    })
+    return res.data;
+  } catch (err) {
+    console.log(err)
+
+  }
+}
+
+export const  ordersApi = async(data:any)=>{
+  try{
+    let token = localStorage.getItem("token")
+    let res = await axiosRequest({
+      method:"post",
+      url:`${BASE_URL}/api/orders_status_update`,
+      headers:{
+        Authorization:`Bearer ${token}`
+      },
+      body:data,
+    })
+    return res
+
+  }catch(err){
+    console.log(err)
+  }
+}
 
 
 export const fetchCustomerStatistics = async () => {
@@ -763,3 +742,21 @@ export const fetchTotalChats = async () => {
     throw err; // Optional: rethrow for higher-level handling
   }
 };
+
+
+export const OrderStatistics = async (data:any)=>{
+  try{
+let token = localStorage.getItem("token")
+let res = await axiosRequest({
+  method:"get",
+  url:`${BASE_URL}/api/order_statistics`,
+  headers:{
+    Authorization:`Bearer ${token}`
+  },
+  body:data
+})
+return res
+  }catch(err){
+    console.log(err)
+  }
+}
