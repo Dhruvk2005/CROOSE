@@ -52,7 +52,7 @@ const OrdersTable = () => {
     const handleOrderStatusUpdate = async (orderId: any, status: string) => {
         try {
             const res = await OrdersStatus({
-                order_id: orderId,
+                id: orderId,
                 status: status,
             });
 

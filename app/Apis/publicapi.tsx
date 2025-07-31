@@ -768,7 +768,7 @@ export const OrdersStatus = async (data: any) => {
     const token = localStorage.getItem("token")
     const res = await axiosRequest({
       method: "post",
-      url: `${BASE_URL}api/orders_status_update`,
+      url: `${BASE_URL}/api/orders_status_update`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
