@@ -663,20 +663,20 @@ export const fetchOrders = async () => {
   }
 }
 
-export const  ordersApi = async(data:any)=>{
-  try{
+export const ordersApi = async (data: any) => {
+  try {
     let token = localStorage.getItem("token")
     let res = await axiosRequest({
-      method:"post",
-      url:`${BASE_URL}/api/orders_status_update`,
-      headers:{
-        Authorization:`Bearer ${token}`
+      method: "post",
+      url: `${BASE_URL}/api/orders_status_update`,
+      headers: {
+        Authorization: `Bearer ${token}`
       },
-      body:data,
+      body: data,
     })
     return res
 
-  }catch(err){
+  } catch (err) {
     console.log(err)
   }
 }
@@ -744,19 +744,38 @@ export const fetchTotalChats = async () => {
 };
 
 
-export const OrderStatistics = async (data:any)=>{
-  try{
-let token = localStorage.getItem("token")
-let res = await axiosRequest({
-  method:"get",
-  url:`${BASE_URL}/api/order_statistics`,
-  headers:{
-    Authorization:`Bearer ${token}`
-  },
-  body:data
-})
-return res
-  }catch(err){
+export const OrderStatistics = async (data: any) => {
+  try {
+    let token = localStorage.getItem("token")
+    let res = await axiosRequest({
+      method: "get",
+      url: `${BASE_URL}/api/order_statistics`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: data
+    })
+    return res
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+
+
+export const OrdersStatus = async (data: any) => {
+  try {
+    const token = localStorage.getItem("token")
+    const res = await axiosRequest({
+      method: "post",
+      url: `${BASE_URL}api/orders_status_update`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: data
+    })
+    return res
+  } catch (err) {
     console.log(err)
   }
 }

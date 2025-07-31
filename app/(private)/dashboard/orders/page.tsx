@@ -6,63 +6,59 @@ import Navbar from "../../components/Navbar";
 import {
     fetchOrders,
     OrderStatistics,
-    ordersApi,
+    OrdersStatus,
 } from '@/app/Apis/publicapi';
 
 const OrdersTable = () => {
     const [orders, setOrders] = useState<any>([]);
     const [OrdersStatistics, setOrdersStatistics] = useState<any>({});
 
-    
     useEffect(() => {
         const fetchOrderStatistics = async () => {
             try {
                 const res = await OrderStatistics({});
-                setOrdersStatistics(res?.data || {});
-                console.log("Fetched order stats:", res);
+                setOrdersStatistics(res || {});
             } catch (err) {
                 console.error("Failed to fetch order stats:", err);
             }
         };
-
         fetchOrderStatistics();
     }, []);
 
-    
     useEffect(() => {
-        const getOrders = async () => {
-            try {
-                const res = await fetchOrders();
-                console.log('yoooo data:',res)
-                if (res) {
-                    setOrders(res);
-                } else {
-                    console.error("fetchOrders returned unexpected structure:", res);
-                }
-            } catch (err) {
-                console.error("Failed to fetch orders:", err);
-            }
-        };
-
         getOrders();
     }, []);
 
-    // Handle status update
-    const handleOrderStatusUpdate = async (orderId: any) => {
-        const payload = {
-            orderId,
-            status: 'delivered',
-        };
-
+    const getOrders = async () => {
         try {
-            const res = await ordersApi(payload);
-            if (res?.data?.success) {
-                console.log("Order status updated:", res);
-                // Refresh the order list
-                const refreshed = await fetchOrders();
-                if (refreshed?.data?.data) {
-                    setOrders(refreshed.data.data);
-                }
+            const res = await fetchOrders();
+            if (res) {
+                setOrders(res);
+            }
+        } catch (err) {
+            console.error("Failed to fetch orders:", err);
+        }
+    };
+
+    // Update local state on dropdown change
+    const handleStatusChange = (orderId: number, newStatus: string) => {
+        setOrders((prevOrders:any) =>
+            prevOrders.map((order:any) =>
+                order.id === orderId ? { ...order, status: newStatus } : order
+            )
+        );
+    };
+
+    const handleOrderStatusUpdate = async (orderId: any, status: string) => {
+        try {
+            const res = await OrdersStatus({
+                order_id: orderId,
+                status: status,
+            });
+
+            if (res?.success) {
+                console.log("Order status updated successfully");
+                getOrders();
             } else {
                 console.error("Failed to update order status");
             }
@@ -76,7 +72,6 @@ const OrdersTable = () => {
             <Navbar heading="Orders" />
 
             <div className="p-6 space-y-6">
-                {/* Header */}
                 <div className="flex justify-between items-start px-8">
                     <div>
                         <h2 className="text-xl font-semibold">Orders</h2>
@@ -86,7 +81,6 @@ const OrdersTable = () => {
                     </div>
                 </div>
 
-                {/* Stats */}
                 <div className="w-full flex flex-wrap gap-6 px-8">
                     <div className="w-full lg:w-[31%] border rounded-[12px] border-[#EAECF0] p-[24px]">
                         <p className="text-[#475467] text-[14px] font-medium">New Orders</p>
@@ -130,7 +124,7 @@ const OrdersTable = () => {
 
                 {/* Orders Table */}
                 <div className="overflow-x-auto px-8">
-                    <table className="min-w-full  border border-gray-200 text-sm text-left">
+                    <table className="min-w-full border border-[#F9FAFB] text-sm text-left">
                         <thead className="bg-[#F9FAFB] text-[#475467] font-medium">
                             <tr>
                                 <th className="px-4 py-3 border">ID</th>
@@ -150,7 +144,6 @@ const OrdersTable = () => {
                                 orders.map((order: any) => (
                                     <tr key={order.id} className="border-t hover:bg-gray-50">
                                         <td className="px-4 py-2">{order.id}</td>
-
                                         <td className="px-4 py-2">{order.space_name}</td>
                                         <td className="px-4 py-2">{order.customer_name}</td>
                                         <td className="px-4 py-2">{order.customer_number}</td>
@@ -158,20 +151,33 @@ const OrdersTable = () => {
                                         <td className="px-4 py-2">₹{Number(order.order_amount).toLocaleString()}</td>
                                         <td className="px-4 py-2 capitalize">{order.payment_status}</td>
                                         <td className="px-4 py-2">{order.order_date}</td>
-                                        <td className="px-4 py-2 capitalize">{order.order_status}</td>
+                                        <td className="px-4 py-2 capitalize">
+                                            <select
+                                                value={order.status}
+                                                onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                                                className="border rounded px-2 py-1"
+                                            >
+                                                <option value="pending">Pending</option>
+                                                <option value="cancelled">Cancelled</option>
+                                                <option value="processing">Processing</option>
+                                                <option value="delivered">Delivered</option>
+                                                <option value="returned">Returned</option>
+                                                <option value="refunded">Refunded</option>
+                                            </select>
+                                        </td>
                                         <td className="px-4 py-2">
                                             <button
-                                                onClick={() => handleOrderStatusUpdate(order.id)}
+                                                onClick={() => handleOrderStatusUpdate(order.id, order.status)}
                                                 className="px-3 py-1 bg-[#685BC7] text-white rounded text-xs"
                                             >
-                                                Mark as Delivered
+                                                Update Status
                                             </button>
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td className="px-4 py-6 text-center text-gray-400">
+                                    <td className="px-4 py-6 text-center text-gray-400" colSpan={10}>
                                         No orders available.
                                     </td>
                                 </tr>
