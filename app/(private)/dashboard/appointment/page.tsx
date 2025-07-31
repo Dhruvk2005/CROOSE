@@ -198,39 +198,39 @@ const AppointmentTable = () => {
     { value: "cancelled", label: "🔴 Cancelled" },
     { value: "completed", label: "🔵 Completed" },
   ];
-const rowsPerPage = 10;
-const indexOfLastAppointment = currentPage * itemsPerPage;
-const indexOfFirstAppointment = indexOfLastAppointment - itemsPerPage;
-const currentAppointments = filteredAppointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
+  const rowsPerPage = 10;
+  const indexOfLastAppointment = currentPage * itemsPerPage;
+  const indexOfFirstAppointment = indexOfLastAppointment - itemsPerPage;
+  const currentAppointments = filteredAppointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
 
-const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
-
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
+  const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
 
 
- const [AppointmentStatistic, setAppointmentStatistic] = useState<any>({});
-    useEffect(() => {
-        const fetchAppointments = async () => {
-            try {
-                let res = await fetchAppointmentStatistics()
-                console.log("Customer Statistics:", res)
-                setAppointmentStatistic(res)
-                
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
 
-            } catch (err) {
-                console.error("Error in Customers component:", err);
-            }
-        }
-        fetchAppointments()
-    }, [])
+  const [AppointmentStatistic, setAppointmentStatistic] = useState<any>({});
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        let res = await fetchAppointmentStatistics()
+        console.log("Customer Statistics:", res)
+        setAppointmentStatistic(res)
+
+
+
+      } catch (err) {
+        console.error("Error in Customers component:", err);
+      }
+    }
+    fetchAppointments()
+  }, [])
 
 
 
@@ -238,98 +238,98 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
 
   return (
     <div>
-    <div>
+      <div>
 
 
-      <Navbar heading="Appointments" />
+        <Navbar heading="Appointments" />
 
 
-      <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6">
 
-        <div className="flex justify-between items-start px-8">
-          <div>
-            <h2 className="text-xl font-semibold">Appointments</h2>
-            <p className="text-sm text-gray-500">
-              Dive deep into who your customers are
-            </p>
-          </div>
-          <div className='border-none' >
-            {/* <DateSelectButton
+          <div className="flex justify-between items-start px-8">
+            <div>
+              <h2 className="text-xl font-semibold">Appointments</h2>
+              <p className="text-sm text-gray-500">
+                Dive deep into who your customers are
+              </p>
+            </div>
+            <div className='border-none' >
+              {/* <DateSelectButton
 
 
           appointmentTime={formData.appointmentTime}
           setDate={setDate}
         /> */}
-          </div>
-
-
-        </div>
-
-
-        <div className='w-full h-full flex flex-wrap flex-col gap-[64px]  ' >
-          <div className='w-full h-auto p-[32px] flex flex-col gap-[24px] '>
-
-            <ul className=' w-[full] flex flex-wrap gap-[16px] ' >
-              <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Appointments</p>
-                <div className='flex items-center gap-[16px] justify-between  '>
-                  <p className='font-semibold text-[#101828] text-[30px] ' >
-                  {AppointmentStatistic.total_new_appointments}
-                  </p>
-                 
-                  <div className='w-[71px] border-[1px] rounded-[99px] flex justify-center gap-[5px] text-[#067647] bg-[#ECFDF3] border-[#ABEFC6]  ' >
-
-                     <Icon icon="jam:arrow-up" width="18" height="24"  style={{color: '#17B26A'}} />
-                    {AppointmentStatistic.total_new_appointments_growth}</div>
-                </div>
-              </li>
-
-
-
-              <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                <p className='text-[#475467] text-[14px] font-medium font-Inter' >Total Appointments</p>
-                <div className='flex items-center gap-[16px] justify-between  '>
-                  <p className='font-semibold text-[#101828] text-[30px] ' >
-
-              {AppointmentStatistic.total_appointments}
-                  </p>
-                  <div className='w-[71px] border-[1px] rounded-[99px] gap-[5px] flex justify-center text-[#067647] bg-[#ECFDF3] border-[#ABEFC6]  ' >
-                    <Icon icon="jam:arrow-up" width="18" height="24"  style={{color: '#17B26A'}} />{AppointmentStatistic.total_appointments_growth}</div>
-                
-                 
-                </div>
-              </li>
-
-              <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
-                <p className='text-[#475467] text-[14px] font-medium font-Inter' >Canceled Appointments</p>
-                <div className='flex items-center gap-[16px] justify-between  '>
-                  <p className='font-semibold text-[#101828] text-[30px] ' >
-                    {AppointmentStatistic.cancelled_appointments}
-                  </p>
-
-                  <div className='w-[71px] border-[1px] rounded-[99px] gap-[5px] flex justify-center text-[#B42318] bg-[#FEF3F2] border-[#FECDCA]  ' >
-                    <Icon icon="charm:arrow-down" width="16" height="24"  style={{color: '#F04438'}} />{AppointmentStatistic.cancelled_appointments_growth}</div>
-              
-                </div>
-              </li>
-            </ul>
+            </div>
 
 
           </div>
 
 
-          {/* <div className="p-6">
+          <div className='w-full h-full flex flex-wrap flex-col gap-[64px]  ' >
+            <div className='w-full h-auto p-[32px] flex flex-col gap-[24px] '>
+
+              <ul className=' w-[full] flex flex-wrap gap-[16px] ' >
+                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+                  <p className='text-[#475467] text-[14px] font-medium font-Inter' >New Appointments</p>
+                  <div className='flex items-center gap-[16px] justify-between  '>
+                    <p className='font-semibold text-[#101828] text-[30px] ' >
+                      {AppointmentStatistic.total_new_appointments}
+                    </p>
+
+                    <div className='w-[71px] border-[1px] rounded-[99px] flex justify-center gap-[5px] text-[#067647] bg-[#ECFDF3] border-[#ABEFC6]  ' >
+
+                      <Icon icon="jam:arrow-up" width="18" height="24" style={{ color: '#17B26A' }} />
+                      {AppointmentStatistic.total_new_appointments_growth}</div>
+                  </div>
+                </li>
+
+
+
+                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+                  <p className='text-[#475467] text-[14px] font-medium font-Inter' >Total Appointments</p>
+                  <div className='flex items-center gap-[16px] justify-between  '>
+                    <p className='font-semibold text-[#101828] text-[30px] ' >
+
+                      {AppointmentStatistic.total_appointments}
+                    </p>
+                    <div className='w-[71px] border-[1px] rounded-[99px] gap-[5px] flex justify-center text-[#067647] bg-[#ECFDF3] border-[#ABEFC6]  ' >
+                      <Icon icon="jam:arrow-up" width="18" height="24" style={{ color: '#17B26A' }} />{AppointmentStatistic.total_appointments_growth}</div>
+
+
+                  </div>
+                </li>
+
+                <li className='w-full  lg:w-[32.2%] border-[2px] rounded-[12px] border-[#EAECF0] p-[24px] ' >
+                  <p className='text-[#475467] text-[14px] font-medium font-Inter' >Canceled Appointments</p>
+                  <div className='flex items-center gap-[16px] justify-between  '>
+                    <p className='font-semibold text-[#101828] text-[30px] ' >
+                      {AppointmentStatistic.cancelled_appointments}
+                    </p>
+
+                    <div className='w-[71px] border-[1px] rounded-[99px] gap-[5px] flex justify-center text-[#B42318] bg-[#FEF3F2] border-[#FECDCA]  ' >
+                      <Icon icon="charm:arrow-down" width="16" height="24" style={{ color: '#F04438' }} />{AppointmentStatistic.cancelled_appointments_growth}</div>
+
+                  </div>
+                </li>
+              </ul>
+
+
+            </div>
+
+
+            {/* <div className="p-6">
           {/* <div className="p-6">
       <div className="flex justify-between items-center border-b border-[#EAECF0] pb-4">
        <h2 className="text-xl font-semibold text-[#121217]">Appointment</h2> */}
-          {/* <button
+            {/* <button
           {/* <button
           onClick={() => setShowModal(true)}
           className="border px-4 py-2 rounded-md text-sm font-medium text-white bg-[#685BC7] hover:bg-[#5a4bb3]"
         >
           Create Appointment
         </button> */}
-        </div>
+          </div>
         </div>
 
         {showModal && (
@@ -506,27 +506,27 @@ const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
 
         </div>
       </div>
-       <div className="flex justify-center gap-[20px] items-center mt-4">
-                    <button
-                        onClick={handlePrevPage}
-                        disabled={currentPage === 1}
-                        className="px-4 py-2 bg-[#685BC7] text-white rounded disabled:opacity-50"
-                    >
-                        Previous
-                    </button>
-                    <span className="text-[#344054] font-medium">
-                        Page {currentPage} of {totalPages}
-                    </span>
-                    <button
-                        onClick={handleNextPage}
-                        disabled={currentPage === totalPages}
-                        className="px-4 py-2 bg-[#685BC7] text-white rounded disabled:opacity-50"
-                    >
-                        Next
-                    </button>
-                </div>
-                </div>
-    
+      <div className="flex justify-center gap-[20px] items-center mt-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-[#685BC7] text-white rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span className="text-[#344054] font-medium">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-[#685BC7] text-white rounded disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
   );
 };
 

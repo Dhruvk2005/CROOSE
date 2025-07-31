@@ -21,6 +21,7 @@ const navItems = [
   // { label: 'Analytics', href: '#', icon: <Icon icon="solar:chart-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Appointments', href: '/dashboard/appointment', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
   { label: 'Product/Services', href: '/dashboard/product', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
+  { label: 'Orders', href: '/dashboard/orders', icon:<Icon icon="lets-icons:order" width="24" height="24"  style={{color: "#e5e7e9"}} />},
 ];
 
 
