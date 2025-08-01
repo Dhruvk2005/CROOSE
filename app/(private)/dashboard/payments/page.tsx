@@ -1,62 +1,53 @@
 'use client';
 
+import { fetchPaymentApi } from '@/app/Apis/publicapi';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const users = [
-  {
-    name: "Neil Sims",
-    email: "neil.sims@flowbite.com",
-    img: "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
-    Amount: "₵250.42",
-    PaymentMethod: "****3214",
-    Payee: "Daniel Kolawole",
-    Date: "Wed 14 Nov, 1:00pm",
-    Status: "Successful"
-  },
-  {
-    name: "Bonnie Green",
-    email: "bonnie@flowbite.com",
-    img: "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
-    Amount: "₵250.42",
-    PaymentMethod: "****3214",
-    Payee: "Daniel Kolawole",
-    Date: "Wed 14 Nov, 1:00pm",
-    Status: "Successful"
-  },
-  {
-    name: "Jese Leos",
-    email: "jese@flowbite.com",
-    img: "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-    Amount: "₵250.42",
-    PaymentMethod: "****3214",
-    Payee: "Daniel Kolawole",
-    Date: "Wed 14 Nov, 1:00pm",
-    Status: "Successful"
-  },
-  {
-    name: "Thomas Lean",
-    email: "thomes@flowbite.com",
-    img: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-    Amount: "₵250.42",
-    PaymentMethod: "****3214",
-    Payee: "Daniel Kolawole",
-    Date: "Wed 14 Nov, 1:00pm",
-    Status: "Successful"
-  },
-  {
-    name: "Leslie Livingston",
-    email: "leslie@flowbite.com",
-    img: "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-    Amount: "₵250.42",
-    PaymentMethod: "****3214",
-    Payee: "Daniel Kolawole",
-    Date: "Wed 14 Nov, 1:00pm",
-    Status: "Successful"
-  }
-];
+type Payment = {
+  type: string;
+  reference_id: string;
+  amount: number;
+  payment_origin?: string;
+  payment_method: string;
+  transaction_status: string;
+  transaction_id: string;
+};
 
 const Payments = () => {
+  const [payments, setPayments] = useState<Payment[]>([]); // <-- add type here
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const data = await fetchPaymentApi(); // <-- use renamed import
+
+        if (!data || !Array.isArray(data)) {
+          setPayments([]);
+          return;
+        }
+
+        const mappedData: Payment[] = data.map((item: any) => ({
+          type: item.type,
+          reference_id: item.reference_id,
+          amount: item.amount,
+          payment_origin: item.payment_origin || "N/A",
+          payment_method: item.payment_method,
+          transaction_status: item.transaction_status,
+          transaction_id: item.transaction_id,
+        }));
+
+        setPayments(mappedData);
+      } catch (err: any) {
+        setError(err.message || "Error fetching payments");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPayments();
+  }, []);
   return (
     <div className="w-full flex flex-col">
      
@@ -108,43 +99,34 @@ const Payments = () => {
       <div className="w-full overflow-x-auto  border-2  border-[#EAECF0]  rounded-[10px]  ">
         <table className="min-w-[700px] w-full  border-[#EAECF0] text-sm text-left text-gray-500 bg-white rounded-[10px]">
           <thead className="text-xs text-[#475467] rounded-[10px] bg-gray-50 font-medium">
-            <tr>
-              <th className="px-6 py-3">Customer</th>
-              <th className="px-6 py-3">Amount</th>
-              <th className="px-6 py-3">Payment Method</th>
-              <th className="px-6 py-3">Payee</th>
-              <th className="px-6 py-3">Date</th>
-              <th className="px-6 py-3">Status</th>
-              <th className="px-6 py-3">Actions</th>
-            </tr>
+            
+           <tr>
+    <th className="px-6 py-3">Type</th>
+    <th className="px-6 py-3">Reference ID</th>
+    <th className="px-6 py-3">Amount</th>
+    <th className="px-6 py-3">Payment Origin</th>
+    <th className="px-6 py-3">Payment Method</th>
+    <th className="px-6 py-3">Transaction Status</th>
+    <th className="px-6 py-3">Transaction ID</th>
+    <th className="px-6 py-3">Actions</th>
+  </tr>
           </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index} className="border-b rounded-[10px] border-[#EAECF0]">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-                    />
-                    <img className="w-10 h-10 rounded-full" src={user.img} alt={user.name} />
-                    <div>
-                      <div className="text-[#101828] font-medium">{user.name}</div>
-                      <div className="text-gray-500 text-sm">{user.email}</div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4">{user.Amount}</td>
-                <td className="px-6 py-4 text-[#101828]">{user.PaymentMethod}</td>
-                <td className="px-6 py-4 text-[#475467]">{user.Payee}</td>
-                <td className="px-6 py-4 text-[#475467]">{user.Date}</td>
-                <td className="px-6 py-4 text-[#475467]">{user.Status}</td>
-                <td className="px-6 py-4 text-[#475467]">
-                  <Icon icon="bi:three-dots-vertical" width="16" height="16" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
+         <tbody>
+  {payments.map((payment, index) => (
+    <tr key={index} className="border-b border-[#EAECF0]">
+      <td className="px-6 py-4">{payment.type}</td>
+      <td className="px-6 py-4">{payment.reference_id}</td>
+      <td className="px-6 py-4">₵{payment.amount}</td>
+      <td className="px-6 py-4">{payment.payment_origin || "N/A"}</td>
+      <td className="px-6 py-4">{payment.payment_method}</td>
+      <td className="px-6 py-4 capitalize">{payment.transaction_status}</td>
+      <td className="px-6 py-4">{payment.transaction_id}</td>
+      <td className="px-6 py-4 text-[#475467]">
+        <Icon icon="bi:three-dots-vertical" width="16" height="16" />
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       </div>
       </div>

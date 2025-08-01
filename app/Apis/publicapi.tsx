@@ -13,6 +13,9 @@ interface AxiosOptions {
 }
 
 
+
+
+
 export const axiosRequest = async ({
   method,
   url,
@@ -87,6 +90,49 @@ export const spaceIqCheck = async (data: any) => {
     console.log(err)
   }
 }
+
+
+export const fetchPaymentApi = async () => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const res = await axios.post(
+      `${BASE_URL}/api/payment_details`, 
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // ✅ Extract and return only the data array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    throw error;
+  }
+};
+
+// export const fetchPaymentsApi = async () => {
+//   try {
+//     const token = localStorage.getItem('token'); // Retrieve stored token
+//     const response = await fetch(${BASE_URL}//api/payment_details', {
+//       method: 'POST', // API requires POST
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${token}`, // Add token here
+//       },
+//       body: JSON.stringify({}) // Send body if required, else keep empty object
+//     });
+
+//     if (!response.ok) throw new Error('Failed to fetch payment details');
+//     return await response.json();
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
 
 export const getCustomer = async () => {
   try {
