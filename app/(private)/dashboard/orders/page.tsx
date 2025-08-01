@@ -68,7 +68,7 @@ const OrdersTable = () => {
     };
 
     return (
-        <div>
+        <div className='select-none' >
             <Navbar heading="Orders" />
 
             <div className="p-6 space-y-6">
@@ -124,26 +124,26 @@ const OrdersTable = () => {
 
                 {/* Orders Table */}
                 <div className="overflow-x-auto px-8">
-                    <table className="min-w-full border border-[#F9FAFB] text-sm text-left">
-                        <thead className="bg-[#F9FAFB] text-[#475467] font-medium">
-                            <tr>
-                                <th className="px-4 py-3 border">ID</th>
-                                <th className="px-4 py-3 border">Space</th>
-                                <th className="px-4 py-3 border">Customer</th>
-                                <th className="px-4 py-3 border">Phone</th>
-                                <th className="px-4 py-3 border">Product</th>
-                                <th className="px-4 py-3 border">Amount</th>
-                                <th className="px-4 py-3 border">Payment</th>
-                                <th className="px-4 py-3 border">Date</th>
-                                <th className="px-4 py-3 border">Status</th>
-                                <th className="px-4 py-3 border">Actions</th>
+                    <table className="min-w-full border-[1px] border-[#F9FAFB] text-sm text-left">
+                        <thead className="bg-[#F9FAFB] border-[1px] border-[#EAECF0] text-[#475467] font-medium">
+                            <tr  >
+                                <th className="px-4 py-3 ">ID</th>
+                                <th className="px-4 py-3 ">Space</th>
+                                <th className="px-4 py-3 ">Customer</th>
+                                <th className="px-4 py-3 ">Phone</th>
+                                <th className="px-4 py-3 ">Product</th>
+                                <th className="px-4 py-3">Amount</th>
+                                <th className="px-4 py-3 ">Payment</th>
+                                <th className="px-4 py-3 ">Date</th>
+                                <th className="px-4 py-3">Status</th>
+                                <th className="px-4 py-3 ">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {orders.length > 0 ? (
                                 orders.map((order: any) => (
-                                    <tr key={order.id} className="border-t hover:bg-gray-50">
-                                        <td className="px-4 py-2">{order.id}</td>
+                                    <tr key={order.id} className=" hover:bg-gray-50 text-[#475467] ">
+                                        <td className="px-4 py-2  ">{order.id}</td>
                                         <td className="px-4 py-2">{order.space_name}</td>
                                         <td className="px-4 py-2">{order.customer_name}</td>
                                         <td className="px-4 py-2">{order.customer_number}</td>

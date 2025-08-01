@@ -90,43 +90,9 @@ const AppointmentTable = () => {
       console.error("Failed to update appointment status", err);
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getNewAppointments();
-        setNewAppointments(data?.new_appointments ?? 0);
-      } catch (err) {
-        console.error("Error loading appointments");
-      }
-    };
+  
 
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getTotalAppointments();
-        setTotalAppointments(data?.total_appointments ?? 0);
-      } catch (err) {
-        console.error("Error loading appointments");
-      }
-    };
-
-    fetchData();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getCancelledAppointments();
-        setCancelAppointments(data?.cancelled_appointments ?? 0);
-      } catch (err) {
-        console.error("Error loading appointments");
-      }
-    };
-
-    fetchData();
-  }, []);
+  
 
   useEffect(() => {
     fetchAppointments();
@@ -237,7 +203,7 @@ const AppointmentTable = () => {
 
 
   return (
-    <div>
+    <div className='select-none' >
       <div>
 
 

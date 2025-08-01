@@ -1,53 +1,78 @@
-import React from 'react';
+'use client'
+import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import Spacenav from '../../components/spacenav';
+import { useParams } from 'next/navigation';
+import { spaceLiveChats } from '@/app/Apis/publicapi';
 
-const users = [
-  {
-    number: 'Mom 💕',
-    sms: 'Mom is typing...',
-    batton: 'General',
-    time: '19:45',
-    count: '5',
-    img: '/Profile.png',
-  },
-  {
-    number: '+233847048730',
-    sms: 'How much exactly does all your ',
-    time: '19:45',
-    count: '5',
-    batton: 'Enquiry',
-    img: '/Profiledummy.png',
-  },
-  {
-    number: '+234567890123',
-    sms: 'Can you send me the detailed report?',
-    time: '14:15',
-    batton: 'Broken',
-    img: '/Profiledummy.png',
-  },
-  {
-    number: '+233456789012',
-    sms: 'What are the available payment...',
-    time: '10:15',
-    batton: 'Complete Sale',
-    img: '/Profiledummy.png',
-  },
-  {
-    number: '+233456789012',
-    img: '/Profiledummy.png',
-    sms: 'How much exactly does all your ',
-  },
-];
+
+interface ChatUser {
+  number: string;
+  sms: string;
+  button: string; 
+  time: string;
+  count?: string;
+  img: string;
+}
 
 const Page = () => {
+  const [spaceLiveChatsData, setSpaceLiveChatsData] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const { spaceId } = useParams();
+
+  useEffect(() => {
+    const fetchSpaceLiveChats = async () => {
+      try {
+        setLoading(true);
+        const res = await spaceLiveChats(Number(spaceId));
+        console.log("API Data:", res); // Verify data structure
+        setSpaceLiveChatsData(res);
+      } catch (err) {
+        console.error('Error:', err);
+        setError('Failed to load data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSpaceLiveChats();
+  }, [spaceId]);
+
+  // Improved data transformation
+  const transformChatData = (data: any): ChatUser[] => {
+    if (!data || typeof data !== 'object') return [];
+
+    // Handle different possible response structures
+    const rawData = data.data || data;
+    
+    return Object.entries(rawData).map(([phoneNumber, message], index) => ({
+      number: phoneNumber,
+      sms: typeof message === 'string' ? message : JSON.stringify(message),
+      button: index < 2 ? (index === 0 ? 'General' : 'Enquiry') : 'General',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      count: index < 2 ? '5' : undefined,
+      img: '/Profiledummy.png',
+    }));
+  };
+
+  const transformedUsers = transformChatData(spaceLiveChatsData);
+  const totalChats = transformedUsers.length;
+  const liveChats = transformedUsers.filter((_, index) => index < 2).length;
+
+  if (loading) {
+    return <div className="loading-spinner">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
   return (
-    <div className=" w-full  h-[900px] opacity-100 gap-[10px]">
+    <div className="w-full h-[900px] opacity-100 gap-[10px]">
       <Spacenav />
 
-      <div className="h-auto w-full bg-[#ffffff] relative mt-[15px] flex flex-col gap-5  items-center">
+      <div className="h-auto w-full bg-[#ffffff] relative mt-[15px] flex flex-col gap-5 items-center">
         <div
-          className="w-[100%]  items-center mt-[-17px]   flex flex-row h-[64px] "
+          className="w-[100%] items-center mt-[-17px] flex flex-row h-[64px]"
           style={{ borderBottom: '1px solid #EAECF0' }}
         >
           <img src="/arrow.png" alt="arrow" className="h-[20px] ml-[10px] m-[-1px] w-[20px]" />
@@ -57,55 +82,53 @@ const Page = () => {
           <div className="w-[50%] sm:w-[70%] text-[13px] sm:text-[1.125rem] text-[#101828] ml-[18px] font-sans font-semibold text-lg leading-7 tracking-normal align-middle h-[28px]">
             Space Name
           </div>
-          <div className="w-[180px] sm:w-[211px] right-[0px] flex flex-row  gap-[8px] h-[36px]">
-            <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px]  flex flex-row  pt-2 pr-4 pb-2 bg-[#EAECF0] pl-4 gap-[10px] rounded-[8px] border-[0]">
-              <div className="font-sans font-semibold text-[10px] sm:text-[12px] w-[100%] leading-5 tracking-normal text-center  text-[#685BC7] h-[20px]">
+          <div className="w-[180px] sm:w-[211px] right-[0px] flex flex-row gap-[8px] h-[36px]">
+            <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px] flex flex-row pt-2 pr-4 pb-2 bg-[#EAECF0] pl-4 gap-[10px] rounded-[8px] border-[0]">
+              <div className="font-sans font-semibold text-[10px] sm:text-[12px] w-[100%] leading-5 tracking-normal text-center text-[#685BC7] h-[20px]">
                 Spaces IQ
               </div>
             </button>
             <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px] flex flex-row pt-2 pr-4 pb-2 pl-4 gap-[10px] bg-[#685BC7] rounded-[8px]">
-              <div className="w-[100%] font-sans  text-[10px] sm:text-[12px] font-semibold text-sm leading-5 tracking-normal text-center text-[#FFFFFF] h-[50px] sm:h-[20px]">
+              <div className="w-[100%] font-sans text-[10px] sm:text-[12px] font-semibold text-sm leading-5 tracking-normal text-center text-[#FFFFFF] h-[50px] sm:h-[20px]">
                 Run Agent
               </div>
             </button>
           </div>
         </div>
 
-        <div className=" flex flex-row flex-wrap gap-[20px] justify-center w-[100%]   rounded-lg">
+        <div className="flex flex-row flex-wrap gap-[20px] justify-center w-[100%] rounded-lg">
           <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/chat.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
+              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467]">
                 Total Chats
               </div>
             </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
+            <div className="text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%] font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+              {totalChats}
             </div>
           </div>
 
           <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/message.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {' '}
+              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467]">
                 Live Chats
               </div>
             </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
+            <div className="text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%] font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+              {liveChats}
             </div>
           </div>
 
           <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/timer.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {' '}
+              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467]">
                 Avg. Response Time
               </div>
             </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+            <div className="text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%] font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
               0
             </div>
           </div>
@@ -113,18 +136,17 @@ const Page = () => {
           <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
             <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
               <img src="/party-popper.png" />
-              <div className="w-[100%] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467] ">
-                {' '}
+              <div className="w-[100%] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467]">
                 Sales
               </div>
             </div>
-            <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
+            <div className="text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%] font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
               0
             </div>
           </div>
         </div>
 
-        <section className="w-full h-auto  items-center justify-center sm:h-[486px] opacity-100 flex flex-col gap-[16px] rotate-0">
+        <section className="w-full h-auto items-center justify-center sm:h-[486px] opacity-100 flex flex-col gap-[16px] rotate-0">
           <div className="w-full sm:w-[1088px] h-auto sm:h-[36px] flex flex-col sm:flex-row items-start sm:items-center bg-[#ffffff] opacity-100 gap-2 px-4 sm:px-0">
             <div className="w-full sm:w-[936px] h-auto sm:h-[36px] opacity-100 gap-4 flex flex-col sm:flex-row items-start sm:items-center">
               <div className="w-full sm:w-[165px] h-auto sm:h-[36px] opacity-100 pt-1 pr-[10px] pb-1 pl-1 bg-[#EFF6FF] border-[#BFDBFE] flex flex-row rounded-3xl border border-solid">
@@ -138,7 +160,7 @@ const Page = () => {
                 </div>
                 <div className="w-[35px] h-[20px] opacity-100 gap-0 flex justify-center items-center mt-1 text-center rounded-3xl bg-[#DC2626]">
                   <span className="w-[19px] h-[16px] font-sans font-semibold text-center text-[10px] leading-4 tracking-normal text-[#ffffff]">
-                    99+
+                    {totalChats > 99 ? '99+' : totalChats}
                   </span>
                 </div>
               </div>
@@ -153,7 +175,7 @@ const Page = () => {
             </div>
           </div>
 
-          <section className="w-full h-auto sm:h-[434px] flex flex-col  sm:flex-row flex-wrap justify-center items-center bg-[#ffffff] opacity-100 gap-4">
+          <section className="w-full h-auto sm:h-[434px] flex flex-col sm:flex-row flex-wrap justify-center items-center bg-[#ffffff] opacity-100 gap-4">
             <section className="w-full sm:w-[320px] h-auto sm:h-[434px] opacity-100 rounded-[16px] border border-[#E4E4E7]">
               <div className="w-full sm:w-[320px] h-[56px] rotate-0 opacity-100 gap-2 border-b pb-[12px] pt-[12px] pl-[12px] pr-[12px] border-[#E4E4E7]">
                 <div className="w-full sm:w-[296px] h-[20px] flex items-center rotate-0 opacity-100 gap-3">
@@ -161,78 +183,87 @@ const Page = () => {
                     <Icon icon="lucide:message-circle-more" width="24" height="24" />
                   </span>
                   <span className="w-auto h-[20px] mt-3 font-semibold text-sm leading-5 align-bottom text-[#18181B]">
-                    Live Chats{' '}
+                    Live Chats
                   </span>
                 </div>
               </div>
 
               <section className="w-full sm:w-[320px] h-auto sm:h-[378px] rotate-0 opacity-100">
-                <div className="h-[378px] overflow-y-hidden overflow-x-hidden scrollbar-hide">
-                  {users.map((user, index) => (
-                    <div
-                      key={index}
-                      className={`w-full sm:w-[320px] h-[87px] flex gap-2 pt-[15px] pl-[15px] pr-[10px] opacity-100 rotate-0  ${index > 1 ? ' opacity-10' : ''}  `}
-                    >
-                      {/* Fixed-size image container */}
+                <div className="h-[378px] overflow-y-auto overflow-x-hidden scrollbar-hide">
+                  {transformedUsers.length > 0 ? (
+                    transformedUsers.map((user, index) => (
                       <div
-                        className={`w-[32px] h-[32px] rounded-full overflow-hidden flex-shrink-0 bg-[#E4E4E7] ${index > 1 ? ' opacity-50' : ''} `}
+                        key={`${user.number}-${index}`}
+                        className={`w-full sm:w-[320px] h-[87px] flex gap-2 pt-[15px] pl-[15px] pr-[10px] opacity-100 rotate-0 ${
+                          index > 1 ? 'opacity-50' : ''
+                        }`}
                       >
-                        {user.img && (
-                          <img
-                            src={user.img}
-                            alt="user"
-                            className="w-full h-full object-cover rounded-full"
-                          />
-                        )}
-                      </div>
-
-                      {/* Flexible text container */}
-                      <div
-                        className={`flex-1 flex flex-col  border-b border-zinc-200 ${index > 1 ? ' opacity-50' : ''} `}
-                      >
-                        <div className="font-sans font-semibold text-sm leading-[100%] text-[#0A0A0A] truncate">
-                          {user.number}
-                        </div>
-                        <div className="font-sans font-normal text-xs leading-5 truncate">
-                          {user.sms}
-                        </div>
-                        <div className="font-sans font-normal text-xs leading-4 text-[#71717A]">
-                          <span
-                            className={`w-[54px] h-[20px] opacity-100 gap-[10px] pt-[2px] pr-[5px] pb-[2px] pl-[5px] rounded-[4px] font-sans font-normal text-xs leading-4 
-              ${user.batton === 'General' ? 'bg-[#F4F4F5] text-black' : ''}
-              ${user.batton === 'Enquiry' ? 'bg-[#FEF3C7] text-[#78350F]' : ''}
-              ${user.batton === 'Broken' ? 'bg-[#FEE2E2] text-[#7F1D1D]' : ''}
-              ${user.batton === 'Complete Sale' ? 'bg-[#DCFCE7] text-[#14532D]' : ''}
-            `}
-                          >
-                            {user.batton}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* ✅ Fixed Time Column (stacked properly) */}
-                      <div className="w-[50px] h-[36px] flex flex-col items-end    border-zinc-200">
-                        <span
-                          className={`font-sans font-normal text-xs leading-4 
-            ${user.batton === 'General' ? 'text-[#1DAB61]' : ''}
-            ${user.batton === 'Enquiry' ? 'text-[#1DAB61]' : ''}
-            ${user.batton === 'Broken' ? 'text-[#71717A]' : ''}
-            ${user.batton === 'Complete Sale' ? 'text-[#71717A]' : ''}
-          `}
+                        <div
+                          className={`w-[32px] h-[32px] rounded-full overflow-hidden flex-shrink-0 bg-[#E4E4E7] ${
+                            index > 1 ? 'opacity-50' : ''
+                          }`}
                         >
-                          {user.time}
-                        </span>
+                          {user.img && (
+                            <img
+                              src={user.img}
+                              alt="user"
+                              className="w-full h-full object-cover rounded-full"
+                            />
+                          )}
+                        </div>
 
-                        {user.count && (
-                          <div className="w-[35px] flex justify-end mt-auto">
-                            <div className="font-sans w-[16px] h-[16px] min-w-[16px] text-center flex justify-center items-center  rounded-[8px] text-white bg-[#1DAB61] font-normal text-xs leading-5 truncate">
-                              {user.count}
-                            </div>
+                        <div
+                          className={`flex-1 flex flex-col border-b border-zinc-200 ${
+                            index > 1 ? 'opacity-50' : ''
+                          }`}
+                        >
+                          <div className="font-sans font-semibold text-sm leading-[100%] text-[#0A0A0A] truncate">
+                            {user.number}
                           </div>
-                        )}
+                          <div className="font-sans font-normal text-xs leading-5 truncate">
+                            {user.sms}
+                          </div>
+                          <div className="font-sans font-normal text-xs leading-4 text-[#71717A]">
+                            <span
+                              className={`w-[54px] h-[20px] opacity-100 gap-[10px] pt-[2px] pr-[5px] pb-[2px] pl-[5px] rounded-[4px] font-sans font-normal text-xs leading-4 
+                                ${user.button === 'General' ? 'bg-[#F4F4F5] text-black' : ''}
+                                ${user.button === 'Enquiry' ? 'bg-[#FEF3C7] text-[#78350F]' : ''}
+                                ${user.button === 'Broken' ? 'bg-[#FEE2E2] text-[#7F1D1D]' : ''}
+                                ${user.button === 'Complete Sale' ? 'bg-[#DCFCE7] text-[#14532D]' : ''}
+                              `}
+                            >
+                              {user.button}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="w-[50px] h-[36px] flex flex-col items-end border-zinc-200">
+                          <span
+                            className={`font-sans font-normal text-xs leading-4 
+                              ${user.button === 'General' ? 'text-[#1DAB61]' : ''}
+                              ${user.button === 'Enquiry' ? 'text-[#1DAB61]' : ''}
+                              ${user.button === 'Broken' ? 'text-[#71717A]' : ''}
+                              ${user.button === 'Complete Sale' ? 'text-[#71717A]' : ''}
+                            `}
+                          >
+                            {user.time}
+                          </span>
+
+                          {user.count && (
+                            <div className="w-[35px] flex justify-end mt-auto">
+                              <div className="font-sans w-[16px] h-[16px] min-w-[16px] text-center flex justify-center items-center rounded-[8px] text-white bg-[#1DAB61] font-normal text-xs leading-5 truncate">
+                                {user.count}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="flex justify-center items-center h-full text-[#71717A]">
+                      No live chats available
                     </div>
-                  ))}
+                  )}
                 </div>
               </section>
             </section>

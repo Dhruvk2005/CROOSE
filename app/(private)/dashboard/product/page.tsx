@@ -532,7 +532,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
 
   return (
-    <div className=" space-y-6">
+    <div className=" space-y-6 select-none ">
          <Navbar heading="Products" />
 
       {/* Top Header */}
@@ -651,7 +651,7 @@ className="bg-[#F9F5FF]  text-sm font-medium text-[#685BC7] hover:bg-violet-200 
           <button
   ref={buttonRef}
   onClick={() => setShowBulkModal(true)}
-  className="flex items-center gap-1 px-5 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium leading-5 whitespace-nowrap"
+  className="flex items-center gap-1 px-5 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium leading-5 whitespace-nowrap hover:cursor-pointer "
   style={{
     fontFamily: "Inter",
     fontWeight: "500",

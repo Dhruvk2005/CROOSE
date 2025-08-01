@@ -76,7 +76,7 @@ const Customers = () => {
     },[])
 
     return (
-        <div>
+        <div className='select-none' >
             {/* Header */}
            <Navbar heading="Customers" />
 

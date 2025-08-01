@@ -74,7 +74,7 @@ const Customisespace = () => {
 
     return (
 
-        <div>
+        <div className='select-none' >
             {/* Header */}
             <div className='flex justify-between w-full border-b-[1px] border-[#EAECF0] px-[20px] pt-[10px] pb-[20px]'>
                 <img className='w-[150px] mt-[8px]' src="/Vector.png" alt='crooselogo' />

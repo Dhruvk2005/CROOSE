@@ -224,7 +224,7 @@ const MainDashboard = () => {
 
   return (
 
-    <div className='w-full  '>
+    <div className='w-full select-none  '>
 
       <div className='w-full py-[18px] px-[24px] h-[64px] flex justify-between items-center border-b-2 border-[#EAECF0]'>
         <div className='text-[#121217] text-[18px] font-semibold font-sans'>Overview</div>
@@ -260,7 +260,7 @@ const MainDashboard = () => {
                   </div>
                 </div>
                 <div className=" text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%]  font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-                  0
+                {customerStatistic?.total_chats || 0}
                 </div>
               </div>
 

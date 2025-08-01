@@ -779,3 +779,64 @@ export const OrdersStatus = async (data: any) => {
     console.log(err)
   }
 }
+
+export const  spaceChats = async (spaceId:number)=>{
+  try{
+    const token = localStorage.getItem("token")
+    const res = await axios({
+      method:'get',
+      url:`${BASE_URL}/api/space_chat_stats`,
+      headers:{
+        Authorization:`Bearer ${token}`
+      },
+      params:{
+        space_id:11
+      }
+
+    })
+    
+    return res.data
+
+  }catch(err){
+console.log(err)
+  }
+}
+
+export const spaceLiveChats = async (spaceId: number) => {
+  try {
+    const token = localStorage.getItem("token");
+    
+    console.log('🔐 Token:', token ? 'Token exists' : 'No token found');
+    console.log('🔍 Making API call with spaceId:', spaceId);
+    
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+    
+    const res = await axios({
+      method: 'get',
+      url: `${BASE_URL}/api/space_chat_list`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+        space_id: 11
+      }
+    });
+    
+    console.log('🌐 Full API Response:', res);
+    console.log('🌐 Response Status:', res.status);
+    console.log('🌐 Response Data:', res.data);
+    console.log('🌐 Response Data.data:', res.data.data);
+    console.log('🌐 Type of res.data.data:', typeof res.data.data);
+    
+    return res.data.data;
+  } catch (err:any) {
+    console.error('❌ API Error:', err);
+    if (err.response) {
+      console.error('❌ Error Response Status:', err.response.status);
+      console.error('❌ Error Response Data:', err.response.data);
+    }
+    throw err;
+  }
+};
