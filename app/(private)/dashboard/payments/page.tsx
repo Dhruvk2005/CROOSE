@@ -87,10 +87,10 @@ const Payments = () => {
             <Icon icon="mynaui:filter-solid" width="20" height="20" className="text-[#667085]" />
             <span className="text-[#344054] font-semibold text-[14px]">Filters</span>
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 border-[2px] border-[#EAECF0] rounded-[8px]">
+          {/* <button className="flex items-center gap-2 px-4 py-2 border-[2px] border-[#EAECF0] rounded-[8px]">
             <Icon icon="bitcoin-icons:export-outline" width="20" height="20" className="text-[#344054]" />
             <span className="text-[#344054] font-semibold text-[14px]">Export</span>
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -108,7 +108,7 @@ const Payments = () => {
     <th className="px-6 py-3">Payment Method</th>
     <th className="px-6 py-3">Transaction Status</th>
     <th className="px-6 py-3">Transaction ID</th>
-    <th className="px-6 py-3">Actions</th>
+    {/* <th className="px-6 py-3">Actions</th> */}
   </tr>
           </thead>
          <tbody>
@@ -121,9 +121,9 @@ const Payments = () => {
       <td className="px-6 py-4">{payment.payment_method}</td>
       <td className="px-6 py-4 capitalize">{payment.transaction_status}</td>
       <td className="px-6 py-4">{payment.transaction_id}</td>
-      <td className="px-6 py-4 text-[#475467]">
+      {/* <td className="px-6 py-4 text-[#475467]">
         <Icon icon="bi:three-dots-vertical" width="16" height="16" />
-      </td>
+      </td> */}
     </tr>
   ))}
 </tbody>
