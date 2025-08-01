@@ -91,7 +91,7 @@ const SettingTwo = () => {
               <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
                 Settings
               </span>
-              <span className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA]" onClick={() => {setOpenSetting1(false)
+              <span className="w-9 h-9 rounded-full border p-2 flex items-center justify-center border-[#F1F2F3] bg-[#F6F8FA] hover:cursor-pointer " onClick={() => {setOpenSetting1(false)
                 setOpenSetting2(false)
               }} >
                 <Icon icon="iconamoon:close-bold" width="24" height="24" style={{ color: '#000' }} />
@@ -107,9 +107,9 @@ const SettingTwo = () => {
                     setOpenSetting2(false);
                     setOpenSetting3(false);
                   }}>
-                    <span className="font-semibold text-[14px] text-[#667085]">Profile</span>
+                    <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Profile</span>
                   </button>
-                  <button className="rounded-sm w-[131px] bg-[#F9F5FF] text-sm px-3 py-2">
+                  <button className="rounded-sm w-[131px] bg-[#F9F5FF] text-sm px-3 py-2 hover:cursor-pointer">
                     <span className="font-semibold text-[14px] text-[#685BC7]">Security</span>
                   </button>
                   <button className="rounded-sm text-sm px-2 py-2" onClick={() => {
@@ -117,13 +117,13 @@ const SettingTwo = () => {
                     setOpenSetting2(false);
                     setOpenSetting1(false);
                   }}>
-                    <span className="font-semibold text-[14px] text-[#667085]">Billing</span>
+                    <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2  hover:cursor-pointer">Billing</span>
                   </button>
                   <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout}>
-                    <span className="font-semibold text-[14px] text-[#667085]">Log Out</span>
+                    <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Log Out</span>
                   </button>
                 </div>
-                <div className="text-[18px] font-inter font-semibold leading-[28px] text-[#101828]">Security</div>
+                <div className="text-[18px] font-inter font-semibold leading-[28px] text-[#101828] hover:cursor-pointer ">Security</div>
               </div>
               <section className='w-full h-[314px] flex  gap-[32px]'>
                 <div className='w-full h-[74px] mt-2 flex flex-col'>
@@ -133,7 +133,7 @@ const SettingTwo = () => {
                       type={showOldPassword ? "text" : "password"}
                       onChange={(e) => setOldPass(e.target.value)}
                       value={oldPass}
-                      className="w-full h-[44px] ..."
+                      className="w-full h-[44px] border-[1px] border-[#D0D5DD] rounded-[12px] px-3"
                       placeholder="Enter your password"
                     />
                     <button
@@ -152,7 +152,7 @@ const SettingTwo = () => {
                         type={showNewPassword ? "text" : "password"}
                         onChange={(e) => setNewPass(e.target.value)}
                         value={newPass}
-                        className="w-full h-[44px] ..."
+                        className="w-full h-[44px] border-[1px] border-[#D0D5DD] rounded-[12px] p-3  ..."
                         placeholder="Enter Password"
                       />
                       <button
@@ -173,7 +173,7 @@ const SettingTwo = () => {
                         type={showConfirmPassword ? "text" : "password"}
                         onChange={(e) => setConfirmPass(e.target.value)}
                         value={confirmPass}
-                        className="w-full h-[44px] ..."
+                        className="w-full h-[44px] border-[1px] border-[#D0D5DD] rounded-[12px] px-3 ..."
                         placeholder="Enter Password"
                       />
                       <button

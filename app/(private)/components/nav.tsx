@@ -10,6 +10,8 @@ import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 import { useContext } from 'react';
 import Settingprovider, { SettingContext } from '@/app/context/SettingContext';
+import { usePathname } from 'next/navigation';
+
 const navItems = [
   { label: 'Overview', href: '/dashboard/maindashboard', icon: <Squares2X2Icon className="w-5.6 h-5.5 text-gray-100" /> },
   // { label: 'Modules', href: '/dashboard/createnewspace', icon: <MagnifyingGlassIcon className="w-5.6 h-5.5 text-gray-100" /> },
@@ -19,6 +21,7 @@ const navItems = [
   // { label: 'Analytics', href: '#', icon: <Icon icon="solar:chart-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Appointments', href: '/dashboard/appointment', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
   { label: 'Product/Services', href: '/dashboard/product', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
+  { label: 'Orders', href: '/dashboard/orders', icon:<Icon icon="lets-icons:order" width="24" height="24"  style={{color: "#e5e7e9"}} />},
 ];
 
 
@@ -59,6 +62,9 @@ export const Nav = ({ show, setShow }: any) => {
 
   };
 
+  const pathname = usePathname();
+
+
   return (
 
 
@@ -80,7 +86,8 @@ export const Nav = ({ show, setShow }: any) => {
             <ul>
               {navItems.map((item, index) => (
                 <Link key={index} href={item.href}>
-                  <li className="flex w-[232px] items-center gap-[8px] px-[12px] py-[8px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB] transition-all">
+                      <li className={`flex w-[232px] items-center gap-[8px] px-[12px] py-[8px] transition-all cursor-pointer
+  ${pathname === item.href ? 'bg-[#1a173b] border-l-4 border-[#7367CB]' : 'hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]'}`}>
                     <div>{item.icon}</div>
                     <div className='text-[14px] font-sans text-[#F2F4F7] font-normal'>{item.label}</div>
                   </li>
@@ -101,19 +108,23 @@ export const Nav = ({ show, setShow }: any) => {
                   </div>
                   <div>
 
-                    <span className="text-[14px] font-sans text-[#F2F4F7] font-normal">Settings</span>
+                    <span className="text-[14px] font-sans text-[#F2F4F7] select-none font-normal">Settings</span>
                   </div>
                 </li>
-                <Link href='/dashboard/support'>
-                  <li className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
-                    <div>
+                <div >             <Link  href='/dashboard/support' >
+                  <li className= {`flex w-[232px] items-center gap-[8px] px-[12px] py-[8px] transition-all cursor-pointer
+  ${pathname === '/dashboard/support'? 'bg-[#1a173b] border-l-4 border-[#7367CB]' : 'hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]'}`} >  
+                    <div  >
                       <Icon icon="tabler:headphones" width="24" height="24" color='white' />
                     </div>
                     <div>
-                      <span className="text-[14px] font-sans text-[#F2F4F7] font-normal">Support</span>
+                      <span className="text-[14px] font-sans text-[#F2F4F7] select-none font-normal">Support</span>
                     </div>
                   </li>
                 </Link>
+                </div>  
+
+
 
                 {/* 
                 <li onClick={handlelogout} className="flex w-[232px] h-auto gap-[8px] pt-[8px] pb-[8px] pl-[12px] pr-[12px] hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]  transition-all">
@@ -128,7 +139,7 @@ export const Nav = ({ show, setShow }: any) => {
               </ul>
             </div>
 
-            <div className="flex flex-col w-[272px] h-auto p-[12px] gap-[10px]">
+            <div className="flex flex-col w-[272px] select-none  h-auto p-[12px] gap-[10px]">
               <hr className="border-[#475467]" />
               <div className="bg-[#FFFFFF1F] flex w-[248px] h-auto p-[12px] gap-[12px] rounded-[10px]">
                 <div className='w-[40px] h-[40px] bg-[#EAECF0] rounded-full flex items-center justify-center text-[#475467] font-semibold text-[14px] uppercase'>
@@ -142,7 +153,7 @@ export const Nav = ({ show, setShow }: any) => {
                 </div>
 
                 <div className="flex flex-col w-[136px] h-auto">
-                  <p className="font-medium text-[14px] text-[#F2F4F7] ">{userdata?.data?.name || "naem"}</p>
+                  <p className="font-medium text-[14px] text-[#F2F4F7] ">{userdata?.data?.name || "name"}</p>
                   <p className="font-normal text-[12px] text-[#F2F4F7] ">{userdata?.data?.email || "email"}</p>
                 </div>
                 <div className="flex items-center">

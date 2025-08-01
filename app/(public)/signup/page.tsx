@@ -95,8 +95,8 @@ const Signupform = () => {
           // if(res.data){
           //   localStorage.setItem("user",JSON.stringify(res.data))
           // }
-         localStorage.setItem('registeredEmail',values.email)
-         console.log("email:",values.email)
+          localStorage.setItem('registeredEmail', values.email)
+          console.log("email:", values.email)
 
           // router.push(`/emailverification?email=${encodeURIComponent(values.email)}`);
           router.push("/login")
@@ -140,7 +140,7 @@ const Signupform = () => {
   return (
     <PublicRoute>
       <div className="flex">
-        <div className="hidden pt-[11px] pl-[7px] w-[684px] h-[1000px] bg-[#685BC71F] md:block">
+        <div className="hidden select-none pt-[11px] pl-[7px] w-[684px] h-[1000px] bg-[#685BC71F] md:block">
           <div className="w-[190px] h-[67.05px] mt-[40.94px] ml-[45px]">
             <img className="w-[173.52px] h-[40.24px] mt-[11.05px] ml-[7.66px]" src="Vector.png" alt="Logo" />
           </div>
@@ -160,17 +160,17 @@ const Signupform = () => {
         <div className="flex-1 flex h-[900px] md:-mt-[40px] md:p-[80px_160px]">
           <section className="w-full md:w-[435px] h-auto flex flex-col gap-[32px]">
             <div className="p-6 space-y-4 sm:p-8">
-              <h1 className="font-bold text-[32px] text-[#1D2939]">Create an account</h1>
+              <h1 className="font-bold text-[32px] select-none  text-[#1D2939]">Create an account</h1>
 
               <form onSubmit={formik.handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block mb-2 text-sm font-medium text-[#344054]">Full Name</label>
-                  <input type="text" name="name" id="name" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Name" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
-                  {formik.touched.name && formik.errors.name && <p className="text-red-500 text-sm mt-1">{formik.errors.name}</p>}
+                  <label htmlFor="name" className="block mb-2 text-sm font-medium select-none text-[#344054]">Full Name</label>
+                  <input  type="text" name="name" id="name" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Name" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
+                  {formik.touched.name && formik.errors.name && <p className="text-red-500  text-sm mt-1">{formik.errors.name}</p>}
                 </div>
 
                 <div>
-                  <label htmlFor="business_name" className="block mb-2 text-sm font-medium text-[#344054]">Business Name</label>
+                  <label htmlFor="business_name" className="block mb-2 text-sm font-medium select-none text-[#344054]">Business Name</label>
                   <input type="text" name="business_name" id="business_name" value={formik.values.business_name} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Business Name" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
                 </div>
 
@@ -179,18 +179,18 @@ const Signupform = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-[#344054]">Email</label>
+                  <label htmlFor="email" className="block mb-2 text-sm font-medium select-none  text-[#344054]">Email</label>
                   <input type="email" name="email" id="email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Email" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
                   {formik.touched.email && formik.errors.email && <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>}
                 </div>
 
                 <div>
-                  <label htmlFor="phone_number" className="block mb-2 text-sm font-medium text-[#344054]">Mobile Number</label>
+                  <label htmlFor="phone_number" className="block mb-2 text-sm font-medium select-none text-[#344054]">Mobile Number</label>
                   <input type="text" name="phone_number" id="phone_number" value={formik.values.phone_number} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Mobile Number" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-[#344054]">Password (Min of 8 characters)</label>
+                  <label htmlFor="password" className="block mb-2 text-sm font-medium select-none select-none text-[#344054]">Password (Min of 8 characters)</label>
                   <input type="password" name="password" id="password" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Enter Password" className="w-full h-[44px] p-[16px] text-sm border border-gray-300 rounded-[12px] outline-none" />
                   {formik.touched.password && formik.errors.password && <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>}
                 </div>
@@ -201,7 +201,7 @@ const Signupform = () => {
 
 
 
-<label  className="block mb-2 text-sm font-medium text-[#344054]" >Select question</label>
+                  <label className="block mb-2 text-sm font-medium text-[#344054]" >Select question</label>
                   <select
                     name="security_question"
                     value={formik.values.security_question || ''}
@@ -209,7 +209,7 @@ const Signupform = () => {
                     onBlur={formik.handleBlur}
                     className='text-[#344054] rounded-[10px] border-[#344054] border-1 text-[11px] font-medium w-full p-[13px]'
                   >
-                    
+
                     <option value='What service did you book first using Croose?'>What service did you book first using Croose?</option>
                     <option value='What was the location of your first appointment with Croose?'>What was the location of your first appointment with Croose?</option>
                     <option value='What was your most recent service on Croose?'>What was your most recent service on Croose?</option>
@@ -236,7 +236,7 @@ const Signupform = () => {
 
                 </div>
                 {/* <Link href={"/emailverification"} > */}
-                  <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
+                <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
                 {/* </Link> */}
                 <div className="text-center text-sm text-[#101828] mt-2">
                   Already have an account?{' '}

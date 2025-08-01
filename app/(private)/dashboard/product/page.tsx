@@ -717,7 +717,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
     <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl h-[80vh] overflow-y-auto p-6 relative transition-all duration-300">
 
       {/* Header with slider */}
-      <div className="flex justify-between items-center border-b border-[#F1F2F3] pb-4 mb-4">
+      <div className="flex justify-between items-center border-b border-[#F1F2F3] p-4 mb-4">
         <div className="relative inline-flex items-center bg-gray-100 rounded-full p-1 transition-all duration-300">
           <button
             onClick={() => setShowBulkModal(false)}

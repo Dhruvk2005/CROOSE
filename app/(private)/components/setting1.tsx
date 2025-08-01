@@ -85,7 +85,7 @@ const Setting1 = () => {
 
   return (
     <div>
-      <div className="fixed inset-0 flex items-center justify-center bg-[#9999] p-4 sm:p-6">
+      <div className="fixed inset-0 flex items-center justify-center bg-[#9999] p-4 sm:p-6 select-none ">
 
         <div className="relative z-10  flex justify-center items-center w-full">
           <div className="w-full max-w-[717px] h-[732px] opacity-100 border-[#E2E4E84D] bg-[#ffffff] rounded-[16px] border border-solid">
@@ -103,25 +103,25 @@ const Setting1 = () => {
               <div className="w-full flex flex-col gap-6">
                 <div className="w-full flex flex-wrap items-center gap-2 sm:gap-5">
                   <div className="flex flex-wrap gap-2 w-full">
-                    <button className="rounded-sm text-sm px-3 py-2 bg-[#F9F5FF]">
-                      <span className="font-semibold text-[14px] text-[#685BC7]">Profile</span>
+                    <button className="rounded-sm text-sm px-3 py-2 bg-[#F9F5FF] hover:cursor-pointer ">
+                      <span className="font-semibold text-[14px]  text-[#685BC7]    ">Profile</span>
                     </button>
                     <button className="rounded-sm text-sm px-3 py-2" onClick={() => {
                       setOpenSetting2(true)
                       setOpenSetting1(false)
                       setOpenSetting3(false)
                     }} >
-                      <span className="font-semibold text-[14px] text-[#667085]">Security</span>
+                      <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Security</span>
                     </button>
-                    <button className="rounded-sm text-sm px-3 py-2" onClick={() => {
+                    <button className="rounded-sm text-sm " onClick={() => {
                       setOpenSetting3(true)
                       setOpenSetting1(false)
                       setOpenSetting2(false)
                     }}  >
-                      <span className="font-semibold text-[14px] text-[#667085]">Billing</span>
+                      <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Billing</span>
                     </button>
                     <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout} >
-                      <span className="font-semibold text-[14px] text-[#667085]">Log Out</span>
+                      <span className="font-semibold text-[14px] text-[#667085]  hover:text-[red] bg-[white] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Log Out</span>
                     </button>
                   </div>
                 </div>

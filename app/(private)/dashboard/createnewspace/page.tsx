@@ -14,6 +14,7 @@ interface Space {
   client_name?: string;
   updated_at?: string;
   created_at?: string;
+  category?: string;
 
 }
 
@@ -42,37 +43,43 @@ const Newspace = () => {
   const IMAGE_BASE_URL = "http://localhost:5000";
 
   return (
-    <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col' >
+    <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col select-none ' >
       <div>
         <Spacenav />
       </div>
 
       <section className='flex flex-wrap justify-center'>
         <div className='w-[90%] min-h-[100vh] flex flex-col gap-[40px] mt-[30px]'>
-          <div className='flex'>
-            <Link
-              href="/spacebusiness"
-            >
-              <button className='flex rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500] items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px]'>
-                Create New Space
-              </button>
-            </Link>
-          </div>
 
           <div className='w-full flex flex-col justify-center -mt-[10px]'>
             <div className='flex justify-between items-center w-[100%] h-auto'>
               <h1 className='text-[#121217] font-[600] text-[24px] font-sans'>
                 Assistants you have created
               </h1>
-              <ul className='flex gap-[10px] mr-[70px] items-center'>
-                <li className='flex items-center justify-center gap-[10px] px-[16px] py-[8px] bg-[#F4F4F5] border border-[#E4E4E7] rounded-full font-sans font-[600] text-[14px] text-[#18181B]'>
-                  <span>All</span>
-                  <Icon icon="charm:tick" width="16" height="16" style={{ color: "black" }} />
-                </li>
-                <li className='text-[#71717A] font-sans font-[600] text-[14px] list-none'>
-                  Active
-                </li>
+              <ul className='flex gap-[10px] mr-[70px] gap-[20px] items-center'>
+                <div className='flex items-center gap-[10px] ' >
+                  <li className='flex items-center justify-center gap-[10px] px-[16px] py-[8px] bg-[#F4F4F5] border border-[#E4E4E7] rounded-full font-sans font-[600] text-[14px] text-[#18181B]'>
+                    <span>All</span>
+                    <Icon icon="charm:tick" width="16" height="16" style={{ color: "black" }} />
+                  </li>
+                  <li className='text-[#71717A] font-sans font-[600] text-[14px] list-none'>
+                    Active
+                  </li>
+                </div>
+
+                <div className='flex'>
+                  <Link
+                    href="/spacebusiness"
+                  >
+                    <button className='flex -mr-[105px] rounded-[8px] bg-[#685BC7] text-[14px] text-white font-[500] items-center pt-[8px] pb-[8px] pr-[16px] pl-[16px] hover:cursor-pointer '>
+                      Create New Space
+                    </button>
+                  </Link>
+                </div>
+
               </ul>
+
+
             </div>
 
           </div>
@@ -80,7 +87,7 @@ const Newspace = () => {
           <div className='w-full flex flex-col gap-[30px]'>
             <ul className='flex flex-wrap gap-[30px]'>
               {loading ? (
-                <p>Loading...</p>
+                <p >Loading...</p>
               ) : spaceData.length === 0 ? (
                 <p>No spaces found</p>
               ) : (
@@ -119,8 +126,8 @@ const Newspace = () => {
                             <li>
                               <img
                                 // src={`${IMAGE_BASE_URL}/${space.image}`}
-                                src="/profile-picture-4.png"
-                                alt={space.name}
+                                src={space.image}
+                                alt={space.image}
                                 className='w-[59px] h-[59px] absolute top-[75%] rounded-full'
                               />
 
@@ -143,8 +150,8 @@ const Newspace = () => {
                               </ul>
 
                               <ul>
-                                <li className='flex text-[#475467] -mt font-500 text-[12px] font-Inter'>
-                                  Hair salon
+                                <li className='flex text-[#475467] -mt font-500 text-[12px] font-Inter  '>
+                                  {space.category}
                                 </li>
                                 {/* <li className='flex text-[#0097A7] font-500 text-[12px] font-Inter'>
                                 Category
@@ -160,7 +167,7 @@ const Newspace = () => {
                                   className='w-[48px] h-[48px] rounded-full'
                                 /> */}
                                 <li className='text-[12px] font-normal text-[#667085] font-Inter ' >
-                                  <p>created on</p>
+                                  <p>Created on</p>
                                   <p className='text-[#101828]  ' >{space.created_at}</p>
                                 </li>
                               </ul>
@@ -173,22 +180,47 @@ const Newspace = () => {
                               </ul>
                             </div>
                           </div>
+
+
                         </section>
+
                       </div>
                     </li>
                   </Link>
                 ))
               )}
-            </ul>
-
-
-          </div>
-
-
-        </div>
-      </section>
-
+{loading ? (
+  <div>
+    <span className="text-gray-500"></span> 
+  </div>
+) : (
+  <Link href="/spacebusiness">
+    <div className="bg-[#F4F4F5] border-[1px] border-[#EAECF0] flex justify-center items-center rounded-[16px] w-[352px] h-[270px] hover:cursor-pointer">
+      <div className="flex-col h-auto">
+        <Icon
+          className="ml-6"
+          icon="bitcoin-icons:plus-filled"
+          width="24"
+          height="24"
+          style={{ color: "#020617" }}
+        />
+        <p className="text-[#1D2939] mt-[10px] text-center font-Inter font-semibold text-[14px]">
+          New Space
+        </p>
+      </div>
     </div>
+  </Link>
+)}
+
+    </ul>
+
+
+          </div >
+
+        </div >
+      </section >
+
+    </div >
   )
 }
 
