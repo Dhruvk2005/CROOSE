@@ -82,9 +82,9 @@ const Spaceiq = (props: any) => {
   return (
     <div>
       <div className="relative z-10">
-        <div className="fixed inset-0 bg-gray-500/75 transition-opacity flex justify-center items-center">
+        <div className="fixed inset-0 bg-[#18181B66] transition-opacity flex justify-center items-center">
           <div className="w-full flex justify-center px-4 sm:px-6">
-            <div className="w-full  max-w-4xl h-auto flex flex-col items-center  rounded-2xl bg-white">
+            <div className="w-full  max-w-4xl h-[600px] flex flex-col items-center  rounded-2xl bg-white">
 
               <div className="w-[90%] flex items-center justify-between h-16">
                 <img src="/arrow-left.png" className="h-5 w-5" />
@@ -107,7 +107,7 @@ const Spaceiq = (props: any) => {
 
                 <div className="sm:w-[80%]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
 
-                  <div className="w-[80%] h-[186px]  flex flex-col items-center gap-1">
+                  <div className="w-[80%] h-[286px]  flex flex-col items-center gap-1">
                     <span className="text-[#18181B] font-sans font-medium text-base leading-6">
                       Prompt
                     </span>
@@ -154,8 +154,10 @@ const Spaceiq = (props: any) => {
 
                 {/* FINAL BUTTON SECTION FIXED */}
                 <div className="w-[55%] ml-6 flex flex-col gap-[7px] sm:flex-row items-center  mt-6 px-4">
-                  <button onClick={() => props.setSpaceiqcoloropen(true)} className="w-[78%] py-2 bg-[#685BC7]  text-white font-sans font-semibold text-sm rounded-md text-center">
-                    Finish
+                  <button onClick={() => {props.setSpaceiqcoloropen(true)
+                    
+                  }} className="w-[78%] py-2 bg-[#685BC7]  text-white font-sans font-semibold text-sm rounded-md text-center">
+                   Proceed
                   </button>
                   <button className="w-[63px] py-2 border border-zinc-200 bg-[#F4F4F5] ml-[5px] text-[#685BC7] font-sans font-semibold text-sm rounded-md text-center">
                     Skip

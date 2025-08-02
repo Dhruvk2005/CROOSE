@@ -20,8 +20,9 @@ const navItems = [
   { label: 'Customers', href: '/dashboard/customers', icon: <Icon icon="lucide:book-user" className="w-5 h-5.5 text-gray-100" /> },
   // { label: 'Analytics', href: '#', icon: <Icon icon="solar:chart-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Appointments', href: '/dashboard/appointment', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
+   { label: 'Orders', href: '/dashboard/orders', icon:<Icon icon="lets-icons:order" width="24" height="24"  style={{color: "#e5e7e9"}} />},
   { label: 'Product/Services', href: '/dashboard/product', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
-  { label: 'Orders', href: '/dashboard/orders', icon:<Icon icon="lets-icons:order" width="24" height="24"  style={{color: "#e5e7e9"}} />},
+ 
 ];
 
 
@@ -68,7 +69,7 @@ export const Nav = ({ show, setShow }: any) => {
   return (
 
 
-    <div className={`${show ? "block" : "hidden"} ${show ? "fixed" : "relative"} xl:block z-1 bg-[#13102E] w-[272px] h-[100%] max-w-[272px]`}>
+    <div className={`${show ? "block" : "hidden"} ${show ? "fixed" : "relative"} xl:block z-1 bg-[#13102E] select-none  w-[272px] h-[100%] max-w-[272px]`}>
       
      
       

@@ -65,14 +65,13 @@ const Spaceiqcolor = (props: any) => {
 
 
   return (
-    <div>
-      <div className="relative  z-[40]">
-        <div className="fixed inset-0 bg-[#18181B66] transition-opacity flex justify-center items-center">
-          <div className="w-full flex justify-center   px-4 sm:px-6">
-            <div className="w-full max-w-4xl h-[300px] mb-[250px]  flex flex-col items-center border-2 border-[#EAECF0] rounded-2xl bg-white">
+     <div>
+      <div className="relative z-10">
+        <div className="fixed inset-0 transition-opacity flex justify-center items-center">
+          <div className="w-full flex justify-center px-4 sm:px-6">
+            <div className="w-full  max-w-4xl h-[600px] flex flex-col items-center  rounded-2xl bg-white">
 
-
-              <div className="w-[97%] h-[100px] flex text-center p-[10px]  items-center justify-between ">
+              <div className="w-[90%] flex items-center justify-between h-16">
                 <img src="/arrow-left.png" className="h-5 w-5" />
                 <div className="text-white font-sans font-semibold text-xl leading-none tracking-tight text-center">
                   Scan QR code
@@ -80,24 +79,22 @@ const Spaceiqcolor = (props: any) => {
                 <img onClick={() => props.setSpaceiqcoloropen(false)} src="/x.png" className="h-5 w-5" />
               </div>
 
-              <div className="bg-white flex flex-col border-b px-4 pb-12 gap-8 w-full items-center">
+              <div className="bg-white flex flex-col px-4 pb-12 gap-3 rounded-2xl  w-full items-center">
+              
 
-
-                <div className="w-full h-[100px]  flex flex-col justify-center items-center gap-2 text-center">
-                  <img src="/Frame.png" className="w-[105px] h-[16px] flex gap-[4px]" />
+                <div className="w-full flex flex-col justify-center items-center gap-2 text-center">
+                     <img src="/Frame.png" className="w-[105px] h-[16px] flex gap-[4px]" />
                   <span className="text-[#121217] font-sans font-semibold text-xl leading-none tracking-tight">
                     Increase Space IQ
                   </span>
-                  <span className="text-[#475467] font-sans text-sm leading-5 w-full sm:w-[47%]">
+                  <span className="text-[#71717A] font-sans text-sm leading-5 w-full sm:w-[47%]">
                     Set custom instructions and guidance for the agent to follow. Enter plain text, upload or link documents.
                   </span>
                 </div>
 
+                <div className="sm:w-[80%]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
 
-                <div className=" sm:w-[80%] h-[]  flex flex-col items-center px-4 py-6 rounded-lg gap-6">
-
-
-                  <div className="w-[80%] h-[186px] items-center flex  flex-col gap-3">
+                  <div className="w-[80%] h-[286px]  flex flex-col items-center gap-1">
                     <span className="text-[#18181B] font-sans font-medium text-base leading-6">
                       Prompt
                     </span>
@@ -114,15 +111,9 @@ const Spaceiqcolor = (props: any) => {
                         <img src="/sms.png" alt="sms" className="h-4 w-4" />
                       </div>
                     </div>
+
                   </div>
-
-
-                  <div className="w-[70%]">
-                    <img src="/Line 10.png" alt="line" className="w-[90%]" />
-                  </div>
-
-{/* 
-                  <div className="w-[80%] h-[116px] items-center flex flex-col gap-3">
+ {/* <div className="w-[80%] h-[116px] items-center flex flex-col gap-3">
                     <span className="text-[#18181B] h-[24px] font-sans font-medium text-base leading-6">
                       Documents
                     </span>
@@ -158,46 +149,32 @@ const Spaceiqcolor = (props: any) => {
                         </Link>
                       </div>
                     </div>
-                  </div> */}
+                  </div>  */}
+
+
+
                 </div>
 
 
-                <div className="w-[55%] ml-6 flex flex-col gap-[7px] sm:flex-row items-center  gap-[8px] px-4">
-                 <button
-  onClick={async () => {
-    try {
-      if (!spaceId) {
-        console.error("spaceId not found");
-        return;
-      }
 
-      await updateSpacePrompt(spaceId, description);
-      console.log("Prompt updated successfully");
-
-      // Close all modals and go to next
-      props.setDocopen(false);
-      props.setSpaceiqcoloropen(false);
-      props.setSpaceiqopen(false);
-      props.setProopen(true);
-    } catch (err) {
-      console.error("Failed to update prompt:", err);
-    }
-  }}
-  className=" w-[70%] py-2 bg-[#685BC7] text-white font-sans font-semibold text-sm rounded-md text-center"
->
-  Finish
-</button>
-
-                  <button className=" w-[23%] py-2 border border-zinc-200 bg-[#F4F4F5] text-[#685BC7] font-sans font-semibold text-sm rounded-md text-center">
+                {/* FINAL BUTTON SECTION FIXED */}
+                <div className="w-[55%] ml-6 flex flex-col gap-[7px] sm:flex-row items-center  mt-6 px-4">
+                  <button onClick={() => {props.setSpaceiqcoloropen(false)
+                    props.setSpaceiqopen(false)
+                  }} className="w-[78%] py-2 bg-[#685BC7]  text-white font-sans font-semibold text-sm rounded-md text-center">
+                    Finish
+                  </button>
+                  <button className="w-[63px] py-2 border border-zinc-200 bg-[#F4F4F5] ml-[5px] text-[#685BC7] font-sans font-semibold text-sm rounded-md text-center">
                     Skip
                   </button>
                 </div>
               </div>
+              {/* END FINAL BUTTON SECTION */}
+
             </div>
           </div>
         </div>
       </div>
-
     </div>
   )
 }

@@ -88,7 +88,7 @@ const Setting1 = () => {
       <div className="fixed inset-0 flex items-center justify-center bg-[#9999] p-4 sm:p-6 select-none ">
 
         <div className="relative z-10  flex justify-center items-center w-full">
-          <div className="w-full max-w-[717px] h-[732px] opacity-100 border-[#E2E4E84D] bg-[#ffffff] rounded-[16px] border border-solid">
+          <div className="w-full max-w-[717px] h-[650px] opacity-100 border-[#E2E4E84D] bg-[#ffffff] rounded-[16px] border border-solid overflow-y-auto ">
 
             <section className="w-full h-auto flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
               <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
@@ -99,7 +99,7 @@ const Setting1 = () => {
               </span>
             </section>
 
-            <section className="w-full h-auto px-4 py-6 sm:px-[64px] sm:py-[32px] flex flex-col gap-8">
+            <section className="w-full h-auto px-4 py-6 sm:px-[64px] sm:py-[32px] flex flex-col">
               <div className="w-full flex flex-col gap-6">
                 <div className="w-full flex flex-wrap items-center gap-2 sm:gap-5">
                   <div className="flex flex-wrap gap-2 w-full">

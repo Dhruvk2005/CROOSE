@@ -90,7 +90,7 @@ const Spacebusiness = () => {
 
 
     return (
-        <div className='w-full min-h-screen px-[20px] py-[14px]'>
+        <div className='w-full min-h-screen select-none px-[20px] py-[14px]'>
             <div className='w-full flex flex-col items-center gap-[32px]'>
 
                 <div className='flex justify-between w-full border-b-[1px] border-[#EAECF0] pb-[30px]'>

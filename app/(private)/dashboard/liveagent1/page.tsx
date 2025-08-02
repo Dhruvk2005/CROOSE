@@ -1,8 +1,31 @@
+
+'use client'
 import React from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import Spacenav from '../../components/spacenav';
+import { useState, useEffect } from 'react';
+import { spaceLiveChats } from '@/app/Apis/publicapi';
+import { useParams, useSearchParams } from 'next/navigation';
+
 
 const Page = () => {
+  const [spaceLiveChatsData, setSpaceLiveChatsData] = useState<any>()
+  const { spaceId } = useParams()
+
+  useEffect(() => {
+    const fetchSpaceLiveChats = async () => {
+      try {
+        const res = spaceLiveChats(Number(spaceId))
+        setSpaceLiveChatsData(res)
+        console.log('Live chats:',res)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchSpaceLiveChats()
+  }, [spaceId])
+
+
   return (
     <div className=" w-full  h-[900px] opacity-100 gap-[10px]">
       <Spacenav />

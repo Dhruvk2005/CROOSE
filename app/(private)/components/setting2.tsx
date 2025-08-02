@@ -86,7 +86,7 @@ const SettingTwo = () => {
     <div>
       <div className="fixed inset-0 flex items-center justify-center bg-[#9999] p-4 sm:p-6">
         <div className="relative z-10 flex justify-center items-center w-full">
-          <div className="w-full max-w-[717px] h-[732px] opacity-100 border-[#E2E4E84D] bg-[#ffffff] rounded-[16px] border border-solid">
+          <div className="w-full max-w-[717px] h-[650px] opacity-100 border-[#E2E4E84D] bg-[#ffffff] rounded-[16px] border border-solid overflow-y-auto ">
             <section className="w-full h-auto flex justify-between items-center border-b border-[#F6F6F6] rounded-t-[16px] px-4 py-3 sm:px-[20px] sm:py-[12px]">
               <span className="w-auto font-inter font-semibold text-[18px] sm:text-[20px] leading-[150%] tracking-[-0.04em] text-[#1D2939]">
                 Settings
@@ -120,7 +120,7 @@ const SettingTwo = () => {
                     <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2  hover:cursor-pointer">Billing</span>
                   </button>
                   <button className="rounded-sm text-sm px-3 py-2" onClick={handlelogout}>
-                    <span className="font-semibold text-[14px] text-[#667085]  hover:text-[#685BC7] bg-[#F9F5FF] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Log Out</span>
+                    <span className="font-semibold text-[14px] text-[#667085]  hover:text-[red] rounded-sm text-sm px-3 py-2 hover:cursor-pointer ">Log Out</span>
                   </button>
                 </div>
                 <div className="text-[18px] font-inter font-semibold leading-[28px] text-[#101828] hover:cursor-pointer ">Security</div>
