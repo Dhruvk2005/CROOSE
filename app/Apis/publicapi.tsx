@@ -2,7 +2,7 @@
 
 import axios, { AxiosRequestConfig } from 'axios';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 interface AxiosOptions {
   method: 'get' | 'post' | 'put' | 'delete';
@@ -11,6 +11,9 @@ interface AxiosOptions {
   body?: any;
   formData?: FormData;
 }
+
+
+
 
 
 export const axiosRequest = async ({
@@ -87,6 +90,49 @@ export const spaceIqCheck = async (data: any) => {
     console.log(err)
   }
 }
+
+
+export const fetchPaymentApi = async () => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const res = await axios.post(
+      `${BASE_URL}/api/payment_details`, 
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // ✅ Extract and return only the data array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    throw error;
+  }
+};
+
+// export const fetchPaymentsApi = async () => {
+//   try {
+//     const token = localStorage.getItem('token'); // Retrieve stored token
+//     const response = await fetch(${BASE_URL}//api/payment_details', {
+//       method: 'POST', // API requires POST
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${token}`, // Add token here
+//       },
+//       body: JSON.stringify({}) // Send body if required, else keep empty object
+//     });
+
+//     if (!response.ok) throw new Error('Failed to fetch payment details');
+//     return await response.json();
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
 
 export const getCustomer = async () => {
   try {
@@ -438,7 +484,38 @@ export const updateServices = async (id: string, data: any) => {
     throw new Error(err?.message || "Failed to add service.");
   }
 };
-
+export const deleteProduct = async (id: string) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: 'delete',
+      url: `${BASE_URL}/api/products/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err: any) {
+    console.log(err);
+    throw new Error(err?.message || "Failed to delete product.");
+  }
+};
+export const deleteService = async (id: string) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axiosRequest({
+      method: 'delete',
+      url: `${BASE_URL}/api/services/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (err: any) {
+    console.log(err);
+    throw new Error(err?.message || "Failed to delete service.");
+  }
+};
 export const getAllProducts = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -455,6 +532,7 @@ export const getAllProducts = async () => {
   }
   return { data: [] };
 };
+
 export const getProductPage = async (page: number = 1) => {
   try {
     const token = localStorage.getItem("token");
