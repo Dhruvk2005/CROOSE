@@ -26,6 +26,7 @@ const Myspace = () => {
   const [loading, setLoading] = useState(false)
   const { iqIncreased, setIqIncreased } = useIq();
   const [spaceChatsData, setSpaceChatsData] = useState<any>()
+const [spaceLiveChatsData, setSpaceLiveChatsData] = useState<any>();
 
 
 
@@ -65,20 +66,30 @@ const Myspace = () => {
 
   const spaceName = searchParams.get('name');
 
-  useEffect(() => {
-    const fetchSpaceChats = async () => {
-
-      try {
-        const res = await spaceChats(Number(id))
-        setSpaceChatsData(res)
-        console.log('space chats:', res)
-      } catch (err) {
-        console.log(err)
-      }
+ useEffect(() => {
+  const fetchSpaceChats = async () => {
+    try {
+      const res = await spaceChats(Number(id));
+      setSpaceChatsData(res);
+    } catch (err) {
+      console.log(err);
     }
+  };
+  if (id) fetchSpaceChats();
+}, [id]);
 
-    fetchSpaceChats()
-  }, [])
+useEffect(() => {
+  const fetchLiveChats = async () => {
+    try {
+      const res = await spaceLiveChats(Number(id));
+      setSpaceLiveChatsData(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  if (id) fetchLiveChats();
+}, [id]);
+
 
 
 
@@ -98,20 +109,7 @@ const Myspace = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchSpaceChats = async () => {
-      if (!id) return;
-      try {
-        const res = await spaceLiveChats(Number(id));
-        setSpaceChatsData(res);
-        console.log('space chatssssss:', res);
-      } catch (err) {
-        console.log(err);
-      }
-    };
 
-    fetchSpaceChats();
-  }, [id]);
 
 
 
