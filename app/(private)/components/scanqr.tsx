@@ -4,7 +4,7 @@ const Scanqrpage = (props:any) => {
     return (
         <>
             <div className=' fixed top-0 left-0 flex z-[70] overflow-y-auto flex-wrap justify-center items-center w-full h-full bg-[#18181B66]  ' >
-                <div className=' flex flex-col items-center w-[859px] h-[700px] rounded-[16px] bg-[#FFFFFF] ' >
+                <div className=' flex flex-col items-center w-[859px] h-[670px] rounded-[16px] bg-[#FFFFFF] ' >
                     <div className=' flex items-center px-[24px] py-[20px] border-[1px] border-[#FFFFFF] rounded-t-[16px] justify-end w-full h-[60px] '>
                         <Icon onClick={()=>props.setScanopen(false)} icon="charm:cross" width="16" height="26" style={{ color: "#000" }} className=' w-[30px] ' />
                     </div>

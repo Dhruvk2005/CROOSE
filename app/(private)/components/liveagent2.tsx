@@ -1,8 +1,8 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import Spacenav from '../../components/spacenav';
-import { useParams } from 'next/navigation';
+import Spacenav from './spacenav';
+import { useParams, useSearchParams } from 'next/navigation';
 import { spaceLiveChats } from '@/app/Apis/publicapi';
 
 
@@ -15,18 +15,22 @@ interface ChatUser {
   img: string;
 }
 
-const Page = () => {
+const LiveAgent2  = () => {
   const [spaceLiveChatsData, setSpaceLiveChatsData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { spaceId } = useParams();
+    const searchParams: any = useSearchParams();
+    const id = searchParams.get('id');
+  
+
 
   useEffect(() => {
     const fetchSpaceLiveChats = async () => {
       try {
         setLoading(true);
-        const res = await spaceLiveChats(Number(spaceId));
-        console.log("API Data:", res); // Verify data structure
+        const res = await spaceLiveChats(Number(id));
+        console.log("API Data:", res); 
         setSpaceLiveChatsData(res);
       } catch (err) {
         console.error('Error:', err);
@@ -36,9 +40,9 @@ const Page = () => {
       }
     };
     fetchSpaceLiveChats();
-  }, [spaceId]);
+  }, [id]);
 
-  // Improved data transformation
+
   const transformChatData = (data: any): ChatUser[] => {
     if (!data || typeof data !== 'object') return [];
 
@@ -68,83 +72,7 @@ const Page = () => {
   }
   return (
     <div className="w-full h-[900px] opacity-100 gap-[10px]">
-      <Spacenav />
-
-      <div className="h-auto w-full bg-[#ffffff] relative mt-[15px] flex flex-col gap-5 items-center">
-        <div
-          className="w-[100%] items-center mt-[-17px] flex flex-row h-[64px]"
-          style={{ borderBottom: '1px solid #EAECF0' }}
-        >
-          <img src="/arrow.png" alt="arrow" className="h-[20px] ml-[10px] m-[-1px] w-[20px]" />
-          <div className="w-[48px] ml-[10px] h-[48px]">
-            <img src="/facebg.png" alt="face imge" className="w-[48px] h-[48px] top-[8px]"></img>
-          </div>
-          <div className="w-[50%] sm:w-[70%] text-[13px] sm:text-[1.125rem] text-[#101828] ml-[18px] font-sans font-semibold text-lg leading-7 tracking-normal align-middle h-[28px]">
-            Space Name
-          </div>
-          <div className="w-[180px] sm:w-[211px] right-[0px] flex flex-row gap-[8px] h-[36px]">
-            <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px] flex flex-row pt-2 pr-4 pb-2 bg-[#EAECF0] pl-4 gap-[10px] rounded-[8px] border-[0]">
-              <div className="font-sans font-semibold text-[10px] sm:text-[12px] w-[100%] leading-5 tracking-normal text-center text-[#685BC7] h-[20px]">
-                Spaces IQ
-              </div>
-            </button>
-            <button className="w-[50%] sm:w-[103px] h-[50px] sm:h-[36px] flex flex-row pt-2 pr-4 pb-2 pl-4 gap-[10px] bg-[#685BC7] rounded-[8px]">
-              <div className="w-[100%] font-sans text-[10px] sm:text-[12px] font-semibold text-sm leading-5 tracking-normal text-center text-[#FFFFFF] h-[50px] sm:h-[20px]">
-                Run Agent
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <div className="flex flex-row flex-wrap gap-[20px] justify-center w-[100%] rounded-lg">
-          <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/chat.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467]">
-                Total Chats
-              </div>
-            </div>
-            <div className="text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%] font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              {totalChats}
-            </div>
-          </div>
-
-          <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/message.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467]">
-                Live Chats
-              </div>
-            </div>
-            <div className="text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%] font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              {liveChats}
-            </div>
-          </div>
-
-          <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/timer.png" />
-              <div className="w-[212px] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467]">
-                Avg. Response Time
-              </div>
-            </div>
-            <div className="text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%] font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
-
-          <div className="w-[260px] rounded-[16px] border border-gray-300 h-[160px]">
-            <div className="w-[100%] border-b border-gray-300 p-[12px] gap-[8px] flex text-[#EAECF0] h-[44px]">
-              <img src="/party-popper.png" />
-              <div className="w-[100%] h-[20px] font-sans font-medium text-xs leading-5 tracking-normal text-[#475467]">
-                Sales
-              </div>
-            </div>
-            <div className="text-center text-[#101828] flex items-center justify-center w-[100%] h-[70%] font-sans font-semibold text-4xl leading-[100%] tracking-[-0.025em]">
-              0
-            </div>
-          </div>
-        </div>
+     
 
         <section className="w-full h-auto items-center justify-center sm:h-[486px] opacity-100 flex flex-col gap-[16px] rotate-0">
           <div className="w-full sm:w-[1088px] h-auto sm:h-[36px] flex flex-col sm:flex-row items-start sm:items-center bg-[#ffffff] opacity-100 gap-2 px-4 sm:px-0">
@@ -176,8 +104,8 @@ const Page = () => {
           </div>
 
           <section className="w-full h-auto sm:h-[434px] flex flex-col sm:flex-row flex-wrap justify-center items-center bg-[#ffffff] opacity-100 gap-4">
-            <section className="w-full sm:w-[320px] h-auto sm:h-[434px] opacity-100 rounded-[16px] border border-[#E4E4E7]">
-              <div className="w-full sm:w-[320px] h-[56px] rotate-0 opacity-100 gap-2 border-b pb-[12px] pt-[12px] pl-[12px] pr-[12px] border-[#E4E4E7]">
+            <section className="w-full sm:w-[320px] h-auto sm:h-[434px] opacity-100 rounded-[16px] ">
+              <div className="w-full sm:w-[320px] h-[56px] rotate-0 opacity-100 gap-2 border-b pb-[12px] border-[1px] rounded-t-[16px] border-[#E4E4E7] pt-[12px] pl-[12px] pr-[12px] border-[#E4E4E7]">
                 <div className="w-full sm:w-[296px] h-[20px] flex items-center rotate-0 opacity-100 gap-3">
                   <span className="rotate-0 w-[16px] h-[16px] text-[#18181B]">
                     <Icon icon="lucide:message-circle-more" width="24" height="24" />
@@ -189,7 +117,7 @@ const Page = () => {
               </div>
 
               <section className="w-full sm:w-[320px] h-auto sm:h-[378px] rotate-0 opacity-100">
-                <div className="h-[378px] overflow-y-auto overflow-x-hidden scrollbar-hide">
+                <div className="h-[378px] overflow-y-auto border-[1px] border-[#E4E4E7] rounded-b-[16px] overflow-x-hidden scrollbar-hide">
                   {transformedUsers.length > 0 ? (
                     transformedUsers.map((user, index) => (
                       <div
@@ -289,8 +217,8 @@ const Page = () => {
           </section>
         </section>
       </div>
-    </div>
+   
   );
 };
 
-export default Page;
+export default LiveAgent2 ;

@@ -780,39 +780,41 @@ export const OrdersStatus = async (data: any) => {
   }
 }
 
-export const  spaceChats = async (spaceId:number)=>{
-  try{
+export const spaceChats = async (spaceId: number) => {
+  try {
     const token = localStorage.getItem("token")
     const res = await axios({
-      method:'get',
-      url:`${BASE_URL}/api/space_chat_stats`,
-      headers:{
-        Authorization:`Bearer ${token}`
+      method: 'get',
+      url: `${BASE_URL}/api/space_chat_stats`,
+      headers: {
+        Authorization: `Bearer ${token}`
       },
-      params:{
-        space_id:11
+      params: {
+        space_id: spaceId
       }
 
     })
-    
+
+  
+
     return res.data
 
-  }catch(err){
-console.log(err)
+  } catch (err) {
+    console.log(err)
   }
 }
 
 export const spaceLiveChats = async (spaceId: number) => {
   try {
     const token = localStorage.getItem("token");
-    
-    console.log('🔐 Token:', token ? 'Token exists' : 'No token found');
-    console.log('🔍 Making API call with spaceId:', spaceId);
-    
+
+    console.log(' Token:', token ? 'Token exists' : 'No token found');
+    console.log(' Making API call with spaceId:', spaceId);
+
     if (!token) {
       throw new Error("No authentication token found");
     }
-    
+
     const res = await axios({
       method: 'get',
       url: `${BASE_URL}/api/space_chat_list`,
@@ -820,23 +822,63 @@ export const spaceLiveChats = async (spaceId: number) => {
         Authorization: `Bearer ${token}`
       },
       params: {
-        space_id: 11
+        space_id: spaceId,
       }
     });
-    
-    console.log('🌐 Full API Response:', res);
-    console.log('🌐 Response Status:', res.status);
-    console.log('🌐 Response Data:', res.data);
+
+    console.log(' Full API Response:', res);
+    console.log(' Response Status:', res.status);
+    console.log(' Response Data:', res.data);
     console.log('🌐 Response Data.data:', res.data.data);
     console.log('🌐 Type of res.data.data:', typeof res.data.data);
-    
-    return res.data.data;
-  } catch (err:any) {
-    console.error('❌ API Error:', err);
+
+    return res.data.data
+  } catch (err: any) {
+    console.error('API Error:', err);
     if (err.response) {
-      console.error('❌ Error Response Status:', err.response.status);
-      console.error('❌ Error Response Data:', err.response.data);
+      console.error('Error Response Status:', err.response.status);
+      console.error('Error Response Data:', err.response.data);
     }
     throw err;
   }
 };
+
+
+export const RunAgent = async (spaceid: number) => {
+  try {
+    const token = localStorage.getItem("token")
+    const res = await axios({
+      method: "post",
+      url: `${BASE_URL}/api/whapi/instance`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+        space_id: spaceid
+      }
+
+
+    })
+    return res
+
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+
+
+
+
+ // Apis/publicapi.ts
+
+export const PayApi = async (uuid:any) => {
+  try {
+    const res = await axios.get(`https://api.joincroose.com/croose/api/paystack/whapi/${uuid}`);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+

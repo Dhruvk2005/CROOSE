@@ -40,7 +40,7 @@ const OrdersTable = () => {
         }
     };
 
-    // Update local state on dropdown change
+
     const handleStatusChange = (orderId: number, newStatus: string) => {
         setOrders((prevOrders:any) =>
             prevOrders.map((order:any) =>
@@ -122,10 +122,10 @@ const OrdersTable = () => {
                     </div>
                 </div>
 
-                {/* Orders Table */}
-                <div className="overflow-x-auto px-8">
-                    <table className="min-w-full border-[1px] border-[#F9FAFB] text-sm text-left">
-                        <thead className="bg-[#F9FAFB] border-[1px] border-[#EAECF0] text-[#475467] font-medium">
+                
+                <div className="overflow-x-auto rounded-[10px] px-8">
+                    <table className="min-w-full rounded-[10px] border-[1px] border-[#F9FAFB] text-sm text-left">
+                        <thead className="bg-[#F9FAFB] rounded-[10px] border-[1px] border-[#EAECF0] text-[#475467] font-medium">
                             <tr  >
                                 <th className="px-4 py-3 ">ID</th>
                                 <th className="px-4 py-3 ">Space</th>

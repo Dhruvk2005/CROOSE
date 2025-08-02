@@ -40,7 +40,7 @@ const Newspace = () => {
     };
     fetchData();
   }, []);
-  const IMAGE_BASE_URL = "http://localhost:5000";
+ 
 
   return (
     <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col select-none ' >
