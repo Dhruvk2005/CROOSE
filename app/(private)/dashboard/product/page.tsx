@@ -39,6 +39,7 @@ const ProductServiceTabs = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [showMainModal, setShowMainModal] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
+    const [images, setImages] = useState<File[]>([]);
   const [activeTab, setActiveTab] = useState<'products' | 'services'>('products');
   const [data, setData] = useState<any>(initialData);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -209,6 +210,14 @@ useEffect(() => {
 }, [searchTerm, activeTab]);
 
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    setImages((prev) => [...prev, ...files]);
+  };
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
 
  
 const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -470,10 +479,6 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
       <tr key={item[id]} className="hover:bg-gray-50 border-b border-[#EAECF0]">
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="flex items-center gap-3">
-            {/* <input
-              type="checkbox"
-              className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-            /> */}
             <div className="flex items-center gap-2">
           {item.image ? (
           <img src={item.image} alt="" className="w-10 h-10 object-cover rounded-full" />
@@ -678,9 +683,9 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
 
 
+<div className='w-full p-6'>
 
-
-      <table className="min-w-full text-sm text-left border  text-gray-900 bg-white rounded-md overflow-hidden p-4">
+      <table className="min-w-full text-sm text-left border text-gray-900 bg-white rounded-md overflow-hidden p-4">
         <thead className="bg-[#F9FAFB] text-[#475467] text-xs font-medium">
           <tr>
             <th className="px-4 py-2">Photos</th>
@@ -712,6 +717,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
           </thead>
           <tbody><RenderTableRows items={items} /></tbody>
         </table>
+        </div>
 {showModal && (
   <div className="fixed inset-0 bg-[#9999] bg-opacity-30 flex items-center justify-center z-50">
     <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl h-[80vh] overflow-y-auto p-6 relative transition-all duration-300">
@@ -751,7 +757,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
         {!showBulkModal ? (
           <form onSubmit={handleAddItem} className="grid grid-cols-2 gap-4">
             <select
-              className="col-span-2 border border-bg-gray-100 rounded px-3 py-3"
+              className="col-span-2 border border-[#D0D5DD]   rounded px-3 py-3"
               value={formState.space_id}
               onChange={(e) => {
                 const space_id = e.target.value;
@@ -778,20 +784,20 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
                 onChange={(e) => setFormState((f) => ({ ...f, name: e.target.value }))}
                 type="text"
                 required
-                className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
+                className="border border-[#D0D5DD]   p-2 py-3 rounded w-full mt-1"
               />
             </label>
 
             {activeTab === 'products' && (
               <>
-                <label>
+                <label className='col-span-2'>
                   <span>Type</span>
                   <select
                     value={formState.type}
                     onChange={(e) => setFormState((f) => ({ ...f, type: e.target.value }))}
-                    className="border border-bg-gray-100 p-2 py-4 rounded w-full mt-1"
+                    className=" border border-[#D0D5DD]   p-2 py-4 rounded w-full mt-1"
                   >
-                    <option value="">Select Type</option>
+                    <option value="" >Select Type</option>
                     {productTypes.map((type) => (
                       <option key={type} value={type}>
                         {type}
@@ -806,7 +812,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
                     value={formState.product_stock}
                     onChange={(e) => setFormState((f) => ({ ...f, product_stock: e.target.value }))}
                     type="text"
-                    className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
+                    className="border border-[#D0D5DD]   p-2 py-3 rounded w-full mt-1"
                   />
                 </label>
 
@@ -817,25 +823,39 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
                     onChange={(e) => setFormState((f) => ({ ...f, product_price: e.target.value }))}
                     type="text"
                     required
-                    className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
+                    className="border border-[#D0D5DD]   p-2 py-3 rounded w-full mt-1"
                   />
                 </label>
 
-                <label className="col-span-2">
-                  <span>Image</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        setFormState((f) => ({ ...f, image: file }));
-                      }
-                    }}
-                    className="border border-bg-gray-100 px-2 py-3 rounded w-full mt-1"
-                    required
-                  />
-                </label>
+                <div className='col-span-2'>
+      <span className="block text-sm font-medium mb-2">Add Images</span>
+      <div className="flex gap-3 flex-wrap">
+        {/* Add Image Button */}
+        <label className="flex flex-col justify-center items-center w-34 h-34 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+          <span className="text-gray-400 text-sm text-center">+ Add an image</span>
+          <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" multiple />
+        </label>
+
+        {/* Image Previews */}
+        {images.map((img, index) => (
+          <div key={index} className="relative w-34 h-34">
+            <img
+              src={URL.createObjectURL(img)}
+              alt={`preview-${index}`}
+              className="w-full h-full object-cover rounded-md"
+            />
+            <button
+              type="button"
+              onClick={() => removeImage(index)}
+              className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+
               </>
             )}
 
@@ -847,7 +867,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
                     value={formState.service_duration}
                     onChange={(e) => setFormState((f) => ({ ...f, service_duration: e.target.value }))}
                     type="number"
-                    className="border border-bg-gray-100 px-2 py-3 rounded w-full mt-1"
+                    className="border border-[#D0D5DD] px-2 py-3 rounded w-full mt-1"
                   />
                 </label>
 
@@ -858,7 +878,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
                     onChange={(e) => setFormState((f) => ({ ...f, service_category: e.target.value }))}
                     type="text"
                     required
-                    className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
+                    className="border border-[#D0D5DD] p-2 py-3 rounded w-full mt-1"
                   />
                 </label>
 
@@ -869,7 +889,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
                     onChange={(e) => setFormState((f) => ({ ...f, service_price: e.target.value }))}
                     type="text"
                     required
-                    className="border border-bg-gray-100 p-2 py-3 rounded w-full mt-1"
+                    className="border border-[#D0D5DD] p-2 py-3 rounded w-full mt-1"
                   />
                 </label>
 
@@ -885,9 +905,38 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
                         available_days: opts.map((o) => o.value),
                       }))
                     }
-                    className="border border-bg-gray-100 rounded"
+                    className="border border-[#D0D5DD] rounded"
                   />
                 </label>
+                          <div>
+      <span className="block text-sm font-medium mb-2">Add Images</span>
+      <div className="flex gap-3 flex-wrap">
+        {/* Add Image Button */}
+        <label className="flex flex-col justify-center items-center w-34 h-34 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+          <span className="text-gray-400 text-sm text-center">+ Add an image</span>
+          <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" multiple />
+        </label>
+
+        {/* Image Previews */}
+        {images.map((img, index) => (
+          <div key={index} className="relative w-34 h-34">
+            <img
+              src={URL.createObjectURL(img)}
+              alt={`preview-${index}`}
+              className="w-full h-full object-cover rounded-md"
+            />
+            <button
+              type="button"
+              onClick={() => removeImage(index)}
+              className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-70"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+
               </>
             )}
 
