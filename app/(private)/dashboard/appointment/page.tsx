@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { appointmentList, fetchAppointmentStatistics, getCancelledAppointments, getNewAppointments, getTotalAppointments, updateAppointmentStatus } from '@/app/Apis/publicapi';
 import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download } from "lucide-react";
-
+import appointmentImg from "@/assets/appointment.png";
 import { Icon } from "@iconify/react";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { dividerClasses } from "@mui/material/Divider";
@@ -30,6 +30,12 @@ const AppointmentTable = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
+
+// Function to open modal with selected appointment
+const handleRowClick = (appt: any) => {
+  setSelectedAppointment(appt);
+};
 
   const defaultTypography: React.CSSProperties = {
     fontFamily: "Inter, sans-serif",
@@ -420,13 +426,15 @@ const AppointmentTable = () => {
             </thead>
             <tbody>
               {currentAppointments.map((appt: any) => (
-                <tr key={appt.id} className="hover:bg-gray-50 border-b border-[#EAECF0]">
+                <tr key={appt.id}
+                 onClick={() => handleRowClick(appt)}
+                  className="hover:bg-gray-50 border-b border-[#EAECF0] cursor-pointer transition-colors duration-200">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
-                      <input
+                      {/* <input
                         type="checkbox"
                         className="appearance-none w-4 h-4 border-2 border-[#D0D5DD] rounded-[4px] checked:bg-[#D0D5DD] checked:border-[#D0D5DD]"
-                      />
+                      /> */}
                       <span style={defaultTypography}>
                         {appt.space_name || "_"}
                       </span>
@@ -491,6 +499,77 @@ const AppointmentTable = () => {
           Next
         </button>
       </div>
+      {selectedAppointment && (
+  <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+    <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6 relative">
+      {/* Close Button */}
+      <button
+        onClick={() => setSelectedAppointment(null)}
+        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+      >
+        ✕
+      </button>
+
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold">
+          {selectedAppointment.customer_name.charAt(0)}
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold">{selectedAppointment.customer_name}</h3>
+          <p className="text-sm text-gray-500">
+            {selectedAppointment.customer_number} • {selectedAppointment.space_name}
+          </p>
+        </div>
+        <span className={`ml-auto px-3 py-1 rounded-full text-sm 
+          ${selectedAppointment.status === "pending" ? "bg-yellow-100 text-yellow-800" : 
+          selectedAppointment.status === "confirmed" ? "bg-green-100 text-green-800" : 
+          selectedAppointment.status === "cancelled" ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"}`}>
+          {selectedAppointment.status}
+        </span>
+      </div>
+
+      {/* Details Section */}
+      <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+        <div>
+          <p className="text-xs text-gray-500">Appointment Day</p>
+          <p className="text-sm font-medium">{selectedAppointment.date}</p>
+        </div>
+        <div>
+          <p className="text-xs text-gray-500">Service</p>
+          <p className="text-sm font-medium">{selectedAppointment.service_name}</p>
+        </div>
+        <div>
+          <p className="text-xs text-gray-500">Phone</p>
+          <p className="text-sm font-medium">{selectedAppointment.customer_number}</p>
+        </div>
+      </div>
+
+      {/* Notes */}
+      <div className="mb-4">
+        <p className="text-xs text-gray-500 mb-1">Notes</p>
+        <p className="text-sm text-gray-700">
+          {selectedAppointment.notes || "No notes available"}
+        </p>
+      </div>
+
+      {/* Shared Images */}
+      {selectedAppointment.images && selectedAppointment.images.length > 0 && (
+        <div>
+          <p className="text-xs text-gray-500 mb-2">Images shared</p>
+          <div className="flex gap-2">
+            {selectedAppointment.images.map((img: string, idx: number) => (
+             
+              <img src="/assets/appointment.png" alt="Shared" />
+
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
     </div>
 
   );
