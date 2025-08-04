@@ -2,7 +2,7 @@
 //import { formatDbDate } from '@/app/(private)/utils/date';
 import React, { useEffect, useState, useRef } from 'react';
 import { appointmentList, fetchAppointmentStatistics, getCancelledAppointments, getNewAppointments, getTotalAppointments, updateAppointmentStatus } from '@/app/Apis/publicapi';
-import { Calendar, ArrowUpRight, ArrowDownRight, Filter, Plus, Search, Download } from "lucide-react";
+import { X} from "lucide-react";
 import appointmentImg from "@/assets/appointment.png";
 import { Icon } from "@iconify/react";
 import { HiOutlineDotsVertical } from "react-icons/hi";
@@ -96,9 +96,22 @@ const handleRowClick = (appt: any) => {
       console.error("Failed to update appointment status", err);
     }
   };
-  
+const subheading = {
+  fontFamily: 'Inter',
+  fontWeight: 500,
+  fontSize: '14px',
+  lineHeight: '20px',
+  letterSpacing: '0%',
+  color: '#1D2939',
+};
+  const datainside = {
+  fontFamily: 'Inter',
+  fontWeight: 400,
+  fontSize: '14px',
+  lineHeight: '20px',
+  letterSpacing: '0%',
 
-  
+};
 
   useEffect(() => {
     fetchAppointments();
@@ -499,76 +512,152 @@ const handleRowClick = (appt: any) => {
           Next
         </button>
       </div>
-      {selectedAppointment && (
-  <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-    <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6 relative">
-      {/* Close Button */}
-      <button
-        onClick={() => setSelectedAppointment(null)}
-        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-      >
-        ✕
-      </button>
+{selectedAppointment && (
+  <div className=" fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
+    <div className="h-[650px] bg-white rounded-2xl shadow-xl w-full max-w-3xl pb-6 relative animate-fadeIn">
+    
+      <div className="relative  rounded-lg overflow-hidden" style={{ width: '773px', height: '146px' }}>
+     
+        <img 
+          src="/assets/appointment.png" 
+          alt="Appointment background"
+          className="w-full h-full object-cover"
+     
+        />
+        
+      
+        <div 
+          className="absolute inset-0"
+           style={{
+      background: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 84%)'
+    }}
+        ></div>
+        
 
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold">
+    
+      </div>
+
+       <button
+              type="button"
+             
+              onClick={() => setSelectedAppointment(null)}
+              
+    
+              className=" absolute p-2 top-1 right-1 bg-[#FFFFFF] text-[#0E120F] bg-opacity-50  rounded-md p-1 hover:bg-opacity-70 mt-2 mr-2 transition-colors duration-200 shadow-md hover:shadow-lg hover:text-gray-700"
+            >
+              <X size={18}  />
+            </button>
+
+  <div className="w-12 h-12 border-[rgba(0, 0, 0, 0.08)] rounded-full bg-[#F2F4F7] flex items-center justify-center text-lg font-semibold text-gray-700 mx-8 mb-2">
           {selectedAppointment.customer_name.charAt(0)}
         </div>
+      <div className="flex items-center gap-4 mb-4 mx-10">
+       
         <div>
-          <h3 className="text-lg font-semibold">{selectedAppointment.customer_name}</h3>
-          <p className="text-sm text-gray-500">
-            {selectedAppointment.customer_number} • {selectedAppointment.space_name}
+          <h3 className="text-[#101828]"
+          style={{
+            fontFamily: 'Inter',
+            fontWeight: 500,
+            fontSize: '14px',
+            lineHeight: '20px',
+            letterSpacing: '0%'
+          }}>{selectedAppointment.customer_name}</h3>
+          <p className=" text-[#475467]"
+             style={{
+            fontFamily: 'Inter',
+            fontWeight: 400,
+            fontSize: '14px',
+            lineHeight: '20px',
+            letterSpacing: '0%'
+          }}>
+            {selectedAppointment.customer_email || ''} • {selectedAppointment.customer_number}
           </p>
         </div>
-        <span className={`ml-auto px-3 py-1 rounded-full text-sm 
-          ${selectedAppointment.status === "pending" ? "bg-yellow-100 text-yellow-800" : 
-          selectedAppointment.status === "confirmed" ? "bg-green-100 text-green-800" : 
-          selectedAppointment.status === "cancelled" ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"}`}>
+        <span className={`ml-auto px-3 py-1 rounded-full text-sm capitalize 
+          ${selectedAppointment.status === "pending" ? "bg-yellow-100 text-yellow-700" : 
+          selectedAppointment.status === "confirmed" ? "bg-green-100 text-green-700" : 
+          selectedAppointment.status === "cancelled" ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"}`}>
           {selectedAppointment.status}
         </span>
       </div>
 
       {/* Details Section */}
-      <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
-        <div>
-          <p className="text-xs text-gray-500">Appointment Day</p>
-          <p className="text-sm font-medium">{selectedAppointment.date}</p>
+      <div className="w-[690px] h-[108px] grid grid-cols-3 gap-4 mb-6 bg-[#F2F4F7] rounded-lg p-4 mx-10">
+        <div className='gap-2 flex-col flex'>
+          <p 
+       style={subheading}>Appointment Day</p>
+          <p className="text-[#475467]"
+        style={datainside} >{selectedAppointment.date}</p>
         </div>
-        <div>
-          <p className="text-xs text-gray-500">Service</p>
-          <p className="text-sm font-medium">{selectedAppointment.service_name}</p>
+        <div className='gap-2 flex-col flex'>
+          <p  style={subheading} >Date created</p>
+          <p className=' text-[#475467]' style={datainside}>{selectedAppointment.created_at}</p>
         </div>
-        <div>
-          <p className="text-xs text-gray-500">Phone</p>
-          <p className="text-sm font-medium">{selectedAppointment.customer_number}</p>
+        <div className='gap-2 flex-col flex'>
+          <p style={subheading}>Service type</p>
+          <p className=' text-[#475467]' style={datainside}>{selectedAppointment.service_name}</p>
         </div>
       </div>
 
       {/* Notes */}
-      <div className="mb-4">
-        <p className="text-xs text-gray-500 mb-1">Notes</p>
-        <p className="text-sm text-gray-700">
-          {selectedAppointment.notes || "No notes available"}
-        </p>
+      <div className="mb-4 mx-10">
+        <p className="mb-1"
+        style={subheading}>Notes</p>
+        <p className=" text-[#344054]">{selectedAppointment.notes ||
+         "Animated splash screens can make loading times feel less tedious, as users are engaged with the animation while the app loads. Animated splash screens can make loading times feel less tedious, as users are engaged with the animation while the app loads"}</p>
       </div>
 
-      {/* Shared Images */}
-      {selectedAppointment.images && selectedAppointment.images.length > 0 && (
-        <div>
-          <p className="text-xs text-gray-500 mb-2">Images shared</p>
-          <div className="flex gap-2">
-            {selectedAppointment.images.map((img: string, idx: number) => (
-             
-              <img src="/assets/appointment.png" alt="Shared" />
-
+      {/* Images Section */}
+      <div className="mx-10 mb-8">
+  <p className="mb-3 text-sm font-medium text-gray-500">Images shared</p>
+  
+  {selectedAppointment.images?.length > 0 ? (
+    <div className="flex flex-wrap gap-3">
+      {selectedAppointment.images.map((image:any, index:any) => (
+        <div key={index} className="relative">
+          <img
+            src={image}
+            alt={`Appointment reference ${index + 1}`}
+            className="w-32 h-28 rounded-lg object-cover border border-gray-200"
+            onError={(e) => (e.currentTarget.src = "/assets/placeholder.png")}
+          />
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div className="w-full h-28 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400">
+      No images shared
+    </div>
+  )}
+</div>
+      {/* {selectedAppointment.images && selectedAppointment.images.length > 0 ? (
+        <div className='mx-10 '>
+          <p className=" mb-2" style={subheading}>Images shared</p>
+          <div className="flex flex-wrap gap-2 ">
+            {selectedAppointment.images.map((image:any, index:any) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Appointment image ${index + 1}`}
+                className="w-32 h-32 rounded-lg object-cover border "
+                onError={(e) => (e.currentTarget.src = "/assets/placeholder.png")}
+              />
             ))}
           </div>
         </div>
-      )}
-    </div>
+      ) : (
+        <div>
+          <p className=" mb-2" style={subheading}>Images shared</p>
+          <div className="w-32 h-32 rounded-lg border border-dashed border-gray-300 flex items-center justify-center text-gray-400">
+            No images
+          </div>
+        </div>
+      )} */}
+      </div>
+    
   </div>
 )}
+
 
     </div>
 
