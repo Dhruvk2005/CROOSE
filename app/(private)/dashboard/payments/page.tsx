@@ -18,7 +18,19 @@ const Payments = () => {
   const [payments, setPayments] = useState<Payment[]>([]); // <-- add type here
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState("All");
 
+
+    // Filter Logic
+  const filteredPayments = payments.filter((payment) => {
+    if (filter === "All") return true;
+    if (filter === "Successful")
+      return payment.transaction_status === "paid" || payment.transaction_status === "success";
+    if (filter === "Pending") return payment.transaction_status === "pending";
+    if (filter === "Failed") return payment.transaction_status === "failed";
+    if (filter === "Refunded") return payment.transaction_status === "refunded";
+    return true;
+  });
   useEffect(() => {
     const fetchPayments = async () => {
       try {
@@ -67,13 +79,22 @@ const Payments = () => {
 
       
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-6">
-        <ul className="flex flex-wrap items-center gap-3 sm:gap-6">
-          <li className="text-[#6941C6] font-semibold text-[14px] bg-[#F9F5FF] px-3 py-2 rounded-[5px]">All</li>
-          <li className="text-[#667085] font-semibold text-[14px]">Successful</li>
-          <li className="text-[#667085] font-semibold text-[14px]">Pending</li>
-          <li className="text-[#667085] font-semibold text-[14px]">Failed</li>
-          <li className="text-[#667085] font-semibold text-[14px]">Refunded</li>
-        </ul>
+     <ul className="flex flex-wrap items-center gap-3 sm:gap-6 mb-4">
+        {["All", "Successful", "Pending", "Failed", "Refunded"].map((status) => (
+          <li
+            key={status}
+            onClick={() => setFilter(status)}
+            className={`cursor-pointer font-semibold text-[14px] px-3 py-2 rounded-[5px] 
+              ${
+                filter === status
+                  ? "text-[#6941C6] bg-[#F9F5FF]" // Active Tab
+                  : "text-[#667085] bg-transparent" // Inactive Tab
+              }`}
+          >
+            {status}
+          </li>
+        ))}
+      </ul>
         <div className="flex flex-wrap gap-3">
           <div className="flex items-center border-[2px] border-[#EAECF0] bg-white px-3 py-2 rounded-[8px] w-full sm:w-auto max-w-[320px]">
             <input
@@ -97,9 +118,8 @@ const Payments = () => {
       <div className='w-full p-6' >
       
       <div className="w-full overflow-x-auto  border-2  border-[#EAECF0]  rounded-[10px]  ">
-        <table className="min-w-[700px] w-full  border-[#EAECF0] text-sm text-left text-gray-500 bg-white rounded-[10px]">
-          <thead className="text-xs text-[#475467] rounded-[10px] bg-gray-50 font-medium">
-            
+       <table className="min-w-full text-sm text-left border  text-gray-900 bg-white rounded-md overflow-hidden p-4">
+        <thead className="bg-[#F9FAFB] text-[#475467] text-xs font-medium">  
            <tr>
     <th className="px-6 py-3">Type</th>
     <th className="px-6 py-3">Reference ID</th>
@@ -112,14 +132,28 @@ const Payments = () => {
   </tr>
           </thead>
          <tbody>
-  {payments.map((payment, index) => (
-    <tr key={index} className="border-b border-[#EAECF0]">
+  {filteredPayments.map((payment, index) => (
+    <tr key={index} className="hover:bg-gray-50 border-b border-[#EAECF0]">
       <td className="px-6 py-4">{payment.type}</td>
       <td className="px-6 py-4">{payment.reference_id}</td>
       <td className="px-6 py-4">₵{payment.amount}</td>
       <td className="px-6 py-4">{payment.payment_origin || "N/A"}</td>
       <td className="px-6 py-4">{payment.payment_method}</td>
-      <td className="px-6 py-4 capitalize">{payment.transaction_status}</td>
+      <td className="px-6 py-4 capitalize">
+      <span
+  className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border 
+    ${
+      payment.transaction_status === 'paid' || payment.transaction_status === 'success'
+        ? 'bg-[#ECFDF3] text-[#027A48] border-[#D1FADF]' // Green
+        : payment.transaction_status === 'pending'
+        ? 'bg-[#FFFAEB] text-[#B54708] border-[#FEDF89]' // Yellow
+        : 'bg-[#FEE2E2] text-[#B91C1C] border-[#FECACA]' // Optional: Red for failed
+    }`}
+>
+  {payment.transaction_status}
+</span>
+
+      </td>
       <td className="px-6 py-4">{payment.transaction_id}</td>
       {/* <td className="px-6 py-4 text-[#475467]">
         <Icon icon="bi:three-dots-vertical" width="16" height="16" />
