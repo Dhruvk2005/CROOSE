@@ -5,7 +5,6 @@ import Spacenav from './spacenav';
 import { useParams, useSearchParams } from 'next/navigation';
 import { spaceLiveChats } from '@/app/Apis/publicapi';
 
-
 interface ChatUser {
   number: string;
   sms: string;
@@ -13,17 +12,17 @@ interface ChatUser {
   time: string;
   count?: string;
   img: string;
+  customerName?: string | null;
+  isTyping?: boolean;
 }
 
-const LiveAgent2  = () => {
+const LiveAgent2 = () => {
   const [spaceLiveChatsData, setSpaceLiveChatsData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { spaceId } = useParams();
-    const searchParams: any = useSearchParams();
-    const id = searchParams.get('id');
-  
-
+  const searchParams: any = useSearchParams();
+  const id = searchParams.get('id');
 
   useEffect(() => {
     const fetchSpaceLiveChats = async () => {
@@ -42,26 +41,39 @@ const LiveAgent2  = () => {
     fetchSpaceLiveChats();
   }, [id]);
 
-
   const transformChatData = (data: any): ChatUser[] => {
     if (!data || typeof data !== 'object') return [];
 
-    // Handle different possible response structures
     const rawData = data.data || data;
     
-    return Object.entries(rawData).map(([phoneNumber, message], index) => ({
-      number: phoneNumber,
-      sms: typeof message === 'string' ? message : JSON.stringify(message),
-      button: index < 2 ? (index === 0 ? 'General' : 'Enquiry') : 'General',
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      count: index < 2 ? '5' : undefined,
+    // Handle if rawData is an array of chat objects
+    if (Array.isArray(rawData)) {
+      return rawData.map((chat, index) => ({
+        number: chat.whatsapp_number || chat.number || `Unknown-${index}`,
+        sms: chat.user_message || chat.message || 'No message',
+        button: chat.category || 'General',
+        time: chat.created_at ? new Date(chat.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        count: chat.unread_count ? chat.unread_count.toString() : undefined,
+        img: '/Profiledummy.png',
+        customerName: chat.customer_name || null,
+        isTyping: false,
+      }));
+    }
+    
+    // Handle if rawData is an object with phone numbers as keys
+    return Object.entries(rawData).map(([phoneNumber, chatData]: [string, any]) => ({
+      number: chatData.whatsapp_number || phoneNumber,
+      sms: chatData.user_message || chatData.message || (typeof chatData === 'string' ? chatData : 'No message'),
+      button: chatData.category || 'General',
+      time: chatData.created_at ? new Date(chatData.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      count: chatData.unread_count ? chatData.unread_count.toString() : undefined,
       img: '/Profiledummy.png',
+      customerName: chatData.customer_name || null,
+      isTyping: false,
     }));
   };
 
   const transformedUsers = transformChatData(spaceLiveChatsData);
-  const totalChats = transformedUsers.length;
-  const liveChats = transformedUsers.filter((_, index) => index < 2).length;
 
   if (loading) {
     return <div className="loading-spinner">Loading...</div>;
@@ -70,155 +82,126 @@ const LiveAgent2  = () => {
   if (error) {
     return <div className="error-message">{error}</div>;
   }
+
   return (
     <div className="w-full h-[900px] opacity-100 gap-[10px]">
-     
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+        <div className="flex items-center bg-blue-50 border border-blue-200 px-3 py-1 rounded-full gap-2">
+          <span>😎</span>
+          <span className="text-sm font-semibold text-gray-800">Main Account</span>
+          <span className="ml-2 bg-red-600 text-white text-xs px-2.5 py-0.5 rounded-full leading-5 min-w-[20px] text-center">
+            {transformedUsers.length > 99 ? '99+' : transformedUsers.length}
+          </span>
+        </div>
+      </div>
 
-        <section className="w-full h-auto items-center justify-center sm:h-[486px] opacity-100 flex flex-col gap-[16px] rotate-0">
-          <div className="w-full sm:w-[1088px] h-auto sm:h-[36px] flex flex-col sm:flex-row items-start sm:items-center bg-[#ffffff] opacity-100 gap-2 px-4 sm:px-0">
-            <div className="w-full sm:w-[936px] h-auto sm:h-[36px] opacity-100 gap-4 flex flex-col sm:flex-row items-start sm:items-center">
-              <div className="w-full sm:w-[165px] h-auto sm:h-[36px] opacity-100 pt-1 pr-[10px] pb-1 pl-1 bg-[#EFF6FF] border-[#BFDBFE] flex flex-row rounded-3xl border border-solid">
-                <div className="w-full sm:w-[165px] h-auto sm:h-[36px] opacity-100 gap-2 pr-[6px] pb-1 pl-[6px] rounded-none flex items-center">
-                  <span className="font-inter font-normal text-[16px] leading-4 tracking-[-0.1px]">
-                    😎
-                  </span>
-                  <span className="w-auto sm:w-[80px] h-[20px] font-sans font-semibold text-xs leading-5 tracking-normal text-[#18181B] ml-1">
-                    Main Account
-                  </span>
-                </div>
-                <div className="w-[35px] h-[20px] opacity-100 gap-0 flex justify-center items-center mt-1 text-center rounded-3xl bg-[#DC2626]">
-                  <span className="w-[19px] h-[16px] font-sans font-semibold text-center text-[10px] leading-4 tracking-normal text-[#ffffff]">
-                    {totalChats > 99 ? '99+' : totalChats}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="hidden sm:block w-[14px] mt-4 border-[#E4E4E7] h-0 opacity-100 border border-solid rotate-[-90deg]"></div>
-
-            <div className="w-full sm:w-[136px] h-[36px] opacity-100 gap-[10px] text-center py-1 rounded-lg border border-[#E4E4E7] bg-[#F4F4F5] flex justify-center items-center">
-              <span className="w-full h-[20px] font-sans font-semibold text-sm leading-5 tracking-normal text-center text-[#18181B]">
-                Add new space
-              </span>
-            </div>
+      {/* Layout */}
+      <div className="flex flex-col lg:flex-row gap-4 w-full h-[calc(100vh-160px)]">
+        {/* Live Chats */}
+        <div className="w-full lg:w-[30%] border border-gray-200 rounded-lg shadow-sm flex flex-col">
+          <div className="flex items-center gap-2 px-4 py-3 border-b bg-gray-50">
+            <Icon icon="lucide:message-circle-more" className="text-gray-700" />
+            <h2 className="text-sm font-semibold text-gray-700">Live Chats</h2>
           </div>
-
-          <section className="w-full h-auto sm:h-[434px] flex flex-col sm:flex-row flex-wrap justify-center items-center bg-[#ffffff] opacity-100 gap-4">
-            <section className="w-full sm:w-[320px] h-auto sm:h-[434px] opacity-100 rounded-[16px] ">
-              <div className="w-full sm:w-[320px] h-[56px] rotate-0 opacity-100 gap-2 border-b pb-[12px] border-[1px] rounded-t-[16px] border-[#E4E4E7] pt-[12px] pl-[12px] pr-[12px] border-[#E4E4E7]">
-                <div className="w-full sm:w-[296px] h-[20px] flex items-center rotate-0 opacity-100 gap-3">
-                  <span className="rotate-0 w-[16px] h-[16px] text-[#18181B]">
-                    <Icon icon="lucide:message-circle-more" width="24" height="24" />
-                  </span>
-                  <span className="w-auto h-[20px] mt-3 font-semibold text-sm leading-5 align-bottom text-[#18181B]">
-                    Live Chats
-                  </span>
-                </div>
-              </div>
-
-              <section className="w-full sm:w-[320px] h-auto sm:h-[378px] rotate-0 opacity-100">
-                <div className="h-[378px] overflow-y-auto border-[1px] border-[#E4E4E7] rounded-b-[16px] overflow-x-hidden scrollbar-hide">
-                  {transformedUsers.length > 0 ? (
-                    transformedUsers.map((user, index) => (
-                      <div
-                        key={`${user.number}-${index}`}
-                        className={`w-full sm:w-[320px] h-[87px] flex gap-2 pt-[15px] pl-[15px] pr-[10px] opacity-100 rotate-0 ${
-                          index > 1 ? 'opacity-50' : ''
+          <div className="flex-1 overflow-y-auto overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            {transformedUsers.length > 0 ? (
+              transformedUsers.map((user, index) => (
+                <div
+                  key={user.number}
+                  className="flex items-start px-4 py-3 gap-3 border-b cursor-pointer transition-all duration-150 hover:bg-gray-50"
+                >
+                  <div className="relative">
+                    <img
+                      src={user.img}
+                      alt="User"
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    {/* Online indicator */}
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    {/* Display customer name if available, otherwise show phone number */}
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="text-sm font-semibold text-gray-900 truncate">
+                        {user.customerName || user.number}
+                      </div>
+                      {user.customerName === 'Mom' && (
+                        <span className="text-pink-500">💖</span>
+                      )}
+                    </div>
+                    
+                    {/* Show phone number below name if customer name exists */}
+                    {user.customerName && (
+                      <div className="text-xs text-gray-500 truncate mb-1">
+                        {user.number}
+                      </div>
+                    )}
+                    
+                    {/* Message below name/number */}
+                    <div className="text-xs text-gray-600 truncate mb-2">
+                      {user.isTyping ? (
+                        <span className="text-gray-500 italic">typing...</span>
+                      ) : (
+                        user.sms
+                      )}
+                    </div>
+                    
+                    {/* Category tag */}
+                    <div className="mt-1">
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                          user.button === 'General'
+                            ? 'bg-gray-100 text-gray-700'
+                            : user.button === 'Enquiry'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : user.button === 'Broken'
+                            ? 'bg-red-100 text-red-800'
+                            : user.button === 'Complete Sale'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-gray-100 text-gray-700'
                         }`}
                       >
-                        <div
-                          className={`w-[32px] h-[32px] rounded-full overflow-hidden flex-shrink-0 bg-[#E4E4E7] ${
-                            index > 1 ? 'opacity-50' : ''
-                          }`}
-                        >
-                          {user.img && (
-                            <img
-                              src={user.img}
-                              alt="user"
-                              className="w-full h-full object-cover rounded-full"
-                            />
-                          )}
-                        </div>
-
-                        <div
-                          className={`flex-1 flex flex-col border-b border-zinc-200 ${
-                            index > 1 ? 'opacity-50' : ''
-                          }`}
-                        >
-                          <div className="font-sans font-semibold text-sm leading-[100%] text-[#0A0A0A] truncate">
-                            {user.number}
-                          </div>
-                          <div className="font-sans font-normal text-xs leading-5 truncate">
-                            {user.sms}
-                          </div>
-                          <div className="font-sans font-normal text-xs leading-4 text-[#71717A]">
-                            <span
-                              className={`w-[54px] h-[20px] opacity-100 gap-[10px] pt-[2px] pr-[5px] pb-[2px] pl-[5px] rounded-[4px] font-sans font-normal text-xs leading-4 
-                                ${user.button === 'General' ? 'bg-[#F4F4F5] text-black' : ''}
-                                ${user.button === 'Enquiry' ? 'bg-[#FEF3C7] text-[#78350F]' : ''}
-                                ${user.button === 'Broken' ? 'bg-[#FEE2E2] text-[#7F1D1D]' : ''}
-                                ${user.button === 'Complete Sale' ? 'bg-[#DCFCE7] text-[#14532D]' : ''}
-                              `}
-                            >
-                              {user.button}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="w-[50px] h-[36px] flex flex-col items-end border-zinc-200">
-                          <span
-                            className={`font-sans font-normal text-xs leading-4 
-                              ${user.button === 'General' ? 'text-[#1DAB61]' : ''}
-                              ${user.button === 'Enquiry' ? 'text-[#1DAB61]' : ''}
-                              ${user.button === 'Broken' ? 'text-[#71717A]' : ''}
-                              ${user.button === 'Complete Sale' ? 'text-[#71717A]' : ''}
-                            `}
-                          >
-                            {user.time}
-                          </span>
-
-                          {user.count && (
-                            <div className="w-[35px] flex justify-end mt-auto">
-                              <div className="font-sans w-[16px] h-[16px] min-w-[16px] text-center flex justify-center items-center rounded-[8px] text-white bg-[#1DAB61] font-normal text-xs leading-5 truncate">
-                                {user.count}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="flex justify-center items-center h-full text-[#71717A]">
-                      No live chats available
+                        {user.button}
+                      </span>
                     </div>
-                  )}
+                  </div>
+                  
+                  {/* Time and count on the right */}
+                  <div className="text-xs text-right text-gray-500 flex flex-col items-end gap-1">
+                    <div className="text-green-600 font-medium">{user.time}</div>
+                    {user.count && (
+                      <div className="bg-green-600 text-white w-5 h-5 text-center rounded-full text-xs leading-5 font-medium">
+                        {user.count}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </section>
-            </section>
-
-            <section className="w-full sm:w-[752px] h-auto sm:h-[434px] flex justify-center items-center opacity-100 rounded-[16px] rotate-0 border border-[#E4E4E7]">
-              <div className="w-[256px] h-[132px] flex justify-center flex-col items-center opacity-100 gap-[20px] rounded-[8px] rotate-0">
-                <div className="w-[48px] h-[48px] opacity-100 gap-[10px] rounded-[12px] flex justify-center items-center rotate-0 bg-[#F4F4F5]">
-                  <span className="text-[#71717A]">
-                    <Icon icon="lucide:message-circle-dashed" width="19" height="19" />
-                  </span>
-                </div>
-                <div className="w-[256px] h-[64px] text-center opacity-100 gap-[4px] rotate-0">
-                  <span className="w-[132px] h-[20px] font-sans font-semibold text-sm leading-5 text-[#18181B] tracking-normal text-center">
-                    Conversation panel
-                  </span>
-                  <br />
-                  <span className="w-[256px] h-[40px] font-sans font-normal text-sm leading-5 tracking-normal text-center align-bottom text-[#71717A]">
-                    Select a conversation from the live chats to view full conversation details
-                  </span>
-                </div>
+              ))
+            ) : (
+              <div className="text-center text-sm text-gray-500 py-10">
+                No live chats available
               </div>
-            </section>
-          </section>
-        </section>
+            )}
+          </div>
+        </div>
+
+        {/* Conversation Panel */}
+        <div className="flex-1 border border-gray-200 rounded-lg shadow-sm flex items-center justify-center bg-gray-50">
+          <div className="text-center space-y-4 px-4">
+            <div className="w-16 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center mx-auto shadow-sm">
+              <Icon icon="lucide:message-circle-dashed" className="text-gray-400" width={28} />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-800">Conversation panel</h3>
+            <p className="text-sm text-gray-500 max-w-sm">
+              Select a conversation from the live chats to view full conversation details.
+            </p>
+          </div>
+        </div>
       </div>
-   
+    </div>
   );
 };
 
-export default LiveAgent2 ;
+export default LiveAgent2;
