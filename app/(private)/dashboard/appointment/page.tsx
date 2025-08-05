@@ -543,7 +543,7 @@ const subheading = {
               onClick={() => setSelectedAppointment(null)}
               
     
-              className=" absolute p-2 top-1 right-1 bg-[#FFFFFF] text-[#0E120F] bg-opacity-50  rounded-md p-1 hover:bg-opacity-70 mt-2 mr-2 transition-colors duration-200 shadow-md hover:shadow-lg hover:text-gray-700"
+              className=" absolute p-2 top-1 right-1 bg-[#FFFFFF] text-[#0E120F] bg-opacity-50  rounded-md p-1 hover:bg-opacity-70 mt-2 mr-2 transition-colors duration-200 shadow-md hover:shadow-lg hover:text-gray-700 cursor-pointer"
             >
               <X size={18}  />
             </button>
@@ -570,7 +570,7 @@ const subheading = {
             lineHeight: '20px',
             letterSpacing: '0%'
           }}>
-            {selectedAppointment.customer_email || ''} • {selectedAppointment.customer_number}
+            {selectedAppointment.customer_email || ''} • {selectedAppointment.customer_number}  • {selectedAppointment.customer_address || ''}
           </p>
         </div>
         <span className={`ml-auto px-3 py-1 rounded-full text-sm capitalize 
@@ -591,7 +591,7 @@ const subheading = {
         </div>
         <div className='gap-2 flex-col flex'>
           <p  style={subheading} >Date created</p>
-          <p className=' text-[#475467]' style={datainside}>{selectedAppointment.created_at}</p>
+          <p className=' text-[#475467]' style={datainside}>{selectedAppointment.date_created}</p>
         </div>
         <div className='gap-2 flex-col flex'>
           <p style={subheading}>Service type</p>
@@ -604,7 +604,7 @@ const subheading = {
         <p className="mb-1"
         style={subheading}>Notes</p>
         <p className=" text-[#344054]">{selectedAppointment.notes ||
-         "Animated splash screens can make loading times feel less tedious, as users are engaged with the animation while the app loads. Animated splash screens can make loading times feel less tedious, as users are engaged with the animation while the app loads"}</p>
+       "No notes available"}</p>
       </div>
 
       {/* Images Section */}
