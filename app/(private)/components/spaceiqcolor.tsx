@@ -76,7 +76,7 @@ const Spaceiqcolor = (props: any) => {
                 <div className="text-white font-sans font-semibold text-xl leading-none tracking-tight text-center">
                   Scan QR code
                 </div>
-                <img onClick={() => props.setSpaceiqcoloropen(false)} src="/x.png" className="h-5 w-5" />
+                <img onClick={() => props.setSpaceiqcoloropen(false)} src="/x.png" className="h-5 w-5 cursor-pointer " />
               </div>
 
               <div className="bg-white flex flex-col px-4 pb-12 gap-3 rounded-2xl  w-full items-center">
