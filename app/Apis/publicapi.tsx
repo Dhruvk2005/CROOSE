@@ -885,14 +885,11 @@ export const spaceChats = async (spaceId: number) => {
 export const spaceLiveChats = async (spaceId: number) => {
   try {
     const token = localStorage.getItem("token");
-
     console.log(' Token:', token ? 'Token exists' : 'No token found');
     console.log(' Making API call with spaceId:', spaceId);
-
     if (!token) {
       throw new Error("No authentication token found");
     }
-
     const res = await axios({
       method: 'get',
       url: `${BASE_URL}/api/space_chat_list`,
@@ -903,13 +900,11 @@ export const spaceLiveChats = async (spaceId: number) => {
         space_id: spaceId,
       }
     });
-
     console.log(' Full API Response:', res);
     console.log(' Response Status:', res.status);
     console.log(' Response Data:', res.data);
     console.log('🌐 Response Data.data:', res.data.data);
     console.log('🌐 Type of res.data.data:', typeof res.data.data);
-
     return res.data.data
   } catch (err: any) {
     console.error('API Error:', err);
@@ -945,11 +940,6 @@ export const RunAgent = async (spaceid: number) => {
 }
 
 
-
-
-
- // Apis/publicapi.ts
-
 export const PayApi = async (uuid:any) => {
   try {
     const res = await axios.get(`https://api.joincroose.com/croose/api/paystack/whapi/${uuid}`);
@@ -957,6 +947,17 @@ export const PayApi = async (uuid:any) => {
   } catch (err) {
     throw err;
   }
+};
+
+export const getQr = (space_id: string) => {
+  const token = localStorage.getItem("token");
+  return axios.get('https://api.joincroose.com/croose/api/whapi/instance/qr', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: { space_id },
+    responseType: 'blob'
+  });
 };
 
 
