@@ -52,7 +52,7 @@ export const Nav = ({ show, setShow }: any) => {
       setSnackbarMessage('Logout successful');
       setOpenSnackbar(true);
 
-
+ 
       setTimeout(() => {
         router.push("/login");
       }, 1000);
@@ -69,7 +69,7 @@ export const Nav = ({ show, setShow }: any) => {
   return (
 
 
-    <div className={`${show ? "block" : "hidden"} ${show ? "fixed" : "relative"} xl:block z-1 bg-[#13102E] select-none  w-[272px] h-[100%] max-w-[272px]`}>
+    <div className={`${show ? "block" : "hidden"} ${show ? "fixed" : "relative"} md:block z-1 bg-[#13102E] select-none  w-[272px] h-full max-w-[272px]`}>
       
      
       
