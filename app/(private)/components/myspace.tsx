@@ -121,10 +121,10 @@ const Myspace = () => {
         const instanceActivatioValue  = res?.data?.instance_activation_status;
         setActivationStatus(instanceActivatioValue)
 
-        if(instanceActivatioValue === 0){
-          setUnderReviewPopupOpen(true);
-    return;
-        }
+    //     if(instanceActivatioValue === 0){
+    //       setUnderReviewPopupOpen(true);
+    // return;
+    //     }
 
         if(instanceActivatioValue === 1){
             setShowLiveAgent(true);
@@ -296,7 +296,7 @@ const Myspace = () => {
                     }}
                     className="w-[150px] flex flex-row rounded-[8px] pt-[8px] pr-[16px] border border-gray-200 pl-[16px] pb-[8px] gap-[10px] bg-[#F2F4F7] h-[36px]"
                   >
-                    <div className="w-[116px] h-[20px] font-sans font-semibold text-sm leading-5 tracking-normal text-center text-[#101828] hover:cursor-pointer">
+                    <div   className="w-[116px] h-[20px] font-sans font-semibold text-sm leading-5 tracking-normal text-center text-[#101828] hover:cursor-pointer">
                       Connect account
                     </div>
                   </button>
