@@ -90,7 +90,7 @@ useEffect(() => {
                            
                           handleOpenQrPage()
 
-                        }} className=' justify-center font-sans w-[360px] text-[white] rounded-[8px]  bg-[#685BC7] flex pt-[8px] pr-[16px] pb-[8px] pl-[16px]  ' >Pay $199 </button>
+                        }} className=' justify-center font-sans w-[360px] text-[white] rounded-[8px]  bg-[#685BC7] flex pt-[8px] pr-[16px] pb-[8px] pl-[16px]  ' >1</button>
                         {/* <button className='flex justify-center font-sans w-[360px]  rounded-[8px] text-white  bg-[#685BC7]  pt-[8px] pr-[16px] pb-[8px] pl-[16px]  ' >Pay $499 </button> */}
                     </div>
                     <div></div>

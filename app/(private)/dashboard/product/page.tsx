@@ -644,7 +644,7 @@ const id = activeTab === 'products' ? 'product_id' : 'service_id' ;
 
   <div className="flex gap-4 items-center">
     <button
-      className="bg-[#F9F5FF] text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md whitespace-nowrap"
+      className="bg-[#F9F5FF] text-[#685BC7] hover:bg-violet-200 px-4 py-2 rounded-md whitespace-nowrap hover:cursor-pointer"
       onClick={() => setShowModal(true)}
       style={{
         display: 'flex',

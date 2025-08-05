@@ -148,7 +148,7 @@ const OrdersTable = () => {
                                         <td className="px-4 py-2">{order.customer_name}</td>
                                         <td className="px-4 py-2">{order.customer_number}</td>
                                         <td className="px-4 py-2">{order.product_name}</td>
-                                        <td className="px-4 py-2">₹{Number(order.order_amount).toLocaleString()}</td>
+                                        <td className="px-4 py-2">{Number(order.order_amount).toLocaleString()}</td>
                                         <td className="px-4 py-2 capitalize">{order.payment_status}</td>
                                         <td className="px-4 py-2">{order.order_date}</td>
                                         <td className="px-4 py-2 capitalize">
@@ -168,7 +168,7 @@ const OrdersTable = () => {
                                         <td className="px-4 py-2">
                                             <button
                                                 onClick={() => handleOrderStatusUpdate(order.id, order.status)}
-                                                className="px-3 py-1 bg-[#685BC7] text-white rounded text-xs"
+                                                className="px-3 py-1 bg-[#685BC7] text-white rounded text-xs hover:cursor-pointer"
                                             >
                                                 Update Status
                                             </button>

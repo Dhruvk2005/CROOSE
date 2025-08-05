@@ -152,7 +152,7 @@ const Spacebusiness = () => {
 
                     <button
                         className={`
-    py-[11.5px] px-[14px] w-[200px] rounded-[8px] font-inter text-[14px]
+    py-[11.5px] px-[14px] w-[200px] rounded-[8px] font-inter text-[14px] hover:cursor-pointer
     ${selectedBusiness
                                 ? 'bg-[#685BC7] text-white'
                                 : 'bg-[#D0D5DD] text-[#344054] cursor-not-allowed'}

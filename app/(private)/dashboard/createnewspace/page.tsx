@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 interface Space {
   id: number;
   name: string;
-  image?: "spaces/1752839531.jpeg";
+  image?: any
   client_name?: string;
   updated_at?: string;
   created_at?: string;
@@ -40,7 +40,7 @@ const Newspace = () => {
     };
     fetchData();
   }, []);
- 
+
 
   return (
     <div style={{ overflowX: "hidden" }} className='min-h-screen flex flex-col select-none ' >
@@ -94,7 +94,9 @@ const Newspace = () => {
 
                 spaceData.map((space) => (
                   <Link
-                    href={`/dashboard/space?name=${encodeURIComponent(space.name)}&id=${space.id}`}                  >
+                    href={`/dashboard/space?name=${encodeURIComponent(space.name)}&id=${space.id}&image=${encodeURIComponent(space.image || '')}`}
+                  >
+
                     <li
                       key={space.id}
                       className='w-[352px] list-none h-auto rounded-[16px] border-[1px] border-[#EAECF0]'
@@ -189,30 +191,30 @@ const Newspace = () => {
                   </Link>
                 ))
               )}
-{loading ? (
-  <div>
-    <span className="text-gray-500"></span> 
-  </div>
-) : (
-  <Link href="/spacebusiness">
-    <div className="bg-[#F4F4F5] border-[1px] border-[#EAECF0] flex justify-center items-center rounded-[16px] w-[352px] h-[270px] hover:cursor-pointer">
-      <div className="flex-col h-auto">
-        <Icon
-          className="ml-6"
-          icon="bitcoin-icons:plus-filled"
-          width="24"
-          height="24"
-          style={{ color: "#020617" }}
-        />
-        <p className="text-[#1D2939] mt-[10px] text-center font-Inter font-semibold text-[14px]">
-          New Space
-        </p>
-      </div>
-    </div>
-  </Link>
-)}
+              {loading ? (
+                <div>
+                  <span className="text-gray-500"></span>
+                </div>
+              ) : (
+                <Link href="/spacebusiness">
+                  <div className="bg-[#F4F4F5] border-[1px] border-[#EAECF0] flex justify-center items-center rounded-[16px] w-[352px] h-[270px] hover:cursor-pointer">
+                    <div className="flex-col h-auto">
+                      <Icon
+                        className="ml-6"
+                        icon="bitcoin-icons:plus-filled"
+                        width="24"
+                        height="24"
+                        style={{ color: "#020617" }}
+                      />
+                      <p className="text-[#1D2939] mt-[10px] text-center font-Inter font-semibold text-[14px]">
+                        New Space
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              )}
 
-    </ul>
+            </ul>
 
 
           </div >

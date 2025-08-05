@@ -97,8 +97,8 @@ export const fetchPaymentApi = async () => {
     const token = localStorage.getItem('token');
 
     const res = await axios.post(
-      `${BASE_URL}/api/payment_details`, 
-      {}, 
+      `${BASE_URL}/api/payment_details`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -873,7 +873,7 @@ export const spaceChats = async (spaceId: number) => {
 
     })
 
-  
+
 
     return res.data
 
@@ -940,7 +940,7 @@ export const RunAgent = async (spaceid: number) => {
 }
 
 
-export const PayApi = async (uuid:any) => {
+export const PayApi = async (uuid: any) => {
   try {
     const res = await axios.get(`https://api.joincroose.com/croose/api/paystack/whapi/${uuid}`);
     return res;
@@ -961,3 +961,23 @@ export const getQr = (space_id: string) => {
 };
 
 
+export const InstanceActivationStatus = async (spaceId: number) => {
+  try {
+    let token = localStorage.getItem("token")
+    return await axios({
+      method: "get",
+      url: `${BASE_URL}/api/whapi/instance_activation_status`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+
+      params: {
+        space_id: spaceId
+      },
+    })
+    
+
+  } catch (err) {
+    console.log(err)
+  }
+}
