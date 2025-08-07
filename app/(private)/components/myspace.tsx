@@ -10,6 +10,7 @@ import { RunAgent, spaceChats, spaceIqCheck, spaceLiveChats, PayApi, InstanceAct
 import { useParams, useSearchParams } from 'next/navigation';
 import { useIq } from '../Iqcontext'
 import LiveAgent2 from './liveagent2'
+import Link from 'next/link'
 const Myspace = () => {
   const [spaceiqopen, setSpaceiqopen] = useState(false)
   const [docopen, setDocopen] = useState(false)
@@ -113,21 +114,21 @@ const Myspace = () => {
     }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     const handleActivationStatus = async () => {
       try {
         let res = await InstanceActivationStatus(id)
-        console.log("instance activation status:",res?.data)
-        const instanceActivatioValue  = res?.data?.instance_activation_status;
+        console.log("instance activation status:", res?.data)
+        const instanceActivatioValue = res?.data?.instance_activation_status;
         setActivationStatus(instanceActivatioValue)
 
-    //     if(instanceActivatioValue === 0){
-    //       setUnderReviewPopupOpen(true);
-    // return;
-    //     }
+        //     if(instanceActivatioValue === 0){
+        //       setUnderReviewPopupOpen(true);
+        // return;
+        //     }
 
-        if(instanceActivatioValue === 1){
-            setShowLiveAgent(true);
+        if (instanceActivatioValue === 1) {
+          setShowLiveAgent(true);
         }
 
 
@@ -137,8 +138,8 @@ const Myspace = () => {
       }
     }
     handleActivationStatus()
-  },[])
-  
+  }, [])
+
 
 
   return (
@@ -146,11 +147,15 @@ const Myspace = () => {
       <Spacenav />
       <div className="h-auto w-full bg-[#FFFFFF] relative mt-[15px] flex flex-col gap-5  items-center">
         <div className="w-[100%]  items-center mt-[-17px]   flex flex-row h-[64px] " style={{ borderBottom: "1px solid #EAECF0" }}>
+          <div className='hover: bg-grey'>
+      <Link href={'/dashboard/createnewspace'} >
           <img
             src="/arrow.png"
             alt="arrow"
             className="h-[20px] ml-[10px] m-[-1px] w-[20px]"
           />
+          </Link>
+          </div>
           <div className="w-[48px] ml-[10px] h-[48px] rounded-full ">
 
             {imageUrl && (
@@ -296,7 +301,7 @@ const Myspace = () => {
                     }}
                     className="w-[150px] flex flex-row rounded-[8px] pt-[8px] pr-[16px] border border-gray-200 pl-[16px] pb-[8px] gap-[10px] bg-[#F2F4F7] h-[36px]"
                   >
-                    <div   className="w-[116px] h-[20px] font-sans font-semibold text-sm leading-5 tracking-normal text-center text-[#101828] hover:cursor-pointer">
+                    <div className="w-[116px] h-[20px] font-sans font-semibold text-sm leading-5 tracking-normal text-center text-[#101828] hover:cursor-pointer">
                       Connect account
                     </div>
                   </button>

@@ -236,9 +236,9 @@ const Signupform = () => {
 
                 </div>
                 {/* <Link href={"/emailverification"} > */}
-                <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center items-center w-full h-[48px] rounded-[12px]">Sign up</button>
+                <button type="submit" className="bg-[#685BC7] text-white font-semibold text-sm flex justify-center className='cursor-pointer'  items-center w-full h-[48px] rounded-[12px]">Sign up</button>
                 {/* </Link> */}
-                <div className="text-center text-sm text-[#101828] mt-2">
+                <div className="text-center  text-sm text-[#101828] mt-2">
                   Already have an account?{' '}
                   <Link href="/login" className="text-[#685BC7] font-medium hover:underline">Log In</Link>
                 </div>
@@ -249,7 +249,7 @@ const Signupform = () => {
                   <hr className="flex-grow border-t border-gray-300" />
                 </div>
 
-                <div>
+                <div className='cursor-pointer' >
                   <button type="button" className="flex items-center justify-center gap-2 w-full h-[48px] border rounded-[12px] text-sm font-medium text-[#344054] border-[#EAECF0]">
                     <img src="google.png" alt="Google" className="w-5 h-5" />
                     Continue with Google

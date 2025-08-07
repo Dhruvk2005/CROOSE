@@ -220,6 +220,7 @@ const Customisespace = () => {
                 </div>
             </div>
             <div className='w-full flex flex-wrap justify-end gap-[15px] p-[30px] mt-[40px]'>
+                
                 <button className='w-[100px] py-[10px] px-[14px] border-2 border-[#D0D5DD] rounded-[8px] font-semibold font-inter text-[14px] bg-white text-[#344054] hover:cursor-pointer'>
                     Previous
                 </button>

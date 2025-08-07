@@ -144,9 +144,11 @@ const Spacebusiness = () => {
             </div>
 
             <div className='w-full flex justify-end gap-[20px] mt-[60px]'>
-                <button className='w-[100px] py-[10px] px-[14px] border-2 border-[#D0D5DD] rounded-[8px] font-semibold font-inter text-[14px] bg-[#FFFFFF] text-[#344054]'>
+                <Link href={'/dashboard/createnewspace'} >
+                <button className='w-[100px] py-[10px] px-[14px] border-2 border-[#D0D5DD] rounded-[8px] font-semibold font-inter text-[14px] bg-[#FFFFFF] text-[#344054 hover:cursor-pointer ]'>
                     Previous
                 </button>
+                </Link>
                 <Link
                     href={"/customisespace"} >
 

@@ -13,16 +13,16 @@ import Settingprovider, { SettingContext } from '@/app/context/SettingContext';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-  { label: 'Overview', href: '/dashboard/maindashboard', icon: <Squares2X2Icon className="w-5.6 h-5.5 text-gray-100" /> },
+  { label: 'Overview', href: '/dashboard/maindashboard', icon: <Squares2X2Icon className="w-5.6 h-5.5 select-none text-gray-100" /> },
   // { label: 'Modules', href: '/dashboard/createnewspace', icon: <MagnifyingGlassIcon className="w-5.6 h-5.5 text-gray-100" /> },
   { label: 'Your Space', href: '/dashboard/createnewspace', icon: <Icon icon="hugeicons:sparkles" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Payments', href: '/dashboard/payments', icon: <Icon icon="solar:banknote-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Customers', href: '/dashboard/customers', icon: <Icon icon="lucide:book-user" className="w-5 h-5.5 text-gray-100" /> },
   // { label: 'Analytics', href: '#', icon: <Icon icon="solar:chart-outline" className="w-5 h-5.5 text-gray-100" /> },
   { label: 'Appointments', href: '/dashboard/appointment', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
-   { label: 'Orders', href: '/dashboard/orders', icon:<Icon icon="lets-icons:order" width="24" height="24"  style={{color: "#e5e7e9"}} />},
+  { label: 'Orders', href: '/dashboard/orders', icon: <Icon icon="lets-icons:order" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
   { label: 'Product/Services', href: '/dashboard/product', icon: <Icon icon="uil:calender" width="24" height="24" style={{ color: "#e5e7e9" }} /> },
- 
+
 ];
 
 
@@ -52,7 +52,7 @@ export const Nav = ({ show, setShow }: any) => {
       setSnackbarMessage('Logout successful');
       setOpenSnackbar(true);
 
- 
+
       setTimeout(() => {
         router.push("/login");
       }, 1000);
@@ -69,17 +69,33 @@ export const Nav = ({ show, setShow }: any) => {
   return (
 
 
-    <div className={`${show ? "block" : "hidden"} ${show ? "fixed" : "relative"} md:block z-1 bg-[#13102E] select-none  w-[272px] h-full max-w-[272px]`}>
-      
-     
-      
-      <div className="bg-[#13102E] w-[272px] h-[100vh] max-w-[272px] fixed">
+      <div className={`fixed select-none top-0 left-0 z-40 w-[272px] h-full bg-[#13102E] transform transition-transform duration-300 ${show ? 'translate-x-0' : '-translate-x-full'}`}>
 
+
+      <div className="   bg-[#13102E] w-[272px] h-[100vh] max-w-[272px] fixed">
+         <div className="absolute top-4 right-4 z-50">
+          <button 
+            onClick={() => setShow(false)}
+            className="cursor-pointer hover:bg-gray-700 rounded-full p-2 transition-colors"
+          >
+            <Icon 
+              icon="iconamoon:close-bold" 
+              width="20" 
+              height="20" 
+              style={{ color: 'white' }} 
+            />
+          </button>
+        </div>
 
 
 
         <div className="flex w-[272px] h-[76px] justify-left gap-[12px] pt-[24px] pr-[32px] pd-[12px] pl-[32px] items-center">
-          <img className="w-[82.95893096923828px] h-[19.239667892456055px]" src="../logo.png" alt='logo' />
+          <div>
+            <img className="w-[82.95893096923828px] h-[19.239667892456055px]" src="../logo.png" alt='logo' />
+          </div>
+
+
+
         </div>
 
         <div className="relative">
@@ -87,7 +103,7 @@ export const Nav = ({ show, setShow }: any) => {
             <ul>
               {navItems.map((item, index) => (
                 <Link key={index} href={item.href}>
-                      <li className={`flex w-[232px] items-center gap-[8px] px-[12px] py-[8px] transition-all cursor-pointer
+                  <li className={`flex w-[232px] items-center gap-[8px] px-[12px] py-[8px] transition-all cursor-pointer
   ${pathname === item.href ? 'bg-[#1a173b] border-l-4 border-[#7367CB]' : 'hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]'}`}>
                     <div>{item.icon}</div>
                     <div className='text-[14px] font-sans text-[#F2F4F7] font-normal'>{item.label}</div>
@@ -112,9 +128,9 @@ export const Nav = ({ show, setShow }: any) => {
                     <span className="text-[14px] font-sans text-[#F2F4F7] select-none font-normal">Settings</span>
                   </div>
                 </li>
-                <div >             <Link  href='/dashboard/support' >
-                  <li className= {`flex w-[232px] items-center gap-[8px] px-[12px] py-[8px] transition-all cursor-pointer
-  ${pathname === '/dashboard/support'? 'bg-[#1a173b] border-l-4 border-[#7367CB]' : 'hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]'}`} >  
+                <div >             <Link href='/dashboard/support' >
+                  <li className={`flex w-[232px] items-center gap-[8px] px-[12px] py-[8px] transition-all cursor-pointer
+  ${pathname === '/dashboard/support' ? 'bg-[#1a173b] border-l-4 border-[#7367CB]' : 'hover:bg-[#1a173b] hover:border-l-4 hover:border-[#7367CB]'}`} >
                     <div  >
                       <Icon icon="tabler:headphones" width="24" height="24" color='white' />
                     </div>
@@ -123,7 +139,7 @@ export const Nav = ({ show, setShow }: any) => {
                     </div>
                   </li>
                 </Link>
-                </div>  
+                </div>
 
 
 
